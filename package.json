@@ -1,0 +1,58 @@
+{
+    "name": "vscode-proto3",
+    "displayName": "vscode-proto3",
+    "description": "Protocol Buffers 3 support for Visual Studio Code",
+    "version": "0.0.1",
+    "publisher": "zxh",
+    "engines": {
+        "vscode": "^1.0.0"
+    },
+    "categories": [
+        "Languages",
+        "Snippets"
+    ],
+    "activationEvents": [
+        "onLanguage:proto3",
+        "onCommand:proto3.compile.one",
+        "onCommand:proto3.compile.all"
+    ],
+    "main": "./out/src/proto3Main",
+    "contributes": {
+        "commands": [
+            {
+                "command": "proto3.compile.one",
+                "title": "proto3: Compile This Proto"
+            },
+            {
+                "command": "proto3.compile.all",
+                "title": "proto3: Compile All Protos"
+            }
+        ],
+        "languages": [{
+            "id": "proto3",
+            "extensions": [".proto"],
+            "aliases": [
+                "protobuf3",
+                "Protocol Buffers 3"
+            ]
+        }],
+        "grammars": [{
+            "language": "proto3",
+            "scopeName": "source.proto",
+            "path": "./syntaxes/proto3.tmLanguage"
+        }],
+        "snippets": [{
+            "language": "proto3",
+            "path": "./snippets/proto3.json"
+        }]
+    },
+    "scripts": {
+        "vscode:prepublish": "node ./node_modules/vscode/bin/compile",
+        "compile": "node ./node_modules/vscode/bin/compile -watch -p ./",
+        "postinstall": "node ./node_modules/vscode/bin/install"
+    },
+    "devDependencies": {
+        "typescript": "^1.8.5",
+        "vscode": "^0.11.0"
+    }
+}
