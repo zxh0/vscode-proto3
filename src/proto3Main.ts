@@ -47,7 +47,7 @@ export function activate(ctx: vscode.ExtensionContext): void {
 		brackets: [
 			['{', '}'],
 			['[', ']'],
-	      //['(', ')'],
+	        ['(', ')'],
 			['<', '>'],
 		],
 
