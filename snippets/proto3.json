@@ -145,6 +145,11 @@
             "description": "oneof field",
             "body": "oneof ${3:name} = {\n}"
         },
+        "enum": {
+            "prefix": "en",
+            "description": "enum",
+            "body": "enum ${3:EnumName} {\n}"
+        },
         "service": {
             "prefix": "sv",
             "description": "service",

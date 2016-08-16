@@ -47,6 +47,7 @@ For example if there is an image subfolder under your extension project workspac
 - `fby`: bytes field_name = tag;
 - `fm`: map<key, val> field_name = tag;
 - `foo`: oneof name = {}
+- `en`: enum EnumName {}
 
 ## Requirements
 
