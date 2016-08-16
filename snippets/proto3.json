@@ -143,7 +143,7 @@
         "oneof field": {
             "prefix": "foo",
             "description": "oneof field",
-            "body": "oneof ${3:name} = {\n}"
+            "body": "oneof ${3:name} {\n}"
         },
         "enum": {
             "prefix": "en",

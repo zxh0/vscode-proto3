@@ -46,8 +46,10 @@ For example if there is an image subfolder under your extension project workspac
 - `fst`: string field_name = tag;
 - `fby`: bytes field_name = tag;
 - `fm`: map<key, val> field_name = tag;
-- `foo`: oneof name = {}
+- `foo`: oneof name {}
 - `en`: enum EnumName {}
+- `sv`: service ServiceName {}
+- `rpc`: rpc method_name (Request) returns (Response);
 
 ## Requirements
 
