@@ -1,6 +1,6 @@
-# vscode-pb3 README
+# vscode-proto3
 
-This is the README for your extension "vscode-pb3". After writing up a brief description, we recommend including the following sections.
+vscode extension for proto3
 
 ## Features
 
@@ -11,6 +11,42 @@ For example if there is an image subfolder under your extension project workspac
 \!\[feature X\]\(images/feature-x.png\)
 
 > Tip: Many popular extensions utilize animations. This is an excellent way to show off your extension! We recommend short, focused animations that are easy to follow.
+
+- syntax coloring
+- syntax check
+- completion
+
+### Snippets
+
+- `sp2`: syntax = "proto3"; 
+- `sp3`: syntax = "proto3";
+- `pkg`: package package.name;
+- `imp`: import "path/to/other/protos.proto";
+- `ojp`: option java_package = "java.package.name";
+- `ojoc`: option java_outer_classname = "ClassName";
+- `o4s`: option optimize_for = SPEED;
+- `o4cs`: option optimize_for = CODE_SIZE;
+- `o4lr`: option optimize_for = LITE_RUNTIME;
+- `odep`: option deprecated = true;
+- `oaa`: option allow_alias = true;
+- `msg`: message MessageName {}
+- `fbo`: bool field_name = tag;
+- `fi32`: int32 field_name = tag;
+- `fi64`: int64 field_name = tag;
+- `fu32`: uint32 field_name = tag;
+- `fu64`: uint64 field_name = tag;
+- `fs32`: sint32 field_name = tag;
+- `fs64`: sint64 field_name = tag;
+- `ff32`: fixed32 field_name = tag;
+- `ff64`: fixed64 field_name = tag;
+- `fsf32`: sfixed32 field_name = tag;
+- `fsf64`: sfixed64 field_name = tag;
+- `ffl`: float field_name = tag;
+- `fdo`: double field_name = tag;
+- `fst`: string field_name = tag;
+- `fby`: bytes field_name = tag;
+- `fm`: map<key, val> field_name = tag;
+- `foo`: oneof name = {}
 
 ## Requirements
 
