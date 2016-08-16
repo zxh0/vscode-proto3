@@ -30,7 +30,7 @@ enum TestEnum {
 service TestService {
   option deprecated = false;
 
-  rpc desc (TestOptions) returns (TestOptions);
+  rpc decr (TestOptions) returns (TestOptions);
   rpc incr (TestOptions) returns (TestOptions) {
     option deprecated = true;
   }
