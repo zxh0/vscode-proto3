@@ -1,0 +1,35 @@
+syntax = "proto3";
+
+message FieldRules {
+  int32 field1=1;
+  repeated int32 field2 = 2;
+  double map = 3;
+}
+
+message MapFields {
+  map<string, int32> map_field1 = 1;
+  map< string,float > map_field2 = 2 [deprecated=true];
+}
+
+message SampleMessage {
+  //int32 name = 1;
+  //int32 xx = 4;
+  oneof test_oneof {
+    string name = 4 [deprecated=true];
+    int32 sub_message = 9;
+  }
+}
+
+message OutMsg {
+  enum NestedEnum {
+    AAA = 0;
+    BBB = 1;
+  }
+  message NestedMsg {
+    message XXX {
+      int32 field1 = 1;
+    }
+  }
+  NestedMsg field1 = 1;
+  NestedEnum field2 = 2;
+}

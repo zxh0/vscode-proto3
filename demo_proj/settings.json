@@ -1,0 +1,9 @@
+{
+    "protoc": {
+        "path": "d:/tools/protoc-3.0.0-win32/bin/protoc.exe",
+        "options": [
+            "--proto_path=v3",
+            "--java_out=gen/java"
+        ]
+    }
+}
