@@ -17,7 +17,7 @@ export class Proto3LanguageDiagnosticProvider {
         stderr.split('\n').forEach(line => {
             //console.log(line);
             if (line.startsWith(shortFileName)) {
-                let errorInfo = line.match(/\w+\.proto:(\d+):(\d+)(.*)/);
+                let errorInfo = line.match(/\w+\.proto:(\d+):(\d+):\s*(.*)/);
                 if (errorInfo) {
                     let startLine = parseInt(errorInfo[1]) - 1;
                     let startChar = parseInt(errorInfo[2]) - 1;
