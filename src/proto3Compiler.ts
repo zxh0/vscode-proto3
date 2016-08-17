@@ -31,7 +31,7 @@ export class Proto3Compiler {
                 // console.log(err);
                 // console.log(stdout);
                 // console.log(stderr);
-                if (callback && stderr) {
+                if (callback) {
                     callback(stderr);
                 }
             });

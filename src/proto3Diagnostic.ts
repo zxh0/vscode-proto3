@@ -4,9 +4,15 @@ import { Proto3Compiler } from './proto3Compiler';
 
 export class Proto3LanguageDiagnosticProvider {
 
+    private errors = vscode.languages.createDiagnosticCollection("languageErrors");
+
     public createDiagnostics(docUri: vscode.Uri, fileName: string) {
         new Proto3Compiler().compile(fileName, stderr => {
-            this.analyzeErrors(docUri, fileName, stderr);
+            if (stderr) {
+                this.analyzeErrors(docUri, fileName, stderr);
+            } else {
+                this.errors.delete(docUri);
+            }
         })
     }
     
@@ -28,8 +34,7 @@ export class Proto3LanguageDiagnosticProvider {
             }
         });
 
-        let errors = vscode.languages.createDiagnosticCollection("languageErrors");
-        errors.set(docUrl, diagnostics);
+        this.errors.set(docUrl, diagnostics);
     }
 
 }
