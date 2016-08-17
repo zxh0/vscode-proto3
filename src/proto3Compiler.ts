@@ -10,18 +10,16 @@ export class Proto3Compiler {
 
     public compileActiveProto() {
         let editor = vscode.window.activeTextEditor;
-		if (!editor){
-            return;
+		if (editor && editor.document.languageId == 'proto3') {
+            let fileName = editor.document.fileName;
+        	this.compile(fileName);
         }
-
-		let fileName = editor.document.fileName;
-        this.compile(fileName);
     }
 
     public compile(fileName: string, callback?: (stderr: string) =>void) {
-		if (!fileName.endsWith('.proto')) {
-			return;
-		}
+		// if (!fileName.endsWith('.proto')) {
+		// 	return;
+		// }
 
 		this.getSettings(jsonObj => {
 			let proto = path.relative(vscode.workspace.rootPath, fileName);
