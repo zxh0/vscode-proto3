@@ -22,23 +22,6 @@ export class Proto3Compiler {
 		
 	}
 
-	private getSettings(cb: (jsonObj) => void) {
-		let settingsPath = path.join(vscode.workspace.rootPath, 'settings.json');
-		fs.exists(settingsPath, exists => {
-			if (exists) {
-				fs.readFile(settingsPath, (err, data) => {
-					if (data) {
-						cb(JSON.parse(data.toString()));
-					} else {
-						cb(null);
-					}
-				});
-			} else {
-				cb(null);
-			}
-		});
-	}
-
     public compile(fileName: string, callback?: (stderr: string) =>void) {
 		if (!fileName.endsWith('.proto')) {
 			return;
@@ -63,5 +46,22 @@ export class Proto3Compiler {
 			}
 		})
     }
+	
+	private getSettings(cb: (jsonObj) => void) {
+		let settingsPath = path.join(vscode.workspace.rootPath, 'settings.json');
+		fs.exists(settingsPath, exists => {
+			if (exists) {
+				fs.readFile(settingsPath, (err, data) => {
+					if (data) {
+						cb(JSON.parse(data.toString()));
+					} else {
+						cb(null);
+					}
+				});
+			} else {
+				cb(null);
+			}
+		});
+	}
 
 }
