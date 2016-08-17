@@ -20,41 +20,46 @@ For example if there is an image subfolder under your extension project workspac
 - brace matching.
 - line and block commenting.
 
+### Syntax highlighting
 
-### Snippets
+### Syntax Validation
 
-- `sp2`: syntax = "proto3"; 
-- `sp3`: syntax = "proto3";
-- `pkg`: package package.name;
-- `imp`: import "path/to/other/protos.proto";
-- `ojp`: option java_package = "java.package.name";
-- `ojoc`: option java_outer_classname = "ClassName";
-- `o4s`: option optimize_for = SPEED;
-- `o4cs`: option optimize_for = CODE_SIZE;
-- `o4lr`: option optimize_for = LITE_RUNTIME;
-- `odep`: option deprecated = true;
-- `oaa`: option allow_alias = true;
-- `msg`: message MessageName {}
-- `fbo`: bool field_name = tag;
-- `fi32`: int32 field_name = tag;
-- `fi64`: int64 field_name = tag;
-- `fu32`: uint32 field_name = tag;
-- `fu64`: uint64 field_name = tag;
-- `fs32`: sint32 field_name = tag;
-- `fs64`: sint64 field_name = tag;
-- `ff32`: fixed32 field_name = tag;
-- `ff64`: fixed64 field_name = tag;
-- `fsf32`: sfixed32 field_name = tag;
-- `fsf64`: sfixed64 field_name = tag;
-- `ffl`: float field_name = tag;
-- `fdo`: double field_name = tag;
-- `fst`: string field_name = tag;
-- `fby`: bytes field_name = tag;
-- `fm`: map<key, val> field_name = tag;
-- `foo`: oneof name {}
-- `en`: enum EnumName {}
-- `sv`: service ServiceName {}
-- `rpc`: rpc method_name (Request) returns (Response);
+### Code Snippets
+
+prefix| body
+----- | -----
+sp2   | `syntax = "proto3";`
+sp3   | `syntax = "proto3";`
+pkg   | `package package.name;`
+imp   | `import "path/to/other/protos.proto";`
+ojp   | `option java_package = "java.package.name";`
+ojoc  | `option java_outer_classname = "ClassName";`
+o4s   | `option optimize_for = SPEED;`
+o4cs  | `option optimize_for = CODE_SIZE;`
+o4lr  | `option optimize_for = LITE_RUNTIME;`
+odep  | `option deprecated = true;`
+oaa   | `option allow_alias = true;`
+msg   | `message MessageName {}`
+fbo   | `bool field_name = tag;`
+fi32  | `int32 field_name = tag;`
+fi64  | `int64 field_name = tag;`
+fu32  | `uint32 field_name = tag;`
+fu64  | `uint64 field_name = tag;`
+fs32  | `sint32 field_name = tag;`
+fs64  | `sint64 field_name = tag;`
+ff32  | `fixed32 field_name = tag;`
+ff64  | `fixed64 field_name = tag;`
+fsf32 | `sfixed32 field_name = tag;`
+fsf64 | `sfixed64 field_name = tag;`
+ffl   | `float field_name = tag;`
+fdo   | `double field_name = tag;`
+fst   | `string field_name = tag;`
+fby   | `bytes field_name = tag;`
+fm    | `map<key, val> field_name = tag;`
+foo   | `oneof name {}`
+en    | `enum EnumName {}`
+sv    | `service ServiceName {}`
+rpc   | `rpc method_name (Request) returns (Response);`
 
 ## Requirements
 
@@ -68,8 +73,8 @@ For example:
 
 This extension contributes the following settings:
 
-* `myExtension.enable`: enable/disable this extension
-* `myExtension.thing`: set to `blah` to do something
+* `myExtension.enable | enable/disable this extension
+* `myExtension.thing | set to `blah` to do something
 
 ## Known Issues
 
