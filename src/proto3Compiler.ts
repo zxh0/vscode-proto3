@@ -12,25 +12,31 @@ export class Proto3Compiler {
         let editor = vscode.window.activeTextEditor;
         if (editor && editor.document.languageId == 'proto3') {
             let fileName = editor.document.fileName;
-            this.compile(fileName);
+            let proto = path.relative(vscode.workspace.rootPath, fileName);
+            this.loadSettings(settings => {
+                let cmd = this.getProtocPath(settings);
+                let args = this.getProtocOptions(settings).concat(proto);
+                let opts = {cwd: vscode.workspace.rootPath};
+
+                cp.execFile(cmd, args, opts, (err, stdout, stderr) => {
+                    console.log(stderr);
+                });
+            })
         }
     }
 
-    public compile(fileName: string, callback?: (stderr: string) =>void) {
-        // if (!fileName.endsWith('.proto')) {
-        //     return;
-        // }
-
-        this.getSettings(jsonObj => {
-            let proto = path.relative(vscode.workspace.rootPath, fileName);
-            let cmd = this.getProtoc(jsonObj);
-            let args = [this.getProtoPath(jsonObj), this.getJavaOut(), proto];
+    public compileProtoToTmp(fileName: string, callback?: (stderr: string) =>void) {
+        let proto = path.relative(vscode.workspace.rootPath, fileName);
+        this.loadSettings(settings => {
+            let cmd = this.getProtocPath(settings);
+            let args = [
+                this.getProtoPathOption(settings),
+                this.getTmpJavaOutOption(),
+                proto
+            ];
             let opts = {cwd: vscode.workspace.rootPath};
 
             cp.execFile(cmd, args, opts, (err, stdout, stderr) => {
-                // console.log(err);
-                // console.log(stdout);
-                // console.log(stderr);
                 if (callback) {
                     callback(stderr);
                 }
@@ -38,26 +44,30 @@ export class Proto3Compiler {
         })
     }
 
-    private getProtoc(jsonObj): string {
-        if (jsonObj && jsonObj.protoc && jsonObj.protoc.path) {
-            return jsonObj.protoc.path;
+    private getProtocPath(settings): string {
+        if (settings && settings.protoc && settings.protoc.path) {
+            return settings.protoc.path as string;
         }
         return 'protoc';
     }
 
-    private getProtoPath(jsonObj): string {
-        if (jsonObj && jsonObj.protoc && jsonObj.protoc.options) {
-             return (jsonObj.protoc.options as string[])
-                     .find(opt => opt.startsWith('--proto_path'));
+    private getProtocOptions(settings): string[] {
+        if (settings && settings.protoc && settings.protoc.options) {
+             return settings.protoc.options as string[];
         }
-        return "";
+        return [];
     }
 
-    private getJavaOut(): string {
+    private getProtoPathOption(settings): string {
+        return this.getProtocOptions(settings)
+            .find(opt => opt.startsWith('--proto_path'));
+    }
+
+    private getTmpJavaOutOption(): string {
         return '--java_out=' + os.tmpdir();
     }
     
-    private getSettings(cb: (jsonObj) => void) {
+    private loadSettings(cb: (settings) => void) {
         let settingsPath = path.join(vscode.workspace.rootPath, 'settings.json');
         fs.exists(settingsPath, exists => {
             if (exists) {
@@ -65,11 +75,11 @@ export class Proto3Compiler {
                     if (data) {
                         cb(JSON.parse(data.toString()));
                     } else {
-                        cb(null);
+                        cb({});
                     }
                 });
             } else {
-                cb(null);
+                cb({});
             }
         });
     }

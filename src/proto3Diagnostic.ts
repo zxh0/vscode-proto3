@@ -9,7 +9,7 @@ export class Proto3LanguageDiagnosticProvider {
     private errors = vscode.languages.createDiagnosticCollection("languageErrors");
 
     public createDiagnostics(docUri: vscode.Uri, fileName: string) {
-        new Proto3Compiler().compile(fileName, stderr => {
+        new Proto3Compiler().compileProtoToTmp(fileName, stderr => {
             if (stderr) {
                 this.analyzeErrors(docUri, fileName, stderr);
             } else {
