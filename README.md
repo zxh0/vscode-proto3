@@ -12,9 +12,14 @@ For example if there is an image subfolder under your extension project workspac
 
 > Tip: Many popular extensions utilize animations. This is an excellent way to show off your extension! We recommend short, focused animations that are easy to follow.
 
-- syntax coloring
-- syntax check
-- completion
+- proto3 support.
+- syntax highlighting.
+- syntax validation.
+- code snippets.
+- code completion.
+- brace matching.
+- line and block commenting.
+
 
 ### Snippets
 
