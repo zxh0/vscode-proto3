@@ -18,34 +18,46 @@ export class Proto3Compiler {
         this.compile(fileName);
     }
 
-	private prepareProtoc(cb: (protocPath: string, protoPathOpt) => void) {
-		
-	}
-
     public compile(fileName: string, callback?: (stderr: string) =>void) {
 		if (!fileName.endsWith('.proto')) {
 			return;
 		}
 
 		this.getSettings(jsonObj => {
-			if (jsonObj) {
-				let proto = path.relative(vscode.workspace.rootPath, fileName);
+			let proto = path.relative(vscode.workspace.rootPath, fileName);
+			let cmd = this.getProtoc(jsonObj);
+			let args = [this.getProtoPath(jsonObj), this.getJavaOut(), proto];
+			let opts = {cwd: vscode.workspace.rootPath};
 
-				let cmd = jsonObj.protoc.path;
-				let args = [].concat(jsonObj.protoc.options).concat(proto);
-				let opts = {cwd: vscode.workspace.rootPath};
-
-				cp.execFile(cmd, args, opts, (err, stdout, stderr) => {
-					//console.log(err);
-					//console.log(stdout);
-					//console.log(stderr);
-					if (callback && stderr) {
-						callback(stderr);
-					}
-				});
-			}
+			cp.execFile(cmd, args, opts, (err, stdout, stderr) => {
+				// console.log(err);
+				// console.log(stdout);
+				// console.log(stderr);
+				if (callback && stderr) {
+					callback(stderr);
+				}
+			});
 		})
     }
+
+	private getProtoc(jsonObj): string {
+		if (jsonObj && jsonObj.protoc && jsonObj.protoc.path) {
+			return jsonObj.protoc.path;
+		}
+		return 'protoc';
+	}
+
+	private getProtoPath(jsonObj): string {
+		if (jsonObj && jsonObj.protoc && jsonObj.protoc.options) {
+			 return (jsonObj.protoc.options as string[])
+			 		.find(opt => opt.startsWith('--proto_path'));
+		}
+		return "";
+	}
+
+	private getJavaOut(): string {
+		return '--java_out=' + os.tmpdir();
+	}
 	
 	private getSettings(cb: (jsonObj) => void) {
 		let settingsPath = path.join(vscode.workspace.rootPath, 'settings.json');
