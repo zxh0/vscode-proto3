@@ -4,6 +4,7 @@ import vscode = require('vscode');
 import fs = require('fs');
 import path = require('path');
 import cp = require('child_process');
+import os = require('os');
 
 export class Proto3Compiler {
 
@@ -17,31 +18,50 @@ export class Proto3Compiler {
         this.compile(fileName);
     }
 
+	private prepareProtoc(cb: (protocPath: string, protoPathOpt) => void) {
+		
+	}
+
+	private getSettings(cb: (jsonObj) => void) {
+		let settingsPath = path.join(vscode.workspace.rootPath, 'settings.json');
+		fs.exists(settingsPath, exists => {
+			if (exists) {
+				fs.readFile(settingsPath, (err, data) => {
+					if (data) {
+						cb(JSON.parse(data.toString()));
+					} else {
+						cb(null);
+					}
+				});
+			} else {
+				cb(null);
+			}
+		});
+	}
+
     public compile(fileName: string, callback?: (stderr: string) =>void) {
 		if (!fileName.endsWith('.proto')) {
 			return;
 		}
 
-		let proto = path.relative(vscode.workspace.rootPath, fileName);
-		//console.log(proto);
+		this.getSettings(jsonObj => {
+			if (jsonObj) {
+				let proto = path.relative(vscode.workspace.rootPath, fileName);
 
-		let settingsPath = path.join(vscode.workspace.rootPath, 'settings.json')
-		if (fs.existsSync(settingsPath)) {
-			let settingsStr = fs.readFileSync(settingsPath).toString();
-			let settingsObj = JSON.parse(settingsStr);
-			let cmd = settingsObj.protoc.path;
-			let args = [].concat(settingsObj.protoc.options).concat(proto);
-			let opts = {cwd: vscode.workspace.rootPath};
+				let cmd = jsonObj.protoc.path;
+				let args = [].concat(jsonObj.protoc.options).concat(proto);
+				let opts = {cwd: vscode.workspace.rootPath};
 
-			cp.execFile(cmd, args, opts, (err, stdout, stderr) => {
-				//console.log(err);
-				//console.log(stdout);
-				//console.log(stderr);
-                if (callback && stderr) {
-                    callback(stderr);
-                }
-			});
-		}
+				cp.execFile(cmd, args, opts, (err, stdout, stderr) => {
+					//console.log(err);
+					//console.log(stdout);
+					//console.log(stderr);
+					if (callback && stderr) {
+						callback(stderr);
+					}
+				});
+			}
+		})
     }
 
 }
