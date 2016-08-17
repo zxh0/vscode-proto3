@@ -22,7 +22,7 @@ export function activate(ctx: vscode.ExtensionContext): void {
 
     let pb3Compiler = new Proto3Compiler();
 
-    ctx.subscriptions.push(vscode.commands.registerCommand('proto3.compile.file', () => {
+    ctx.subscriptions.push(vscode.commands.registerCommand('proto3.compile.one', () => {
         pb3Compiler.compileActiveProto();
     }));
 
