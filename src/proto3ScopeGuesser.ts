@@ -70,6 +70,8 @@ class ScopeGuesser {
                         this.enterScope(Proto3ScopeKind.Message, i);
                     } else if (line.text.match(ENUM_BEGIN)) {
                         this.enterScope(Proto3ScopeKind.Enum, i);
+                    } else if (line.text.match(SERVICE_BEGIN)) {
+                        this.enterScope(Proto3ScopeKind.Service, i);
                     } else if (line.text.match(SCOPE_END)) {
                         this.exitScope(i);
                     }
@@ -92,9 +94,8 @@ class ScopeGuesser {
         this.currentScope.lineTo = lineNum;
         if (!this.scopeAtCursor) {
             if (this.currentScope.lineFrom <= this.cursorLineNum
-                && this.currentScope.lineTo >= this.cursorLineNum) {
-
-                    this.scopeAtCursor = this.currentScope;
+                    && this.currentScope.lineTo >= this.cursorLineNum) {
+                this.scopeAtCursor = this.currentScope;
             }
         }
         if (this.currentScope.parent) {
