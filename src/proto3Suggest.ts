@@ -179,11 +179,21 @@ is a formalization for deprecating enums.
 ];
 
 let enumValueOptions = [
-    // TODO
+    createCompletionOption('deprecated', `
+Is this enum value deprecated?
+Depending on the target platform, this can emit Deprecated annotations
+for the enum value, or it will be completely ignored; in the very least,
+this is a formalization for deprecating enum values.
+    `),
 ];
 
 let serviceOptions = [
-    // TODO
+    createCompletionOption('deprecated', `
+Is this service deprecated?
+Depending on the target platform, this can emit Deprecated annotations
+for the service, or it will be completely ignored; in the very least,
+this is a formalization for deprecating services.
+    `),
 ];
 
 let frOptional = createCompletionKeyword('optional');
