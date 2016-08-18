@@ -186,77 +186,66 @@ let serviceOptions = [
     // TODO
 ];
 
-let frOptional = createCompletionFieldRule('optional');
-let frRequired = createCompletionFieldRule('required');
-let frRepeated = createCompletionFieldRule('repeated');
+let frOptional = createCompletionKeyword('optional');
+let frRequired = createCompletionKeyword('required');
+let frRepeated = createCompletionKeyword('repeated');
 
 let scalaTypes = [
-    createCompletionScalaType('bool', ``),
-    createCompletionScalaType('int32', `
+    createCompletionKeyword('bool', ``),
+    createCompletionKeyword('int32', `
 Uses variable-length encoding. 
 Inefficient for encoding negative numbers – if your field is likely to have 
 negative values, use sint32 instead.`
     ),
-    createCompletionScalaType('int64', `
+    createCompletionKeyword('int64', `
 Uses variable-length encoding. 
 Inefficient for encoding negative numbers – if your field is likely to have 
 negative values, use sint64 instead.    
     `),
-    createCompletionScalaType('uint32', `Uses variable-length encoding.`),
-    createCompletionScalaType('uint64', `Uses variable-length encoding.`),
-    createCompletionScalaType('sint32', `
+    createCompletionKeyword('uint32', `Uses variable-length encoding.`),
+    createCompletionKeyword('uint64', `Uses variable-length encoding.`),
+    createCompletionKeyword('sint32', `
 Uses variable-length encoding. 
 Signed int value. 
 These more efficiently encode negative numbers than regular int32s.    
     `),
-    createCompletionScalaType('sint64', `
+    createCompletionKeyword('sint64', `
 Uses variable-length encoding. 
 Signed int value. 
 These more efficiently encode negative numbers than regular int64s.    
     `),
-    createCompletionScalaType('fixed32', `
+    createCompletionKeyword('fixed32', `
 Always four bytes. 
 More efficient than uint32 if values are often greater than 2^28.    
     `),
-    createCompletionScalaType('fixed64', `
+    createCompletionKeyword('fixed64', `
 Always eight bytes. 
 More efficient than uint64 if values are often greater than 2^56.    
     `),
-    createCompletionScalaType('sfixed32', `Always four bytes.`),
-    createCompletionScalaType('sfixed64', `Always eight bytes.`),
-    createCompletionScalaType('float', ``),
-    createCompletionScalaType('double', ``),
-    createCompletionScalaType('string', `
+    createCompletionKeyword('sfixed32', `Always four bytes.`),
+    createCompletionKeyword('sfixed64', `Always eight bytes.`),
+    createCompletionKeyword('float', ``),
+    createCompletionKeyword('double', ``),
+    createCompletionKeyword('string', `
 A string must always contain UTF-8 encoded or 7-bit ASCII text.
     `),
-    createCompletionScalaType('bytes', `
+    createCompletionKeyword('bytes', `
 May contain any arbitrary sequence of bytes.
     `),
 ];
 
-function createCompletionKeyword(keyword: string): vscode.CompletionItem {
-    let item = new vscode.CompletionItem(keyword);
+function createCompletionKeyword(label: string, doc?: string): vscode.CompletionItem {
+    let item = new vscode.CompletionItem(label);
     item.kind = vscode.CompletionItemKind.Keyword;
-    item.insertText = keyword;
+    if (doc) {
+        item.documentation = doc;
+    }
     return item
 }
+
 function createCompletionOption(option: string, doc: string): vscode.CompletionItem {
     let item = new vscode.CompletionItem(option);
     item.kind = vscode.CompletionItemKind.Value;
-    //item.insertText = option;
-    item.documentation = doc;
-    return item
-}
-function createCompletionFieldRule(rule: string): vscode.CompletionItem {
-    let item = new vscode.CompletionItem('field rule ' + rule);
-    item.kind = vscode.CompletionItemKind.Keyword;
-    item.insertText = rule;
-    return item
-}
-function createCompletionScalaType(type: string, doc: string): vscode.CompletionItem {
-    let item = new vscode.CompletionItem(type);
-    item.kind = vscode.CompletionItemKind.Keyword;
-    //item.insertText = type;
     item.documentation = doc;
     return item
 }
