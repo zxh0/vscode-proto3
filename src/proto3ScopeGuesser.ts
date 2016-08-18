@@ -20,6 +20,7 @@ export enum Proto3ScopeKind {
     Proto,
     Message,
     Enum,
+    Service,
 }
 
 
@@ -59,19 +60,20 @@ class ScopeGuesser {
         this.enterScope(Proto3ScopeKind.Proto, 0);
         for (var i = 0; i < doc.lineCount; i++) {
             var line = doc.lineAt(i);
-            if (line.isEmptyOrWhitespace) {
-                continue;
-            }
-            //let text = line.text.replace(/\s*\/\/.*/, "");
-            if (line.text.match(/^\s*\/\/.*/)) {
-                this.enterScope(Proto3ScopeKind.Comment, i);
-                this.exitScope(i);
-            } else if (line.text.match(MSG_BEGIN)) {
-                this.enterScope(Proto3ScopeKind.Message, i);
-            } else if (line.text.match(ENUM_BEGIN)) {
-                this.enterScope(Proto3ScopeKind.Enum, i);
-            } else if (line.text.match(SCOPE_END)) {
-                this.exitScope(i);
+            if (!line.isEmptyOrWhitespace) {
+                if (line.text.match(/^\s*\/\*.*/)) {
+                    this.enterScope(Proto3ScopeKind.Comment, i);
+                } else if (line.text.match(/.*\*\/\s*$/)) {
+                    this.exitScope(i);
+                } else if (this.currentScope.kind != Proto3ScopeKind.Comment) {
+                    if (line.text.match(MSG_BEGIN)) {
+                        this.enterScope(Proto3ScopeKind.Message, i);
+                    } else if (line.text.match(ENUM_BEGIN)) {
+                        this.enterScope(Proto3ScopeKind.Enum, i);
+                    } else if (line.text.match(SCOPE_END)) {
+                        this.exitScope(i);
+                    }
+                }
             }
         }
         this.exitScope(doc.lineCount);
