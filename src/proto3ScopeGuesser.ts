@@ -2,17 +2,29 @@
 
 import vscode = require('vscode');
 
-export function guessScope(doc: vscode.TextDocument, cursorLineNum: number): Proto3Scope {
-    return new ScopeGuesser().guess(doc, cursorLineNum);
+
+const MSG_BEGIN = /\s*message\s+(\w*)\s*\{.*/;
+const ENUM_BEGIN = /\s*enum\s+(\w*)\s*\{.*/;
+const SERVICE_BEGIN = /\s*service\s+(\w*)\s*\{.*/;
+const SCOPE_END = /\s*\}.*/;
+
+
+export function guessScope(doc: vscode.TextDocument,
+                           cursorLineNum: number): Proto3Scope {
+    return new ScopeGuesser(cursorLineNum).guess(doc);
 }
 
+
 export enum Proto3ScopeKind {
+    Comment,
     Proto,
     Message,
     Enum,
 }
 
+
 export class Proto3Scope {
+
     kind: Proto3ScopeKind;
     parent: Proto3Scope;
     children: Proto3Scope[];
@@ -29,11 +41,9 @@ export class Proto3Scope {
         this.children.push(child);
         child.parent = this;
     }
+
 }
 
-const MSG_BEGIN = /\s*message\s*(\w+)\s*\{.*/
-const ENUM_BEGIN = /\s*enum\s*(\w+)\s*\{.*/
-const SCOPE_END = /\s*\}.*/
 
 class ScopeGuesser {
 
@@ -41,8 +51,11 @@ class ScopeGuesser {
     private scopeAtCursor: Proto3Scope;
     private cursorLineNum: number;
 
-    guess(doc: vscode.TextDocument, cursorLineNum: number): Proto3Scope {
+    constructor(cursorLineNum: number) {
         this.cursorLineNum = cursorLineNum;
+    }
+
+    guess(doc: vscode.TextDocument): Proto3Scope {
         this.enterScope(Proto3ScopeKind.Proto, 0);
         for (var i = 0; i < doc.lineCount; i++) {
             var line = doc.lineAt(i);
