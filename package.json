@@ -32,8 +32,7 @@
             "id": "proto3",
             "extensions": [".proto"],
             "aliases": [
-                "protobuf3",
-                "Protocol Buffers 3"
+                "Protocol Buffers"
             ]
         }],
         "grammars": [{
