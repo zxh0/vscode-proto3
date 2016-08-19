@@ -10,6 +10,7 @@ export class Proto3LanguageDiagnosticProvider {
 
     public createDiagnostics(docUri: vscode.Uri, fileName: string) {
         new Proto3Compiler().compileProtoToTmp(fileName, stderr => {
+            //console.log(stderr);
             if (stderr) {
                 this.analyzeErrors(docUri, fileName, stderr);
             } else {

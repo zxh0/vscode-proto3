@@ -29,11 +29,8 @@ export class Proto3Compiler {
         let proto = path.relative(vscode.workspace.rootPath, fileName);
         this.loadSettings(settings => {
             let cmd = this.getProtocPath(settings);
-            let args = [
-                this.getProtoPathOption(settings),
-                this.getTmpJavaOutOption(),
-                proto
-            ];
+            let args = this.getProtocOptions(settings)
+                    .concat(this.getTmpJavaOutOption(), proto);
             let opts = {cwd: vscode.workspace.rootPath};
 
             cp.execFile(cmd, args, opts, (err, stdout, stderr) => {
@@ -58,9 +55,9 @@ export class Proto3Compiler {
         return [];
     }
 
-    private getProtoPathOption(settings): string {
+    private getProtoPathOptions(settings): string[] {
         return this.getProtocOptions(settings)
-            .find(opt => opt.startsWith('--proto_path'));
+            .filter(opt => opt.startsWith('--proto_path') || opt.startsWith('-I'));
     }
 
     private getTmpJavaOutOption(): string {
