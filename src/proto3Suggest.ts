@@ -285,6 +285,8 @@ export class Pb3CompletionItemProvider implements vscode.CompletionItemProvider 
 
             let textBeforeCursor = lineText.substring(0, position.character - 1)
             let scope = guessScope(document, position.line);
+            //console.log(scope.syntax);
+
             switch (scope.kind) {
                 case Proto3ScopeKind.Proto: {
                     if (textBeforeCursor.match(/^\s*\w*$/)) {

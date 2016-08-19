@@ -26,6 +26,7 @@ export enum Proto3ScopeKind {
 
 export class Proto3Scope {
 
+    syntax: number; // 2 or 3
     kind: Proto3ScopeKind;
     parent: Proto3Scope;
     children: Proto3Scope[];
@@ -51,6 +52,7 @@ class ScopeGuesser {
     private currentScope: Proto3Scope;
     private scopeAtCursor: Proto3Scope;
     private cursorLineNum: number;
+    private syntax: number = 2;
 
     constructor(cursorLineNum: number) {
         this.cursorLineNum = cursorLineNum;
@@ -61,7 +63,9 @@ class ScopeGuesser {
         for (var i = 0; i < doc.lineCount; i++) {
             var line = doc.lineAt(i);
             if (!line.isEmptyOrWhitespace) {
-                if (line.text.match(/^\s*\/\*.*/)) {
+                if (line.text.match(/^\s*syntax\s*=\s*"proto3"\s*;/)) {
+                    this.syntax = 3;
+                } else if (line.text.match(/^\s*\/\*.*/)) {
                     this.enterScope(Proto3ScopeKind.Comment, i);
                 } else if (line.text.match(/.*\*\/\s*$/)) {
                     this.exitScope(i);
@@ -79,6 +83,7 @@ class ScopeGuesser {
             }
         }
         this.exitScope(doc.lineCount);
+        this.scopeAtCursor.syntax = this.syntax;
         return this.scopeAtCursor;
     }
 
