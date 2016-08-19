@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-package test.proto3;
+package v3.test.proto3;
 
 import "google/protobuf/any.proto";
 import "foo/bar/msg.proto";
@@ -8,5 +8,5 @@ import "foo/bar/msg.proto";
 message ErrorStatus {
   string message = 1;
   repeated google.protobuf.Any details = 2;
-  bar.foo.FooBar foo_bar = 3;
+  v3.bar.foo.FooBar foo_bar = 3;
 }

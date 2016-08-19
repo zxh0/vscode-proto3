@@ -1,5 +1,7 @@
 syntax = "proto3";
 
+package v3;
+
 message SearchRequest {
   int32 x = 1;
 }

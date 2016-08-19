@@ -1,6 +1,8 @@
 syntax = "proto3";
 
-option java_package = "com.example.foo";
+package v3;
+
+option java_package = "v3.com.example.foo";
 option java_outer_classname = "Ponycopter";
 option java_multiple_files = false;
 option java_generate_equals_and_hash = false;
