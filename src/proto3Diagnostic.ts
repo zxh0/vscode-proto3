@@ -21,7 +21,7 @@ export class Proto3LanguageDiagnosticProvider {
     private analyzeErrors(docUrl: vscode.Uri, fileName: string, stderr: string) {
         let shortFileName = path.parse(fileName).name;
         let diagnostics = stderr.split('\n')
-            .filter(line => line.startsWith(shortFileName))
+            .filter(line => line.includes(shortFileName))
             .map(line => this.parseErrorLine(line))
             .filter(diagnostic => diagnostic != null);
 
