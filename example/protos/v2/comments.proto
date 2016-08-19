@@ -1,4 +1,4 @@
-syntax = "proto3";//line comment
+syntax = "proto2";//line comment
 
 // line comment
 //line comment
