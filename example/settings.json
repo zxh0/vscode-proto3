@@ -1,6 +1,6 @@
 {
     "protoc": {
-        "path": "/path/to/protoc-3.0.0-osx-x86_64/bin/protoc",
+        "path": "d:/tools/protoc-3.0.0-win32/bin/protoc.exe",
         "options": [
             "--proto_path=protos/v3",
             "--java_out=gen/java"
