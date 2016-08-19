@@ -1,0 +1,13 @@
+syntax = "proto3";//line comment
+
+// line comment
+//line comment
+/*block comment*/
+/* block comment */
+/*
+  block comment
+*/
+/*
+ * block
+ * comment
+ */
