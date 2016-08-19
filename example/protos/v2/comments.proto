@@ -1,5 +1,7 @@
 syntax = "proto2";//line comment
 
+package v2;
+
 // line comment
 //line comment
 /*block comment*/

@@ -1,6 +1,6 @@
 syntax = "proto2";
 
-package bar.foo;
+package v2.bar.foo;
 
 message FooBar {
     int32 field_name = 1;

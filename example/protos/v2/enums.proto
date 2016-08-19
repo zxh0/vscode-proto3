@@ -1,5 +1,7 @@
 syntax = "proto2";
 
+package v2;
+
 enum Corpus {
   UNIVERSAL=0;
   WEB = 1 ;
