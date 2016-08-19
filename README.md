@@ -4,14 +4,6 @@ vscode extension for proto3
 
 ## Features
 
-Describe specific features of your extension including screenshots of your extension in action. Image paths are relative to this README file.
-
-For example if there is an image subfolder under your extension project workspace:
-
-\!\[feature X\]\(images/feature-x.png\)
-
-> Tip: Many popular extensions utilize animations. This is an excellent way to show off your extension! We recommend short, focused animations that are easy to follow.
-
 - proto3 support.
 - syntax highlighting.
 - syntax validation.
@@ -20,9 +12,35 @@ For example if there is an image subfolder under your extension project workspac
 - brace matching.
 - line and block commenting.
 
-### Syntax highlighting
+\!\[feature X\]\(images/feature-x.png\)
+
+### Syntax Highlighting
+
+The grammar is written in tmLanguage.
+It is written in JSON format and then converted to xml format using 
+[vscode-tmlanguage](https://github.com/Togusa09/vscode-tmlanguage) extension.
 
 ### Syntax Validation
+
+The validation is triggered when you save the proto file. You need protoc 
+compiler to enable syntax validation. You also need a settings.json file 
+to tell the extension the full path of protoc if it is not in `path`. 
+Bellow is the settings.json file comes from `example` folder:
+```json
+{
+    "protoc": {
+        "path": "d:/tools/protoc-3.0.0-win32/bin/protoc.exe",
+        "options": [
+            "--proto_path=protos/v3",
+            "--java_out=gen/java"
+        ]
+    }
+}
+```
+
+### Code Completion
+
+A very simple parser is written to support code completion. 
 
 ### Code Snippets
 
@@ -61,54 +79,15 @@ en    | `enum EnumName {}`
 sv    | `service ServiceName {}`
 rpc   | `rpc method_name (Request) returns (Response);`
 
-## Requirements
-
-If you have any requirements or dependencies, add a section describing those and how to install and configure them.
-
-## Extension Settings
-
-Include if your extension adds any VS Code settings through the `contributes.configuration` extension point.
-
-For example:
-
-This extension contributes the following settings:
-
-* `myExtension.enable | enable/disable this extension
-* `myExtension.thing | set to `blah` to do something
 
 ## Known Issues
 
-Calling out known issues can help limit users opening duplicate issues against your extension.
+Auto-completion not works in some situations.
+
+## TODO
 
 ## Release Notes
 
-Users appreciate release notes as you update your extension.
+### 0.1.0
 
-### 1.0.0
-
-Initial release of ...
-
-### 1.0.1
-
-Fixed issue #.
-
-### 1.1.0
-
-Added features X, Y, and Z.
-
------------------------------------------------------------------------------------------------------------
-
-## Working with Markdown
-
-**Note:** You can author your README using Visual Studio Code.  Here are some useful editor keyboard shortcuts:
-
-* Split the editor (`Cmd+\` on OSX or `Ctrl+\` on Windows and Linux)
-* Toggle preview (`Shift+CMD+V` on OSX or `Shift+Ctrl+V` on Windows and Linux)
-* Press `Ctrl+Space` (Windows, Linux) or `Cmd+Space` (OSX) to see a list of Markdown snippets
-
-### For more information
-
-* [Visual Studio Code's Markdown Support](http://code.visualstudio.com/docs/languages/markdown)
-* [Markdown Syntax Reference](https://help.github.com/articles/markdown-basics/)
-
-**Enjoy!**
+Initial release of vscode-proto3
