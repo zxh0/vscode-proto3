@@ -12,7 +12,7 @@ vscode extension for proto3
 - brace matching.
 - line and block commenting.
 
-\!\[feature X\]\(images/feature-x.png\)
+![gif1](images/gif1.png)
 
 ### Syntax Highlighting
 
@@ -29,9 +29,10 @@ Bellow is the settings.json file comes from `example` folder:
 ```json
 {
     "protoc": {
-        "path": "d:/tools/protoc-3.0.0-win32/bin/protoc.exe",
+        "path": "/path/to/protoc-3.0.0-osx-x86_64/bin/protoc",
         "options": [
             "--proto_path=protos/v3",
+            "--proto_path=protos/v2",
             "--java_out=gen/java"
         ]
     }
