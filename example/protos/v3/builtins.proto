@@ -1,0 +1,13 @@
+syntax = "proto3";//line comment
+
+package v3;
+
+import "google/protobuf/any.proto";
+import "google/protobuf/empty.proto";
+import "google/protobuf/timestamp.proto";
+import "google/protobuf/duration.proto";
+
+message MessageName {
+    google.protobuf.Any any = 2;
+
+}
