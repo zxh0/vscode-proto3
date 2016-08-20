@@ -12,7 +12,7 @@ vscode extension for proto3
 - brace matching.
 - line and block commenting.
 
-![gif1](images/gif1.png)
+![gif1](images/gif1.gif)
 
 ### Syntax Highlighting
 
