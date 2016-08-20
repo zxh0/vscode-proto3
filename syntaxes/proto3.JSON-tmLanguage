@@ -78,13 +78,15 @@
       ]
     },
     "field": {
-      "match": "\\s*(optional|repeated|required)?\\s*\\b([\\w.]+)\\s+(\\w+)\\s*=\\s*(\\d+)\\s*(\\[\\s*(\\w+)\\s*=\\s*(true|false|[A-Z_]+)\\s*\\])?\\s*;",
+      "match": "\\s*(optional|repeated|required)?\\s*\\b([\\w.]+)\\s+(\\w+)\\s*=\\s*(\\d+)\\s*(\\[\\s*(\\w+)\\s*=\\s*((true|false|[A-Z_]+)|(-?[0-9.]+)|(\".*\"))\\s*\\])?\\s*;",
       "captures": {
         "1": {"name": "storage.modifier.proto"},
         "2": {"name": "storage.type.proto"},
         "3": {"name": "variable.other.proto"},
         "4": {"name": "constant.numeric.proto"},
-        "7": {"name": "constant.language.proto"}
+        "8": {"name": "constant.language.proto"},
+        "9": {"name": "constant.numeric.proto"},
+        "10": {"name": "string.quoted.double.proto"}
       }
     },
     "mapfield": {

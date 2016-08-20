@@ -210,7 +210,7 @@
       <key>field</key>
       <dict>
         <key>match</key>
-        <string>\s*(optional|repeated|required)?\s*\b([\w.]+)\s+(\w+)\s*=\s*(\d+)\s*(\[\s*(\w+)\s*=\s*(true|false|[A-Z_]+)\s*\])?\s*;</string>
+        <string>\s*(optional|repeated|required)?\s*\b([\w.]+)\s+(\w+)\s*=\s*(\d+)\s*(\[\s*(\w+)\s*=\s*((true|false|[A-Z_]+)|(-?[0-9.]+)|(".*"))\s*\])?\s*;</string>
         <key>captures</key>
         <dict>
           <key>1</key>
@@ -233,10 +233,20 @@
             <key>name</key>
             <string>constant.numeric.proto</string>
           </dict>
-          <key>7</key>
+          <key>8</key>
           <dict>
             <key>name</key>
             <string>constant.language.proto</string>
+          </dict>
+          <key>9</key>
+          <dict>
+            <key>name</key>
+            <string>constant.numeric.proto</string>
+          </dict>
+          <key>10</key>
+          <dict>
+            <key>name</key>
+            <string>string.quoted.double.proto</string>
           </dict>
         </dict>
       </dict>
