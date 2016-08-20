@@ -4,14 +4,14 @@ import vscode = require('vscode');
 import fs = require('fs');
 import path = require('path');
 import cp = require('child_process');
-import { Pb3CompletionItemProvider } from './proto3Suggest';
+import { Proto3CompletionItemProvider } from './proto3Suggest';
 import { Proto3LanguageDiagnosticProvider } from './proto3Diagnostic';
 import { Proto3Compiler } from './proto3Compiler';
 import { PROTO3_MODE } from './proto3Mode';
 
 export function activate(ctx: vscode.ExtensionContext): void {
 
-    ctx.subscriptions.push(vscode.languages.registerCompletionItemProvider(PROTO3_MODE, new Pb3CompletionItemProvider(), '.', '\"'));
+    ctx.subscriptions.push(vscode.languages.registerCompletionItemProvider(PROTO3_MODE, new Proto3CompletionItemProvider(), '.', '\"'));
     
     let diagnosticProvider = new Proto3LanguageDiagnosticProvider();
     vscode.workspace.onDidSaveTextDocument(event => {
@@ -20,10 +20,10 @@ export function activate(ctx: vscode.ExtensionContext): void {
         }
     });
 
-    let pb3Compiler = new Proto3Compiler();
+    let compiler = new Proto3Compiler();
 
     ctx.subscriptions.push(vscode.commands.registerCommand('proto3.compile.one', () => {
-        pb3Compiler.compileActiveProto();
+        compiler.compileActiveProto();
     }));
 
     ctx.subscriptions.push(vscode.commands.registerCommand('proto3.compile.all', () => {

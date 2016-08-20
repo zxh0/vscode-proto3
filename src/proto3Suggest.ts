@@ -266,7 +266,7 @@ function createCompletionOption(option: string, doc: string): vscode.CompletionI
 }
 
 
-export class Pb3CompletionItemProvider implements vscode.CompletionItemProvider {
+export class Proto3CompletionItemProvider implements vscode.CompletionItemProvider {
 
     public provideCompletionItems(document: vscode.TextDocument,
                                   position: vscode.Position,
