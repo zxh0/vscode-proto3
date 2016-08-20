@@ -3,10 +3,10 @@ syntax = "proto2";
 package v2;
 
 message SearchRequest {
-  int32 x = 1;
+  optional int32 x = 1;
 }
 message SearchResponse {
-  int32 y = 2;
+  optional int32 y = 2;
 }
 
 service SearchService {

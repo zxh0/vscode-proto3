@@ -15,10 +15,10 @@ message TestOptions {
   option no_standard_descriptor_accessor = false;
   option deprecated = false;
 
-  int32 old_field = 6 [deprecated=true];
+  optional int32 old_field = 6 [deprecated=true];
   repeated int32 x = 7 [ packed = true ];
-  int64 y = 8 [ jstype=JS_STRING ];
-  int64 z = 9 [lazy=false];
+  optional int64 y = 8 [ jstype=JS_STRING ];
+  optional int64 z = 9 [lazy=false];
 }
 
 enum TestEnum {

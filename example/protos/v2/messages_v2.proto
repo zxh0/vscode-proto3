@@ -3,9 +3,9 @@ syntax = "proto2";
 package v2;
 
 message FieldRules {
-  int32 field1=1;
+  optional int32 field1=1;
   repeated int32 field2 = 2;
-  double map = 3;
+  required double map = 3;
 }
 
 message MapFields {
@@ -29,9 +29,9 @@ message OutMsg {
   }
   message NestedMsg {
     message XXX {
-      int32 field1 = 1;
+      optional int32 field1 = 1;
     }
   }
-  NestedMsg field1 = 1;
-  NestedEnum field2 = 2;
+  optional NestedMsg field1 = 1;
+  optional NestedEnum field2 = 2;
 }
