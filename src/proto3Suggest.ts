@@ -165,6 +165,8 @@ is a formalization for deprecating fields.
     `),
 ];
 
+let fieldDefault = createCompletionOption('default', ``);
+
 let enumOptions = [
     createCompletionOption('allow_alias', `
 Set this option to true to allow mapping different tag names to the same
@@ -319,6 +321,9 @@ export class Pb3CompletionItemProvider implements vscode.CompletionItemProvider 
                         suggestions.push(...msgOptions);
                     } else if (textBeforeCursor.match(/.*\[.*/)) {
                         suggestions.push(...fieldOptions);
+                        if (scope.syntax == 2) {
+                            suggestions.push(fieldDefault);
+                        }
                     }
                     break;
                 }
