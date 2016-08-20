@@ -3,7 +3,7 @@
     "displayName": "vscode-proto3",
     "description": "Protocol Buffers 3 support for Visual Studio Code",
     "version": "0.0.1",
-    "publisher": "zxh",
+    "publisher": "zxh404",
     "engines": {
         "vscode": "^1.0.0"
     },
