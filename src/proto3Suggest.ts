@@ -196,9 +196,11 @@ this is a formalization for deprecating services.
     `),
 ];
 
-let frOptional = createCompletionKeyword('optional');
-let frRequired = createCompletionKeyword('required');
-let frRepeated = createCompletionKeyword('repeated');
+let fieldRules = [
+    createCompletionKeyword('repeated'),
+    createCompletionKeyword('required'),
+    createCompletionKeyword('optional'),
+];
 
 let scalaTypes = [
     createCompletionKeyword('bool', ``),
@@ -286,11 +288,11 @@ export class Pb3CompletionItemProvider implements vscode.CompletionItemProvider 
             let textBeforeCursor = lineText.substring(0, position.character - 1)
             let scope = guessScope(document, position.line);
             //console.log(scope.syntax);
+            //console.log(textBeforeCursor);
 
             switch (scope.kind) {
                 case Proto3ScopeKind.Proto: {
                     if (textBeforeCursor.match(/^\s*\w*$/)) {
-                        //console.log(textBeforeCursor);
                         suggestions.push(kwSyntax);
                         suggestions.push(kwPackage);
                         suggestions.push(kwOption);
@@ -304,12 +306,14 @@ export class Pb3CompletionItemProvider implements vscode.CompletionItemProvider 
                 }
                 case Proto3ScopeKind.Message: {
                     if (textBeforeCursor.match(/^\s*\w*$/)) {
-                        //console.log(textBeforeCursor);
                         suggestions.push(kwOption);
                         suggestions.push(kwMessage);
                         suggestions.push(kwEnum);
-                        suggestions.push(frOptional);
-                        suggestions.push(frRepeated);
+                        if (scope.syntax == 2) {
+                            suggestions.push(...fieldRules);
+                        } else {
+                            suggestions.push(fieldRules[0]);
+                        }
                         suggestions.push(...scalaTypes);
                     } else if (textBeforeCursor.match(/^\s*option\s+\w*$/)) {
                         suggestions.push(...msgOptions);
