@@ -319,6 +319,8 @@ export class Pb3CompletionItemProvider implements vscode.CompletionItemProvider 
                             suggestions.push(fieldRules[0]);
                         }
                         suggestions.push(...scalaTypes);
+                    } else if (textBeforeCursor.match(/(repeated|required|optional)\s*\w*$/)) {
+                        suggestions.push(...scalaTypes);
                     } else if (textBeforeCursor.match(/^\s*option\s+\w*$/)) {
                         suggestions.push(...msgOptions);
                     } else if (textBeforeCursor.match(/.*\[.*/)) {
