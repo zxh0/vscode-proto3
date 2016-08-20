@@ -68,6 +68,7 @@
       },
       "end": "\\}",
       "patterns": [
+        {"include": "#reserved"},
         {"include": "$self"},
         {"include": "#enum"},
         {"include": "#option"},
@@ -75,6 +76,24 @@
         {"include": "#oneof"},
         {"include": "#field"},
         {"include": "#mapfield"}
+      ]
+    },
+    "reserved": {
+      "begin": "(reserved)\\s+",
+      "beginCaptures": {
+        "1": {"name": "keyword.other.proto"}
+      },
+      "end": ";",
+      "patterns": [
+        {
+          "match": "(\\d+)(\\s+(to)\\s+(\\d+))?",
+          "captures": {
+            "1": {"name": "constant.numeric.proto"},
+            "3": {"name": "keyword.other.proto"},
+            "4": {"name": "constant.numeric.proto"}
+          }
+        },
+        {"include": "#string"}
       ]
     },
     "field": {
@@ -168,12 +187,12 @@
       "match": "\\b(double|float|int32|int64|uint32|uint64|sint32|sint64|fixed32|fixed64|sfixed32|sfixed64|bool|string|bytes)\\b",
       "name": "storage.type.proto"
     },
-    "strings": {
+    "string": {
       "begin": "\"",
       "end": "\"",
       "name": "string.quoted.double.proto"
     },
-    "numbers": {
+    "number": {
       "name": "constant.numeric.proto",
       "match": "\\b((0(x|X)[0-9a-fA-F]*)|(([0-9]+\\.?[0-9]*)|(\\.[0-9]+))((e|E)(\\+|-)?[0-9]+)?)\\b"
     }

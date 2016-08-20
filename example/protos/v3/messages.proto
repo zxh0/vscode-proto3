@@ -23,7 +23,7 @@ message OneofField {
 }
 
 message ReservedFields {
-  reserved 2, 15, 9 to 11, 3;
+  reserved 2, 15, 9 to 11, 3, 100 to 200;
   reserved "foo", "bar";
   //int32 foo = 1;
   //int32 zzz = 15;

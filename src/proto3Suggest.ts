@@ -9,6 +9,7 @@ let kwOption = createCompletionKeyword('option');
 let kwImport = createCompletionKeyword('import');
 let kwMessage = createCompletionKeyword('message');
 let kwEnum = createCompletionKeyword('enum');
+let kwReserved = createCompletionKeyword('reserved');
 
 let fileOptions = [
     createCompletionOption('java_package', `
@@ -311,6 +312,7 @@ export class Pb3CompletionItemProvider implements vscode.CompletionItemProvider 
                         suggestions.push(kwOption);
                         suggestions.push(kwMessage);
                         suggestions.push(kwEnum);
+                        suggestions.push(kwReserved);
                         if (scope.syntax == 2) {
                             suggestions.push(...fieldRules);
                         } else {

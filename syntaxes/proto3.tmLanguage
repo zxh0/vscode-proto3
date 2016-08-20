@@ -179,6 +179,10 @@
         <array>
           <dict>
             <key>include</key>
+            <string>#reserved</string>
+          </dict>
+          <dict>
+            <key>include</key>
             <string>$self</string>
           </dict>
           <dict>
@@ -204,6 +208,50 @@
           <dict>
             <key>include</key>
             <string>#mapfield</string>
+          </dict>
+        </array>
+      </dict>
+      <key>reserved</key>
+      <dict>
+        <key>begin</key>
+        <string>(reserved)\s+</string>
+        <key>beginCaptures</key>
+        <dict>
+          <key>1</key>
+          <dict>
+            <key>name</key>
+            <string>keyword.other.proto</string>
+          </dict>
+        </dict>
+        <key>end</key>
+        <string>;</string>
+        <key>patterns</key>
+        <array>
+          <dict>
+            <key>match</key>
+            <string>(\d+)(\s+(to)\s+(\d+))?</string>
+            <key>captures</key>
+            <dict>
+              <key>1</key>
+              <dict>
+                <key>name</key>
+                <string>constant.numeric.proto</string>
+              </dict>
+              <key>3</key>
+              <dict>
+                <key>name</key>
+                <string>keyword.other.proto</string>
+              </dict>
+              <key>4</key>
+              <dict>
+                <key>name</key>
+                <string>constant.numeric.proto</string>
+              </dict>
+            </dict>
+          </dict>
+          <dict>
+            <key>include</key>
+            <string>#string</string>
           </dict>
         </array>
       </dict>
@@ -466,7 +514,7 @@
         <key>name</key>
         <string>storage.type.proto</string>
       </dict>
-      <key>strings</key>
+      <key>string</key>
       <dict>
         <key>begin</key>
         <string>"</string>
@@ -475,7 +523,7 @@
         <key>name</key>
         <string>string.quoted.double.proto</string>
       </dict>
-      <key>numbers</key>
+      <key>number</key>
       <dict>
         <key>name</key>
         <string>constant.numeric.proto</string>
