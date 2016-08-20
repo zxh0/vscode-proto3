@@ -63,22 +63,25 @@ class ScopeGuesser {
         for (var i = 0; i < doc.lineCount; i++) {
             var line = doc.lineAt(i);
             if (!line.isEmptyOrWhitespace) {
-                if (line.text.match(/^\s*syntax\s*=\s*"proto3"\s*;/)) {
-                    this.syntax = 3;
-                } else if (line.text.match(/^\s*\/\*.*/)) {
-                    this.enterScope(Proto3ScopeKind.Comment, i);
-                } else if (line.text.match(/.*\*\/\s*$/)) {
-                    this.exitScope(i);
-                } else if (this.currentScope.kind != Proto3ScopeKind.Comment) {
-                    if (line.text.match(MSG_BEGIN)) {
-                        this.enterScope(Proto3ScopeKind.Message, i);
-                    } else if (line.text.match(ENUM_BEGIN)) {
-                        this.enterScope(Proto3ScopeKind.Enum, i);
-                    } else if (line.text.match(SERVICE_BEGIN)) {
-                        this.enterScope(Proto3ScopeKind.Service, i);
-                    } else if (line.text.match(SCOPE_END)) {
-                        this.exitScope(i);
+                let lineText = line.text;
+                if (this.currentScope.kind == Proto3ScopeKind.Comment) {
+                    if (lineText.match(/.*\*\/\s*$/)) {
+                        this.exitScope(i); // exit block comment
                     }
+                } else if (lineText.match(/^\s*\/\*.*/)) {
+                    this.enterScope(Proto3ScopeKind.Comment, i); // enter block comment
+                } else if (lineText.match(/^\s*\/\//)) {
+                    continue; // skip line comments
+                } else if (lineText.match(/^\s*syntax\s*=\s*"proto3"\s*;/)) {
+                    this.syntax = 3;
+                } else if (lineText.match(MSG_BEGIN)) {
+                    this.enterScope(Proto3ScopeKind.Message, i);
+                } else if (lineText.match(ENUM_BEGIN)) {
+                    this.enterScope(Proto3ScopeKind.Enum, i);
+                } else if (lineText.match(SERVICE_BEGIN)) {
+                    this.enterScope(Proto3ScopeKind.Service, i);
+                } else if (lineText.match(SCOPE_END)) {
+                    this.exitScope(i);
                 }
             }
         }
