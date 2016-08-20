@@ -13,13 +13,20 @@ message MapFields {
   map< string,float > map_field2 = 2 [deprecated=true];
 }
 
-message SampleMessage {
+message OneofField {
   //int32 name = 1;
   //int32 xx = 4;
   oneof test_oneof {
     string name = 4 [deprecated=true];
     int32 sub_message = 9;
   }
+}
+
+message ReservedFields {
+  reserved 2, 15, 9 to 11, 3;
+  reserved "foo", "bar";
+  //int32 foo = 1;
+  //int32 zzz = 15;
 }
 
 message OutMsg {
