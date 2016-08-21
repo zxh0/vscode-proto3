@@ -80,7 +80,7 @@ fm    | `map<key, val> field_name = tag;`
 foo   | `oneof name {}`
 en    | `enum EnumName {}`
 sv    | `service ServiceName {}`
-rpc   | `rpc method_name (Request) returns (Response);`
+rpc   | `rpc MethodName (Request) returns (Response);`
 
 
 ## Known Issues
