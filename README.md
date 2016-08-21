@@ -92,6 +92,6 @@ Auto-completion not works in some situations.
 
 ## Release Notes
 
-### 0.0.1 ~ 0.0.3
+### 0.0.1 ~ 0.0.4
 
 Initial release of vscode-proto3
