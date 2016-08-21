@@ -2,6 +2,8 @@
 
 vscode extension for proto3
 
+https://github.com/zxh0/vscode-proto3
+
 ## Features
 
 - proto3 support.
@@ -17,7 +19,7 @@ vscode extension for proto3
 ### Syntax Highlighting
 
 The grammar is written in tmLanguage.
-It is written in JSON format and then converted to xml format using 
+It is written in JSON format and then converted to XML format using 
 [vscode-tmlanguage](https://github.com/Togusa09/vscode-tmlanguage) extension.
 
 ### Syntax Validation
