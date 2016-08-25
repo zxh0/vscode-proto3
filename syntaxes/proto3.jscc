@@ -1,38 +1,171 @@
+/~ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  tokens 
+ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ ~/
 
-!	' |\r|\n|\t|//[^\n]*\n'
+!	' |\r|\n|\t|//[^\n]*\n|/\*.*\*/'
 
-	"IF"
-	"ELSE"
-	"WHILE"
-	"DO"
-	"SAY"
-	"WRITE"
-	"READ"
+	'syntax'		[* %match = %match + ':' + %offset *]
+	'package'		[* %match = %match + ':' + %offset *]
+	'import'		[* %match = %match + ':' + %offset *]
+	'option'		[* %match = %match + ':' + %offset *]
+	'message'		[* %match = %match + ':' + %offset *]
+	'map'			[* %match = %match + ':' + %offset *]
+	'enum'			[* %match = %match + ':' + %offset *]
+	'service'		[* %match = %match + ':' + %offset *]
+	'optional'		[* %match = %match + ':' + %offset *]
+	'required'		[* %match = %match + ':' + %offset *]
+	'repeated'		[* %match = %match + ':' + %offset *]
+	'rpc'			[* %match = %match + ':' + %offset *]
+	'returns'		[* %match = %match + ':' + %offset *]
+	'true'
+	'false'
 	'{'
 	'}'
 	';'
+	','
 	'='
-	'=='
-	'!='
-	'<='
-	'>='
-	'>'
 	'<'
-	'\+'
-	'\-'
-	'/'
-	'\*'
+	'>'
 	'\('
 	'\)'
-	'#'
-	'[A-Za-z_][A-Za-z0-9_]*'		Identifier
-	'\'([^\']|\'\')*\''				String							[* %match = %match.substr( 1, %match.length - 2 );
-																	   %match = %match.replace( /''/g, "\'" );		*]
+	'\['
+	'\]'
+	'[A-Za-z_][A-Za-z0-9_\.]*'		Identifier		/~ TODO ~/
+	'"([^"])*"'						String			[* %match = %match.substr( 1, %match.length - 2 ); *]
 	'[0-9]+'						Integer
 	'[0-9]+\.[0-9]*|[0-9]*\.[0-9]+'	Float
 	;
 
-
 ##
-Program: Integer
-;
+
+/~ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  grammar
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ ~/
+
+Proto:			Proto TopLevel
+				|
+				;
+
+TopLevel:		Syntax
+				| Package
+				| Import
+				| Option
+				| Message
+				| Enum
+				| Service
+				;
+
+/~ ~~~~~~~~~ syntax ~~~~~~~~~ ~/
+
+Syntax:			syntax '=' String ';'
+				;
+
+/~ ~~~~~~~~~ package ~~~~~~~~~ ~/
+
+Package:		package Identifier ';'
+				;
+
+/~ ~~~~~~~~~ import ~~~~~~~~~ ~/
+
+Import:			import String ';'
+				;
+
+/~ ~~~~~~~~~ option ~~~~~~~~~ ~/
+
+Option:			option Identifier '=' OptionValue ';'
+				;
+
+OptionValue:	Identifier
+				| String
+				| true
+				| false
+				;
+
+/~ ~~~~~~~~~ message ~~~~~~~~~ ~/
+
+Message:		message Identifier '{' MessageBody '}'	[* //alert(%1+ ':' + %2) *]
+				;
+
+MessageBody:	MessageBody Option
+				| MessageBody Field
+				|
+				;
+
+Field:			FieldRule FieldType FieldName '=' Tag FieldOption ';'
+				;
+
+FieldRule:		optional	/~ proto2 ~/
+				| required	/~ proto2 ~/
+				| repeated	/~ proto3 ~/
+				|			/~ proto3 ~/
+				;
+
+FieldType:		Identifier
+				| MapFieldType
+				;
+
+MapFieldType:	map '<' Identifier ',' Identifier '>'
+				;
+
+FieldName:		Identifier
+				;
+
+Tag:			Integer
+				;
+
+FieldOption:	'[' Identifier '=' OptionValue ']'
+				|
+				;
+
+/~ ~~~~~~~~~ enum ~~~~~~~~~ ~/
+
+Enum:			enum Identifier '{' EnumBody '}'
+				;
+
+EnumBody:		EnumBody Option
+				| EnumBody Const
+				|
+				;
+
+Const:			ConstName '=' ConstValue ConstOption ';'
+				;
+
+ConstName:		Identifier
+				;
+
+ConstValue:		Integer
+				;
+
+ConstOption:	'[' Identifier '=' OptionValue ']'
+				|
+				;
+
+/~ ~~~~~~~~~ service ~~~~~~~~~ ~/
+
+Service:		service Identifier '{' ServiceBody '}'
+				;
+
+ServiceBody:	ServiceBody Option
+				| ServiceBody Method
+				|
+				;
+
+Method:			rpc MethodName '(' Request ')' returns '(' Response ')' MethodBody
+				;
+
+MethodName:		Identifier
+				;
+
+Request:		Identifier
+				;
+
+Response:		Identifier
+				;
+
+MethodBody:		';'
+				| '{' OptionList '}'
+				;
+
+OptionList:		OptionList Option
+				|
+				;
