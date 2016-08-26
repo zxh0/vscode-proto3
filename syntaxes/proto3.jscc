@@ -14,15 +14,15 @@ var scopes = [];
 
 // scope struct
 function Scope() {
-	var from; // offset
-	var to; // offset
+	var startOffset;
+	var endOffset;
 	var kind;
 }
 
-function addScope(from, to, kind) {
+function addScope(startOffset, endOffset, kind) {
 	var scope = new Scope();
-	scope.from = from;
-	scope.to = to;
+	scope.startOffset = startOffset;
+	scope.endOffset = endOffset;
 	scope.kind = kind;
 	scopes.push(scope);
 }

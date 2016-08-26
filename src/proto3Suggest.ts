@@ -290,6 +290,7 @@ export class Proto3CompletionItemProvider implements vscode.CompletionItemProvid
 
             let textBeforeCursor = lineText.substring(0, position.character - 1)
             let scope = guessScope(document.getText(), document.offsetAt(position));
+            //console.log(scope.kind);
             //console.log(scope.syntax);
             //console.log(textBeforeCursor);
 

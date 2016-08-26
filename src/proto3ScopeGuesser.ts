@@ -4,8 +4,8 @@ import vscode = require('vscode');
 import { parse } from './proto3JSCC';
 
 interface ScopeJSCC {
-    from: number;
-    to: number;
+    startOffset: number;
+    endOffset: number;
     kind: number;
 }
 
@@ -16,9 +16,9 @@ export function guessScope(text: string,
 
     let scopes: ScopeJSCC[] = parse(text);
     scopes.forEach(scope => {
-        if (scope.from > scopeAtCursor.offset) {
-            if (scope.from <= cursorOffset && cursorOffset <= scope.to) {
-                scopeAtCursor = new Proto3Scope(scope.kind, scope.from);;
+        if (scope.startOffset > scopeAtCursor.offset) {
+            if (scope.startOffset <= cursorOffset && cursorOffset <= scope.endOffset) {
+                scopeAtCursor = new Proto3Scope(scope.kind, scope.startOffset);;
             }
         }
     });

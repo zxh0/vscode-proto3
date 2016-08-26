@@ -8,15 +8,15 @@ var scopes = [];
 
 // scope struct
 function Scope() {
-    var from; // offset
-    var to; // offset
+    var startOffset;
+    var endOffset;
     var kind;
 }
 
-function addScope(from, to, kind) {
+function addScope(startOffset, endOffset, kind) {
     var scope = new Scope();
-    scope.from = from;
-    scope.to = to;
+    scope.startOffset = startOffset;
+    scope.endOffset = endOffset;
     scope.kind = kind;
     scopes.push(scope);
 }
@@ -996,8 +996,8 @@ function __parse( src, err_off, err_la )
     var        go;
     var        la;
     var        rval;
-    //var     parseinfo        = new Function( "", "var offset; var src; var att;" );
-    //var        info            = new parseinfo();
+    // var     parseinfo        = new Function( "", "var offset; var src; var att;" );
+    // var        info            = new parseinfo();
     var info = {offset:null, src:null, att:null};
     
 /* Pop-Table */
@@ -1960,7 +1960,7 @@ switch( act )
         
         if( _dbg_withtrace )
         {        
-            //alert( _dbg_string );
+            // alert( _dbg_string );
             _dbg_string = new String();
         }
     }
@@ -1968,7 +1968,7 @@ switch( act )
     if( _dbg_withtrace )
     {
         __dbg_print( "\nParse complete." );
-        //alert( _dbg_string );
+        // alert( _dbg_string );
     }
     
     return err_cnt;
