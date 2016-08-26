@@ -2,32 +2,59 @@
 	Protobuf 3
 ~/
 
+[* 
+
+// scope kind
+var SCOPE_PROTO		= 0;
+var SCOPE_MESSAGE	= 0;
+var SCOPE_ENUM		= 1;
+var SCOPE_SERVICE	= 2;
+
+var scopes = [];
+
+// scope struct
+function Scope() {
+	var from; // offset
+	var to; // offset
+	var kind;
+}
+
+function addScope(from, to, kind) {
+	var scope = new Scope();
+	scope.from = from;
+	scope.to = to;
+	scope.kind = kind;
+	scopes.push(scope);
+}
+
+*]
+
 /~
 	--- These are the token definitions ---
 ~/
 
 !	' |\r|\n|\t|//[^\n]*\n|/\*.*\*/'
 
-	'syntax'		[* %match = %match + ':' + %offset *]
-	'package'		[* %match = %match + ':' + %offset *]
-	'import'		[* %match = %match + ':' + %offset *]
-	'option'		[* %match = %match + ':' + %offset *]
-	'message'		[* %match = %match + ':' + %offset *]
-	'oneof'			[* %match = %match + ':' + %offset *]
-	'map'			[* %match = %match + ':' + %offset *]
-	'reserved'		[* %match = %match + ':' + %offset *]
-	'to'			[* %match = %match + ':' + %offset *]
-	'enum'			[* %match = %match + ':' + %offset *]
-	'service'		[* %match = %match + ':' + %offset *]
-	'optional'		[* %match = %match + ':' + %offset *]
-	'required'		[* %match = %match + ':' + %offset *]
-	'repeated'		[* %match = %match + ':' + %offset *]
-	'rpc'			[* %match = %match + ':' + %offset *]
-	'returns'		[* %match = %match + ':' + %offset *]
+	'syntax'
+	'package'
+	'import'
+	'option'
+	'message'
+	'oneof'
+	'map'
+	'reserved'
+	'to'
+	'enum'
+	'service'
+	'optional'
+	'required'
+	'repeated'
+	'rpc'
+	'returns'
 	'true'
 	'false'
-	'{'
-	'}'
+	'{'													[* %match = %offset *]
+	'}'													[* %match = %offset *]
 	';'
 	','
 	'='
@@ -92,7 +119,7 @@ OptionValue:	Identifier
 
 /~ ~~~~~~~~~ message ~~~~~~~~~ ~/
 
-Message:		message Identifier '{' MessageBody '}'	[* //alert(%1+ ':' + %2) *]
+Message:		message Identifier '{' MessageBody '}'		[* addScope(%3, %5, SCOPE_MESSAGE) *]
 				;
 
 MessageBody:	MessageBody Option
@@ -152,7 +179,7 @@ ReservedNames:	String
 
 /~ ~~~~~~~~~ enum ~~~~~~~~~ ~/
 
-Enum:			enum Identifier '{' EnumBody '}'
+Enum:			enum Identifier '{' EnumBody '}'		[* addScope(%3, %5, SCOPE_ENUM) *]
 				;
 
 EnumBody:		EnumBody Option
@@ -175,7 +202,7 @@ ConstOption:	'[' Identifier '=' OptionValue ']'
 
 /~ ~~~~~~~~~ service ~~~~~~~~~ ~/
 
-Service:		service Identifier '{' ServiceBody '}'
+Service:		service Identifier '{' ServiceBody '}'		[* addScope(%3, %5, SCOPE_SERVICE) *]
 				;
 
 ServiceBody:	ServiceBody Option
@@ -202,3 +229,24 @@ MethodBody:		';'
 OptionList:		OptionList Option
 				|
 				;
+
+[*
+
+var error_offsets = new Array();
+var error_lookaheads = new Array();
+var error_count = 0;
+var str = document.getElementById('code2').value; 
+if( ( error_count = __parse( str, error_offsets, error_lookaheads ) ) > 0 ) {
+	var errstr = new String();
+	for( var i = 0; i < error_count; i++ )
+		errstr += "Parse error in line "
+		 	+ ( str.substr( 0, error_offsets[i] ).match( /\n/g ) ? str.substr( 0, error_offsets[i] ).match( /\n/g ).length : 1 )
+		 	+ " near \""
+		 	+ str.substr( error_offsets[i] )
+		 	+ "\", expecting \"" + error_lookaheads[i].join() 
+		 	+ "\"\n" ; 
+	alert( errstr );
+}
+alert(scopes.length);
+
+*]
