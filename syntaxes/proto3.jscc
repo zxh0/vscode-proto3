@@ -93,6 +93,8 @@ MessageBody:	MessageBody Option
 				| MessageBody Field
 				| MessageBody Oneof
 				| MessageBody Reserved
+				| MessageBody Enum
+				| MessageBody Message
 				|
 				;
 
