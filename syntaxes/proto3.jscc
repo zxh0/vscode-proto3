@@ -9,6 +9,7 @@
 	'import'		[* %match = %match + ':' + %offset *]
 	'option'		[* %match = %match + ':' + %offset *]
 	'message'		[* %match = %match + ':' + %offset *]
+	'oneof'			[* %match = %match + ':' + %offset *]
 	'map'			[* %match = %match + ':' + %offset *]
 	'enum'			[* %match = %match + ':' + %offset *]
 	'service'		[* %match = %match + ':' + %offset *]
@@ -88,6 +89,7 @@ Message:		message Identifier '{' MessageBody '}'	[* //alert(%1+ ':' + %2) *]
 
 MessageBody:	MessageBody Option
 				| MessageBody Field
+				| MessageBody Oneof
 				|
 				;
 
@@ -115,6 +117,13 @@ Tag:			Integer
 
 FieldOption:	'[' Identifier '=' OptionValue ']'
 				|
+				;
+
+Oneof:			oneof Identifier '{' FieldList '}'
+				;
+
+FieldList:		FieldList Field
+				| Field
 				;
 
 /~ ~~~~~~~~~ enum ~~~~~~~~~ ~/
