@@ -4,6 +4,7 @@ var SCOPE_MESSAGE    = 1;
 var SCOPE_ENUM        = 2;
 var SCOPE_SERVICE    = 3;
 
+var syntax = "proto2";
 var scopes = [];
 
 // scope struct
@@ -1622,7 +1623,7 @@ switch( act )
     break;
     case 10:
     {
-        rval = vstack[ vstack.length - 4 ];
+         syntax = vstack[ vstack.length - 2 ]; 
     }
     break;
     case 11:
@@ -1976,11 +1977,14 @@ switch( act )
 
 
 
-export function parse(text: string): any[] {
+export function parse(text: string): any {
     var error_offsets = new Array();
     var error_lookaheads = new Array();
     var error_count = 0;
     error_count = __parse(text, error_offsets, error_lookaheads);
     //return error_count;
-    return scopes;
+    return {
+        syntax: syntax == "proto3" ? 3 : 2,
+        scopes: scopes
+    };
 }

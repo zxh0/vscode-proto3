@@ -9,13 +9,18 @@ interface ScopeJSCC {
     kind: number;
 }
 
+interface ParseResultJSCC {
+    syntax: number;
+    scopes: ScopeJSCC[];
+}
+
 export function guessScope(text: string,
                            cursorOffset: number): Proto3Scope {
     
     let scopeAtCursor = new Proto3Scope(Proto3ScopeKind.Proto, 0);
 
-    let scopes: ScopeJSCC[] = parse(text);
-    scopes.forEach(scope => {
+    let parseResult: ParseResultJSCC = parse(text);
+    parseResult.scopes.forEach(scope => {
         if (scope.startOffset > scopeAtCursor.offset) {
             if (scope.startOffset <= cursorOffset && cursorOffset <= scope.endOffset) {
                 scopeAtCursor = new Proto3Scope(scope.kind, scope.startOffset);;
@@ -23,6 +28,7 @@ export function guessScope(text: string,
         }
     });
     
+    scopeAtCursor.syntax = parseResult.syntax;
     return scopeAtCursor
 }
 

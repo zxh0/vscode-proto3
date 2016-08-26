@@ -10,6 +10,7 @@ var SCOPE_MESSAGE	= 1;
 var SCOPE_ENUM		= 2;
 var SCOPE_SERVICE	= 3;
 
+var syntax = "proto2";
 var scopes = [];
 
 // scope struct
@@ -91,7 +92,7 @@ TopLevel:		Syntax
 
 /~ ~~~~~~~~~ syntax ~~~~~~~~~ ~/
 
-Syntax:			syntax '=' String ';'
+Syntax:			syntax '=' String ';'		[* syntax = %3; *]
 				;
 
 /~ ~~~~~~~~~ package ~~~~~~~~~ ~/
