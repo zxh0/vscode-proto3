@@ -33,10 +33,10 @@
 	'\)'
 	'\['
 	'\]'
-	'[A-Za-z_][A-Za-z0-9_\.]*'		Identifier		/~ TODO ~/
-	'"([^"])*"'						String			[* %match = %match.substr( 1, %match.length - 2 ); *]
-	'[0-9]+'						Integer
-	'[0-9]+\.[0-9]*|[0-9]*\.[0-9]+'	Float
+	'[A-Za-z_][A-Za-z0-9_\.]*'			Identifier		/~ TODO ~/
+	'"([^"])*"'							String			[* %match = %match.substr( 1, %match.length - 2 ); *]
+	'\-?[0-9]+'							Integer
+	'\-?[0-9]+\.[0-9]*|[0-9]*\.[0-9]+'	Float
 	;
 
 ##
@@ -80,6 +80,8 @@ Option:			option Identifier '=' OptionValue ';'
 
 OptionValue:	Identifier
 				| String
+				| Integer
+				| Float
 				| true
 				| false
 				;
