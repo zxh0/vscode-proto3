@@ -11,6 +11,8 @@
 	'message'		[* %match = %match + ':' + %offset *]
 	'oneof'			[* %match = %match + ':' + %offset *]
 	'map'			[* %match = %match + ':' + %offset *]
+	'reserved'		[* %match = %match + ':' + %offset *]
+	'to'			[* %match = %match + ':' + %offset *]
 	'enum'			[* %match = %match + ':' + %offset *]
 	'service'		[* %match = %match + ':' + %offset *]
 	'optional'		[* %match = %match + ':' + %offset *]
@@ -90,6 +92,7 @@ Message:		message Identifier '{' MessageBody '}'	[* //alert(%1+ ':' + %2) *]
 MessageBody:	MessageBody Option
 				| MessageBody Field
 				| MessageBody Oneof
+				| MessageBody Reserved
 				|
 				;
 
@@ -124,6 +127,19 @@ Oneof:			oneof Identifier '{' FieldList '}'
 
 FieldList:		FieldList Field
 				| Field
+				;
+
+Reserved:		'reserved' ReservedTags ';'
+				| 'reserved' ReservedNames ';'
+				;
+
+ReservedTags:	ReservedTags ',' ReservedTags
+				| Integer
+				| Integer 'to' Integer
+				;
+
+ReservedNames:	String
+				| String ',' String
 				;
 
 /~ ~~~~~~~~~ enum ~~~~~~~~~ ~/
