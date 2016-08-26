@@ -6,9 +6,9 @@
 
 // scope kind
 var SCOPE_PROTO		= 0;
-var SCOPE_MESSAGE	= 0;
-var SCOPE_ENUM		= 1;
-var SCOPE_SERVICE	= 2;
+var SCOPE_MESSAGE	= 1;
+var SCOPE_ENUM		= 2;
+var SCOPE_SERVICE	= 3;
 
 var scopes = [];
 
