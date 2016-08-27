@@ -92,7 +92,7 @@ TopLevel:		Syntax
 
 /~ ~~~~~~~~~ syntax ~~~~~~~~~ ~/
 
-Syntax:			syntax '=' String ';'		[* syntax = %3; *]
+Syntax:			syntax '=' String ';'						[* syntax = %3; *]
 				;
 
 /~ ~~~~~~~~~ package ~~~~~~~~~ ~/
@@ -132,7 +132,8 @@ MessageBody:	MessageBody Option
 				|
 				;
 
-Field:			FieldRule FieldType FieldName '=' Tag FieldOption ';'
+Field:			FieldRule FieldType FieldName
+					'=' Tag FieldOption ';'
 				;
 
 FieldRule:		optional	/~ proto2 ~/
@@ -180,7 +181,7 @@ ReservedNames:	String
 
 /~ ~~~~~~~~~ enum ~~~~~~~~~ ~/
 
-Enum:			enum Identifier '{' EnumBody '}'		[* addScope(%3, %5, SCOPE_ENUM) *]
+Enum:			enum Identifier '{' EnumBody '}'			[* addScope(%3, %5, SCOPE_ENUM) *]
 				;
 
 EnumBody:		EnumBody Option
@@ -211,7 +212,8 @@ ServiceBody:	ServiceBody Option
 				|
 				;
 
-Method:			rpc MethodName '(' Request ')' returns '(' Response ')' MethodBody
+Method:			rpc MethodName '(' Request ')' 
+					returns '(' Response ')' MethodBody
 				;
 
 MethodName:		Identifier
