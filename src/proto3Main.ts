@@ -27,7 +27,7 @@ export function activate(ctx: vscode.ExtensionContext): void {
     }));
 
     ctx.subscriptions.push(vscode.commands.registerCommand('proto3.compile.all', () => {
-        console.log('proto3.compile.all');
+        compiler.compileAllProtos();
     }));
 
 

@@ -8,6 +8,11 @@ import os = require('os');
 
 export class Proto3Compiler {
 
+    public compileAllProtos() {
+        // todo
+        console.log('proto3.compile.all');
+    }
+
     public compileActiveProto() {
         let editor = vscode.window.activeTextEditor;
         if (editor && editor.document.languageId == 'proto3') {
@@ -29,7 +34,7 @@ export class Proto3Compiler {
         let proto = path.relative(vscode.workspace.rootPath, fileName);
         this.loadSettings(settings => {
             let cmd = this.getProtocPath(settings);
-            let args = this.getProtocOptions(settings)
+            let args = this.getProtoPathOptions(settings)
                     .concat(this.getTmpJavaOutOption(), proto);
             let opts = {cwd: vscode.workspace.rootPath};
 
