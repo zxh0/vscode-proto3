@@ -25,6 +25,7 @@ export class Proto3Compiler {
 
                 cp.execFile(cmd, args, opts, (err, stdout, stderr) => {
                     console.log(stderr);
+                    vscode.window.showErrorMessage(stderr);
                 });
             })
         }
