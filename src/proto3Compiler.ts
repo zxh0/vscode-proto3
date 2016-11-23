@@ -9,8 +9,18 @@ import os = require('os');
 export class Proto3Compiler {
 
     public compileAllProtos() {
-        // todo
-        console.log('proto3.compile.all');
+        this.loadSettings(settings => {
+            let cmd = this.getProtocPath(settings);
+            let args = this.getProtocOptions(settings);
+            args = args.concat(this.getProtos(settings));
+            let opts = {cwd: vscode.workspace.rootPath};
+            //console.log(args);
+
+            cp.execFile(cmd, args, opts, (err, stdout, stderr) => {
+                console.log(stderr);
+                vscode.window.showErrorMessage(stderr);
+            });
+        })
     }
 
     public compileActiveProto() {
@@ -66,6 +76,13 @@ export class Proto3Compiler {
             .filter(opt => opt.startsWith('--proto_path') || opt.startsWith('-I'));
     }
 
+    private getProtos(settings): string[] {
+        if (settings && settings.options) {
+            return settings.options as string[];
+        }
+        return new InputCollector().collectInputs(vscode.workspace.rootPath);
+    }
+
     private getTmpJavaOutOption(): string {
         return '--java_out=' + os.tmpdir();
     }
@@ -85,6 +102,25 @@ export class Proto3Compiler {
                 cb({});
             }
         });
+    }
+
+}
+
+class InputCollector {
+
+    inputs: string[] = [];
+
+    collectInputs(dir: string): string[] {
+        let kids = fs.readdirSync(dir);
+        if (kids.some(kid => kid.endsWith(".proto"))) {
+            let relDir = path.relative(vscode.workspace.rootPath, dir);
+            let input = path.join(relDir, "*.proto");
+            this.inputs = this.inputs.concat(input);
+        }
+        kids.map(kid => path.join(dir, kid))
+            .filter(kid => fs.statSync(kid).isDirectory())
+            .forEach(subDir => this.collectInputs(subDir));
+        return this.inputs;
     }
 
 }
