@@ -8,19 +8,23 @@ import os = require('os');
 
 export class Proto3Compiler {
 
-    public compileAllProtos() {
-        this.loadSettings(settings => {
-            let cmd = this.getProtocPath(settings);
-            let args = this.getProtocOptions(settings);
-            args = args.concat(this.getProtos(settings));
-            let opts = {cwd: vscode.workspace.rootPath};
-            //console.log(args);
+    private _settings: vscode.WorkspaceConfiguration;
 
-            cp.execFile(cmd, args, opts, (err, stdout, stderr) => {
-                console.log(stderr);
-                vscode.window.showErrorMessage(stderr);
-            });
-        })
+    constructor() {
+        this._settings = vscode.workspace.getConfiguration("protoc")
+    }
+
+    public compileAllProtos() {
+        let cmd = this.getProtocPath();
+        let args = this.getProtocOptions();
+        args = args.concat(this.getProtos());
+        let opts = {cwd: vscode.workspace.rootPath};
+        //console.log(args);
+
+        cp.execFile(cmd, args, opts, (err, stdout, stderr) => {
+            console.log(stderr);
+            vscode.window.showErrorMessage(stderr);
+        });
     }
 
     public compileActiveProto() {
@@ -28,57 +32,48 @@ export class Proto3Compiler {
         if (editor && editor.document.languageId == 'proto3') {
             let fileName = editor.document.fileName;
             let proto = path.relative(vscode.workspace.rootPath, fileName);
-            this.loadSettings(settings => {
-                let cmd = this.getProtocPath(settings);
-                let args = this.getProtocOptions(settings).concat(proto);
-                let opts = {cwd: vscode.workspace.rootPath};
+            let cmd = this.getProtocPath();
+            let args = this.getProtocOptions().concat(proto);
+            let opts = {cwd: vscode.workspace.rootPath};
 
-                cp.execFile(cmd, args, opts, (err, stdout, stderr) => {
-                    console.log(stderr);
-                    vscode.window.showErrorMessage(stderr);
-                });
-            })
+            cp.execFile(cmd, args, opts, (err, stdout, stderr) => {
+                console.log(stderr);
+                vscode.window.showErrorMessage(stderr);
+            });
         }
     }
 
     public compileProtoToTmp(fileName: string, callback?: (stderr: string) =>void) {
         let proto = path.relative(vscode.workspace.rootPath, fileName);
-        this.loadSettings(settings => {
-            let cmd = this.getProtocPath(settings);
-            let args = this.getProtoPathOptions(settings)
-                    .concat(this.getTmpJavaOutOption(), proto);
-            let opts = {cwd: vscode.workspace.rootPath};
 
-            cp.execFile(cmd, args, opts, (err, stdout, stderr) => {
-                if (callback) {
-                    callback(stderr);
-                }
-            });
-        })
+        let cmd = this.getProtocPath();
+        let args = this.getProtoPathOptions()
+                .concat(this.getTmpJavaOutOption(), proto);
+        let opts = {cwd: vscode.workspace.rootPath};
+
+        cp.execFile(cmd, args, opts, (err, stdout, stderr) => {
+            if (callback) {
+                callback(stderr);
+            }
+        });
     }
 
-    private getProtocPath(settings): string {
-        if (settings && settings.protoc && settings.protoc.path) {
-            return settings.protoc.path as string;
-        }
-        return 'protoc';
+    private getProtocPath(): string {
+        return this._settings.get<string>('path', 'protoc');
     }
 
-    private getProtocOptions(settings): string[] {
-        if (settings && settings.protoc && settings.protoc.options) {
-             return settings.protoc.options as string[];
-        }
-        return [];
+    private getProtocOptions(): string[] {
+        return this._settings.get<string[]>('options', []);
     }
 
-    private getProtoPathOptions(settings): string[] {
-        return this.getProtocOptions(settings)
+    private getProtoPathOptions(): string[] {
+        return this.getProtocOptions()
             .filter(opt => opt.startsWith('--proto_path') || opt.startsWith('-I'));
     }
 
-    private getProtos(settings): string[] {
-        if (settings && settings.options) {
-            return settings.options as string[];
+    private getProtos(): string[] {
+        if (this._settings.has('options')) {
+            return this.getProtocOptions();
         }
         return new InputCollector().collectInputs(vscode.workspace.rootPath);
     }
@@ -86,24 +81,6 @@ export class Proto3Compiler {
     private getTmpJavaOutOption(): string {
         return '--java_out=' + os.tmpdir();
     }
-    
-    private loadSettings(cb: (settings) => void) {
-        let settingsPath = path.join(vscode.workspace.rootPath, 'settings.json');
-        fs.exists(settingsPath, exists => {
-            if (exists) {
-                fs.readFile(settingsPath, (err, data) => {
-                    if (data) {
-                        cb(JSON.parse(data.toString()));
-                    } else {
-                        cb({});
-                    }
-                });
-            } else {
-                cb({});
-            }
-        });
-    }
-
 }
 
 class InputCollector {
