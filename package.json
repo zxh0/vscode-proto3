@@ -49,7 +49,32 @@
         "snippets": [{
             "language": "proto3",
             "path": "./snippets/proto3.json"
-        }]
+        }],
+        "configuration": {
+            "type": "object",
+            "title": "vscode-proto3 configuration",
+            "properties": {
+                "protoc": {
+                    "type": "object",
+                    "description": "vscode-proto3 configuration",
+                    "properties": {
+                        "path":{
+                            "type": "string",
+                            "default": "protoc",
+                            "description": "Path to protoc command"
+                        },
+                        "options": {
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            },
+                            "default": [],
+                            "description": "Command line options for protoc"
+                        }
+                    }
+                }
+            }
+        }
     },
     "scripts": {
         "vscode:prepublish": "node ./node_modules/vscode/bin/compile",
