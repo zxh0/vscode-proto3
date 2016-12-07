@@ -125,13 +125,25 @@ class ConfigurationResolver {
     public resolve(value: any): any {
         if (typeof value === 'string') {
             return this.resolveString(value);
-        } else if (typeof value === 'array' || typeof value === 'object') {
+        } else if (this.isArray(value)) {
             return this.resolveArray(value);
         }
         return value;
     }
 
-	private resolveArray(value: string[]): string[] {
+    private isArray(array: any): array is any[] {
+        if (Array.isArray) {
+            return Array.isArray(array);
+        }
+
+        if (array && typeof (array.length) === 'number' && array.constructor === Array) {
+            return true;
+        }
+
+        return false;
+    }
+	
+    private resolveArray(value: string[]): string[] {
 		return value.map(s => this.resolveString(s));
 	}
 
