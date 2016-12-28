@@ -126,7 +126,7 @@
       <key>option</key>
       <dict>
         <key>match</key>
-        <string>\s*(option)\s+(\w+)\s*=\s*(("[\w.]+")|([A-Z_]+)|(true|false));</string>
+        <string>\s*(option)\s+(\w+)\s*=\s*(("[^"]+")|([A-Z_]+)|(true|false));</string>
         <key>captures</key>
         <dict>
           <key>1</key>

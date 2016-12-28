@@ -51,7 +51,7 @@
       }
     },
     "option": {
-      "match": "\\s*(option)\\s+(\\w+)\\s*=\\s*((\"[\\w.]+\")|([A-Z_]+)|(true|false));",
+      "match": "\\s*(option)\\s+(\\w+)\\s*=\\s*((\"[^\"]+\")|([A-Z_]+)|(true|false));",
       "captures": {
         "1": {"name": "keyword.other.proto"},
         "2": {"name": "support.other.proto"},
