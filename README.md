@@ -92,11 +92,14 @@ Auto-completion not works in some situations.
 
 ## Release Notes
 
-### 0.0.1 ~ 0.0.4
-Initial release.
+### 0.0.6
+Fix some syntax highlighting problems.
 
 ### 0.0.5
 Fix some bugs.
+
+### 0.0.1 ~ 0.0.4
+Initial release.
 
 
 Initial release of vscode-proto3
