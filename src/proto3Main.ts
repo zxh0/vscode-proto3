@@ -16,7 +16,7 @@ export function activate(ctx: vscode.ExtensionContext): void {
     let diagnosticProvider = new Proto3LanguageDiagnosticProvider();
     vscode.workspace.onDidSaveTextDocument(event => {
         if (event.languageId == 'proto3') {
-            diagnosticProvider.createDiagnostics(event.uri, event.fileName);
+            diagnosticProvider.createDiagnostics(event);
         }
     });
 

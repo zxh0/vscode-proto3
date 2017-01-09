@@ -17,14 +17,10 @@ export class Proto3Compiler {
     }
 
     public compileAllProtos() {
-        let cmd = this.getProtocPath();
-        let args = this.getProtocOptions();
-        args = args.concat(this.getProtos());
-        let opts = {cwd: vscode.workspace.rootPath};
-        //console.log(args);
+        let args = this.getProtocOptions()
+            .concat(this.getProtos());
 
-        cp.execFile(cmd, args, opts, (err, stdout, stderr) => {
-            console.log(stderr);
+        this.runProtoc(args, undefined, (stdout, stderr) => {
             vscode.window.showErrorMessage(stderr);
         });
     }
@@ -34,12 +30,9 @@ export class Proto3Compiler {
         if (editor && editor.document.languageId == 'proto3') {
             let fileName = editor.document.fileName;
             let proto = path.relative(vscode.workspace.rootPath, fileName);
-            let cmd = this.getProtocPath();
             let args = this.getProtocOptions().concat(proto);
-            let opts = {cwd: vscode.workspace.rootPath};
 
-            cp.execFile(cmd, args, opts, (err, stdout, stderr) => {
-                console.log(stderr);
+            this.runProtoc(args, undefined, (stdout, stderr) => {
                 vscode.window.showErrorMessage(stderr);
             });
         }
@@ -48,16 +41,33 @@ export class Proto3Compiler {
     public compileProtoToTmp(fileName: string, callback?: (stderr: string) =>void) {
         let proto = path.relative(vscode.workspace.rootPath, fileName);
 
-        let cmd = this.getProtocPath();
         let args = this.getProtoPathOptions()
                 .concat(this.getTmpJavaOutOption(), proto);
-        let opts = {cwd: vscode.workspace.rootPath};
 
-        cp.execFile(cmd, args, opts, (err, stdout, stderr) => {
+        this.runProtoc(args, undefined, (stdout, stderr) => {
             if (callback) {
                 callback(stderr);
             }
         });
+    }
+
+    private runProtoc(args: string[], opts?: cp.ExecFileOptions, callback?: (stdout: string, stderr: string) =>void) {
+        if( !opts ) {
+            opts = {};
+        }
+        opts = Object.assign(opts, {cwd: vscode.workspace.rootPath});
+        cp.execFile(this.getProtocPath(), args, opts, (err, stdout, stderr) => {
+            if(err && stdout.length == 0 && stderr.length == 0) {
+                // Assume the OS error if no messages to buffers because
+                // "err" does not provide error type info.
+                vscode.window.showErrorMessage(err.message);
+                console.error(err);
+                return
+            }
+            if (callback) {
+                callback(stdout, stderr);
+            }
+        });       
     }
 
     private getProtocPath(): string {
