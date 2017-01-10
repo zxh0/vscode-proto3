@@ -11,4 +11,5 @@ message SearchResponse {
 
 service SearchService {
   rpc Search (SearchRequest) returns (SearchResponse);
+  rpc Search2 (stream SearchRequest) returns (stream SearchResponse);
 }

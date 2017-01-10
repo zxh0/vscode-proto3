@@ -165,11 +165,13 @@
       ]
     },
     "method": {
-      "begin": "(rpc)\\s+([A-Za-z][A-Z-a-z0-9_]+)\\s*\\(([A-Za-z0-9_.]+)\\)\\s+(returns)\\s+\\(([A-Za-z0-9_.]+)\\)\\{?",
+      "begin": "(rpc)\\s+([A-Za-z][A-Z-a-z0-9_]+)\\s*\\((stream\\s+)?([A-Za-z0-9_.]+)\\)\\s+(returns)\\s+\\((stream\\s+)?([A-Za-z0-9_.]+)\\)\\{?",
       "beginCaptures": {
         "1": {"name": "keyword.other.proto"},
         "2": {"name": "entity.name.function"},
-        "4": {"name": "keyword.other.proto"}
+        "3": {"name": "keyword.other.proto"},
+        "5": {"name": "keyword.other.proto"},
+        "6": {"name": "keyword.other.proto"}
       },
       "end": "\\}|;",
       "patterns": [

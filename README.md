@@ -92,6 +92,9 @@ Auto-completion not works in some situations.
 
 ## Release Notes
 
+### 0.0.7
+Fix syntax highlighting bug of keyword `stream`.
+
 ### 0.0.6
 Fix some syntax highlighting problems.
 
