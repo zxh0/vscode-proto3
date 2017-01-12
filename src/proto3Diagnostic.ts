@@ -7,9 +7,14 @@ import { Proto3Compiler } from './proto3Compiler';
 export class Proto3LanguageDiagnosticProvider {
 
     private errors = vscode.languages.createDiagnosticCollection("languageErrors");
+    private compiler: Proto3Compiler;
+
+    constructor(compiler: Proto3Compiler) {
+        this.compiler = compiler;
+    }
 
     public createDiagnostics(doc: vscode.TextDocument) {
-        new Proto3Compiler().compileProtoToTmp(doc.fileName, stderr => {
+        this.compiler.compileProtoToTmp(doc.fileName, stderr => {
             if (stderr) {
                 this.analyzeErrors(stderr, doc);
             } else {
