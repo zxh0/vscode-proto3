@@ -30,7 +30,7 @@
       </dict>
       <dict>
         <key>include</key>
-        <string>#option</string>
+        <string>#optionStmt</string>
       </dict>
       <dict>
         <key>include</key>
@@ -128,7 +128,7 @@
           </dict>
         </dict>
       </dict>
-      <key>option</key>
+      <key>optionStmt</key>
       <dict>
         <key>match</key>
         <string>\s*(option)\s*(\w+|\(\w+\))(\.\w+)?\s*=\s*(("[^"]+")|([A-Z_]+)|(true|false));</string>
@@ -201,7 +201,7 @@
           </dict>
           <dict>
             <key>include</key>
-            <string>#option</string>
+            <string>#optionStmt</string>
           </dict>
           <dict>
             <key>include</key>
@@ -364,7 +364,7 @@
         <array>
           <dict>
             <key>include</key>
-            <string>#option</string>
+            <string>#optionStmt</string>
           </dict>
           <dict>
             <key>include</key>
@@ -399,7 +399,7 @@
         <array>
           <dict>
             <key>include</key>
-            <string>#option</string>
+            <string>#optionStmt</string>
           </dict>
           <dict>
             <key>include</key>
@@ -456,7 +456,7 @@
           </dict>
           <dict>
             <key>include</key>
-            <string>#option</string>
+            <string>#optionStmt</string>
           </dict>
           <dict>
             <key>include</key>
@@ -506,7 +506,7 @@
           </dict>
           <dict>
             <key>include</key>
-            <string>#option</string>
+            <string>#optionStmt</string>
           </dict>
         </array>
       </dict>

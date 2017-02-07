@@ -8,7 +8,7 @@
     {"include": "#syntax"},
     {"include": "#package"},
     {"include": "#import"},
-    {"include": "#option"},
+    {"include": "#optionStmt"},
     {"include": "#message"},
     {"include": "#enum"},
     {"include": "#service"}
@@ -51,7 +51,7 @@
         "3": {"name": "string.quoted.double.proto.import"}
       }
     },
-    "option": {
+    "optionStmt": {
       "match": "\\s*(option)\\s*(\\w+|\\(\\w+\\))(\\.\\w+)?\\s*=\\s*((\"[^\"]+\")|([A-Z_]+)|(true|false));",
       "captures": {
         "1": {"name": "keyword.other.proto"},
@@ -73,7 +73,7 @@
         {"include": "#reserved"},
         {"include": "$self"},
         {"include": "#enum"},
-        {"include": "#option"},
+        {"include": "#optionStmt"},
         {"include": "#comments"},
         {"include": "#oneof"},
         {"include": "#field"},
@@ -128,7 +128,7 @@
       },
       "end": "\\}",
       "patterns": [
-        {"include": "#option"},
+        {"include": "#optionStmt"},
         {"include": "#comments"},
         {"include": "#field"}
       ]
@@ -141,7 +141,7 @@
       },
       "end": "\\}",
       "patterns": [
-        {"include": "#option"},
+        {"include": "#optionStmt"},
         {"include": "#comments"},
         {
           "match": "([A-Za-z][A-Za-z0-9_]*)\\s*=\\s*([0-9]*)\\s*(\\[(\\w+)=(true|false|[A-Z_]+)\\])?\\s*;",
@@ -162,7 +162,7 @@
       "end": "\\}",
       "patterns": [
         {"include": "#comments"},
-        {"include": "#option"},
+        {"include": "#optionStmt"},
         {"include": "#method"}
       ]
     },
@@ -178,7 +178,7 @@
       "end": "\\}|;",
       "patterns": [
         {"include": "#comments"},
-        {"include": "#option"}
+        {"include": "#optionStmt"}
       ]
     },
     "constants": {
