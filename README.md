@@ -91,8 +91,8 @@ Auto-completion not works in some situations.
 ## Release Notes
 
 ### 0.1.0
-Fixed some syntax highlighting issues.
-Use user and workspace settings instead of a custom settings.json file.
+- Fixed some syntax highlighting issues.
+- Use user and workspace settings instead of a custom settings.json file.
 
 ### 0.0.7
 Fixed syntax highlighting bug of keyword `stream`.
