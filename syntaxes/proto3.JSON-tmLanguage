@@ -52,13 +52,14 @@
       }
     },
     "option": {
-      "match": "\\s*(option)\\s+(\\w+)\\s*=\\s*((\"[^\"]+\")|([A-Z_]+)|(true|false));",
+      "match": "\\s*(option)\\s*(\\w+|\\(\\w+\\))(\\.\\w+)?\\s*=\\s*((\"[^\"]+\")|([A-Z_]+)|(true|false));",
       "captures": {
         "1": {"name": "keyword.other.proto"},
         "2": {"name": "support.other.proto"},
-        "4": {"name": "string.quoted.double.proto"},
-        "5": {"name": "constant.language.proto"},
-        "6": {"name": "constant.language.proto"}
+        "3": {"name": "support.other.proto"},
+        "5": {"name": "string.quoted.double.proto"},
+        "6": {"name": "constant.language.proto"},
+        "7": {"name": "constant.language.proto"}
       }
     },
     "message": {
