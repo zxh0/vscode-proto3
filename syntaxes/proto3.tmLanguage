@@ -108,7 +108,7 @@
       <key>import</key>
       <dict>
         <key>match</key>
-        <string>\s*(import)\s+("[\w/.]+")\s*;</string>
+        <string>\s*(import)\s+(weak|public)?\s+("[\w/.]+")\s*;</string>
         <key>captures</key>
         <dict>
           <key>1</key>
@@ -117,6 +117,11 @@
             <string>keyword.other.proto</string>
           </dict>
           <key>2</key>
+          <dict>
+            <key>name</key>
+            <string>keyword.other.proto</string>
+          </dict>
+          <key>3</key>
           <dict>
             <key>name</key>
             <string>string.quoted.double.proto.import</string>

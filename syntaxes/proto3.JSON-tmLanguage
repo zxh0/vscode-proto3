@@ -44,10 +44,11 @@
       }
     },
     "import": {
-      "match": "\\s*(import)\\s+(\"[\\w/.]+\")\\s*;",
+      "match": "\\s*(import)\\s+(weak|public)?\\s+(\"[\\w/.]+\")\\s*;",
       "captures": {
         "1": {"name": "keyword.other.proto"},
-        "2": {"name": "string.quoted.double.proto.import"}
+        "2": {"name": "keyword.other.proto"},
+        "3": {"name": "string.quoted.double.proto.import"}
       }
     },
     "option": {
