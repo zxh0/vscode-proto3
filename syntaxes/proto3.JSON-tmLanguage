@@ -62,6 +62,24 @@
         "7": {"name": "constant.language.proto"}
       }
     },
+    "fieldOptions": {
+      "begin": "\\[",
+      "end": "\\]",
+      "patterns": [
+        {"include": "#fieldOption"}
+      ]
+    },
+    "fieldOption": {
+      "match": "\\s*(\\w+|\\(\\w+\\))(\\.\\w+)?\\s*=\\s*((\"[^\"]+\")|([A-Z_]+)|(-?[0-9.]+)|(true|false))\\s*,?",
+      "captures": {
+        "1": {"name": "support.other.proto"},
+        "2": {"name": "support.other.proto"},
+        "4": {"name": "string.quoted.double.proto"},
+        "5": {"name": "constant.language.proto"},
+        "6": {"name": "constant.numeric.proto"},
+        "7": {"name": "constant.language.proto"}
+      }
+    },
     "message": {
       "begin": "(message|extend)(\\s+)([A-Za-z][A-Za-z0-9_.]*)(\\s*)(\\{)?",
       "beginCaptures": {
@@ -99,16 +117,17 @@
       ]
     },
     "field": {
-      "match": "\\s*(optional|repeated|required)?\\s*\\b([\\w.]+)\\s+(\\w+)\\s*=\\s*(\\d+)\\s*(\\[\\s*(\\w+)\\s*=\\s*((true|false|[A-Z_]+)|(-?[0-9.]+)|(\".*\"))\\s*\\])?\\s*;",
-      "captures": {
+      "begin": "\\s*(optional|repeated|required)?\\s*\\b([\\w.]+)\\s+(\\w+)\\s*=\\s*(\\d+)",
+      "beginCaptures": {
         "1": {"name": "storage.modifier.proto"},
         "2": {"name": "storage.type.proto"},
         "3": {"name": "variable.other.proto"},
-        "4": {"name": "constant.numeric.proto"},
-        "8": {"name": "constant.language.proto"},
-        "9": {"name": "constant.numeric.proto"},
-        "10": {"name": "string.quoted.double.proto"}
-      }
+        "4": {"name": "constant.numeric.proto"}
+      },
+      "end": ";",
+      "patterns": [
+        {"include": "#fieldOptions"}
+      ]
     },
     "mapfield": {
       "match": "\\s*(map)\\s*<\\s*([\\w.]+)\\s*,\\s*([\\w.]+)\\s*>\\s+(\\w+)\\s*=\\s*(\\d+)\\s*(\\[\\s*(\\w+)\\s*=\\s*(true|false|[A-Z_]+)\\s*\\])?\\s*;",
