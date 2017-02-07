@@ -28,7 +28,7 @@ The validation is triggered when you save the proto file. You need protoc
 compiler to enable syntax validation. You also need a settings.json file 
 to tell the extension the full path of protoc if it is not in `path`. 
 Bellow is the settings.json file comes from 
-[example](https://github.com/zxh0/vscode-proto3/tree/master/example) folder:
+[example/.vscode](https://github.com/zxh0/vscode-proto3/tree/master/example/.vscode) folder:
 ```json
 {
     "protoc": {
@@ -88,21 +88,20 @@ rpc   | `rpc MethodName (Request) returns (Response);`
 
 Auto-completion not works in some situations.
 
-## TODO
-
 ## Release Notes
 
+### 0.1.0
+Fixed some syntax highlighting issues.
+Use user and workspace settings instead of a custom settings.json file.
+
 ### 0.0.7
-Fix syntax highlighting bug of keyword `stream`.
+Fixed syntax highlighting bug of keyword `stream`.
 
 ### 0.0.6
-Fix some syntax highlighting problems.
+Fixed some syntax highlighting problems.
 
 ### 0.0.5
-Fix some bugs.
+Fixed some bugs.
 
-### 0.0.1 ~ 0.0.4
+### 0.0.4
 Initial release.
-
-
-Initial release of vscode-proto3
