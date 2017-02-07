@@ -44,7 +44,7 @@
       }
     },
     "import": {
-      "match": "\\s*(import)\\s+(weak|public)?\\s+(\"[\\w/.]+\")\\s*;",
+      "match": "\\s*(import)\\s+(weak|public)?\\s*(\"[^\"]+\")\\s*;",
       "captures": {
         "1": {"name": "keyword.other.proto"},
         "2": {"name": "keyword.other.proto"},

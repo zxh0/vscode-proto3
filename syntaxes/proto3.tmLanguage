@@ -108,7 +108,7 @@
       <key>import</key>
       <dict>
         <key>match</key>
-        <string>\s*(import)\s+(weak|public)?\s+("[\w/.]+")\s*;</string>
+        <string>\s*(import)\s+(weak|public)?\s*("[^"]+")\s*;</string>
         <key>captures</key>
         <dict>
           <key>1</key>
