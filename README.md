@@ -95,13 +95,13 @@ Auto-completion not works in some situations.
 - Use user and workspace settings instead of a custom settings.json file.
 
 ### 0.0.7
-Fixed syntax highlighting bug of keyword `stream`.
+- Fixed syntax highlighting bug of keyword `stream`.
 
 ### 0.0.6
-Fixed some syntax highlighting problems.
+- Fixed some syntax highlighting problems.
 
 ### 0.0.5
-Fixed some bugs.
+- Fixed some bugs.
 
 ### 0.0.4
-Initial release.
+- Initial release.
