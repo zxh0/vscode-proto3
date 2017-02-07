@@ -356,9 +356,9 @@
       </dict>
       <key>mapfield</key>
       <dict>
-        <key>match</key>
-        <string>\s*(map)\s*&lt;\s*([\w.]+)\s*,\s*([\w.]+)\s*&gt;\s+(\w+)\s*=\s*(\d+)\s*(\[\s*(\w+)\s*=\s*(true|false|[A-Z_]+)\s*\])?\s*;</string>
-        <key>captures</key>
+        <key>begin</key>
+        <string>\s*(map)\s*&lt;\s*([\w.]+)\s*,\s*([\w.]+)\s*&gt;\s+(\w+)\s*=\s*(\d+)</string>
+        <key>beginCaptures</key>
         <dict>
           <key>1</key>
           <dict>
@@ -385,12 +385,16 @@
             <key>name</key>
             <string>constant.numeric.proto</string>
           </dict>
-          <key>8</key>
-          <dict>
-            <key>name</key>
-            <string>constant.language.proto</string>
-          </dict>
         </dict>
+        <key>end</key>
+        <string>;</string>
+        <key>patterns</key>
+        <array>
+          <dict>
+            <key>include</key>
+            <string>#fieldOptions</string>
+          </dict>
+        </array>
       </dict>
       <key>oneof</key>
       <dict>

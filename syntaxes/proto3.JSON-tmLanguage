@@ -130,15 +130,18 @@
       ]
     },
     "mapfield": {
-      "match": "\\s*(map)\\s*<\\s*([\\w.]+)\\s*,\\s*([\\w.]+)\\s*>\\s+(\\w+)\\s*=\\s*(\\d+)\\s*(\\[\\s*(\\w+)\\s*=\\s*(true|false|[A-Z_]+)\\s*\\])?\\s*;",
-      "captures": {
+      "begin": "\\s*(map)\\s*<\\s*([\\w.]+)\\s*,\\s*([\\w.]+)\\s*>\\s+(\\w+)\\s*=\\s*(\\d+)",
+      "beginCaptures": {
         "1": {"name": "storage.type.proto"},
         "2": {"name": "storage.type.proto"},
         "3": {"name": "storage.type.proto"},
         "4": {"name": "variable.other.proto"},
-        "5": {"name": "constant.numeric.proto"},
-        "8": {"name": "constant.language.proto"}
-      }
+        "5": {"name": "constant.numeric.proto"}
+      },
+      "end": ";",
+      "patterns": [
+        {"include": "#fieldOptions"}
+      ]
     },
     "oneof": {
       "begin": "(oneof)\\s+([A-Za-z][A-Za-z0-9_]*)\\s*\\{?",
