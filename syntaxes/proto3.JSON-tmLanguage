@@ -166,12 +166,15 @@
         {"include": "#optionStmt"},
         {"include": "#comments"},
         {
-          "match": "([A-Za-z][A-Za-z0-9_]*)\\s*=\\s*([0-9]*)\\s*(\\[(\\w+)=(true|false|[A-Z_]+)\\])?\\s*;",
-          "captures": {
+          "begin": "([A-Za-z][A-Za-z0-9_]*)\\s*=\\s*([0-9]*)",
+          "beginCaptures": {
             "1": {"name": "constant.other.proto"},
-            "2": {"name": "constant.numeric.proto"},
-            "5": {"name": "constant.language.proto"}
-          }
+            "2": {"name": "constant.numeric.proto"}
+          },
+          "end": ";",
+          "patterns": [
+            {"include": "#fieldOptions"}
+          ]
         }
       ]
     },

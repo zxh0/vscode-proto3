@@ -456,9 +456,9 @@
             <string>#comments</string>
           </dict>
           <dict>
-            <key>match</key>
-            <string>([A-Za-z][A-Za-z0-9_]*)\s*=\s*([0-9]*)\s*(\[(\w+)=(true|false|[A-Z_]+)\])?\s*;</string>
-            <key>captures</key>
+            <key>begin</key>
+            <string>([A-Za-z][A-Za-z0-9_]*)\s*=\s*([0-9]*)</string>
+            <key>beginCaptures</key>
             <dict>
               <key>1</key>
               <dict>
@@ -470,12 +470,16 @@
                 <key>name</key>
                 <string>constant.numeric.proto</string>
               </dict>
-              <key>5</key>
-              <dict>
-                <key>name</key>
-                <string>constant.language.proto</string>
-              </dict>
             </dict>
+            <key>end</key>
+            <string>;</string>
+            <key>patterns</key>
+            <array>
+              <dict>
+                <key>include</key>
+                <string>#fieldOptions</string>
+              </dict>
+            </array>
           </dict>
         </array>
       </dict>
