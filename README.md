@@ -92,7 +92,8 @@ Auto-completion not works in some situations.
 
 ### 0.1.0
 - Fixed some syntax highlighting issues.
-- Use user and workspace settings instead of a custom settings.json file.
+- Use user and workspace settings instead of a custom settings.json file. 
+- (NOTE: Old users should move the settings.json file into .vscode folder!)
 
 ### 0.0.7
 - Fixed syntax highlighting bug of keyword `stream`.
