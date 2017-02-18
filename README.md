@@ -36,11 +36,21 @@ Bellow is the settings.json file comes from
         "options": [
             "--proto_path=protos/v3",
             "--proto_path=protos/v2",
+            "--proto_path=${workspaceRoot}/proto",
+            "--proto_path=${env.GOPATH}/src"
             "--java_out=gen/java"
         ]
     }
 }
 ```
+
+Variables
+
+Variable      | Description
+------------- | ------------
+config.*      | Refer settings items in ``Preferences``.
+env.*         | Refer environment variable.
+workspaceRoot | Returns current workspace root path.
 
 ### Code Completion
 
