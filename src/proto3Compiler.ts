@@ -116,11 +116,16 @@ export class Proto3Compiler {
     }
 
     private runProtoc(args: string[], opts?: cp.ExecFileOptions, callback?: (stdout: string, stderr: string) =>void) {
+        let protocPath = this.getProtocPath()
+        if (protocPath == "?") {
+            return // protoc is not configured
+        }
+        
         if( !opts ) {
             opts = {};
         }
         opts = Object.assign(opts, {cwd: vscode.workspace.rootPath});
-        cp.execFile(this.getProtocPath(), args, opts, (err, stdout, stderr) => {
+        cp.execFile(protocPath, args, opts, (err, stdout, stderr) => {
             if(err && stdout.length == 0 && stderr.length == 0) {
                 // Assume the OS error if no messages to buffers because
                 // "err" does not provide error type info.
@@ -136,7 +141,7 @@ export class Proto3Compiler {
 
     private getProtocPath(): string {
         return this._configResolver.resolve(
-            this._settings.get<string>('path', this.settingsV1.settings.protoc.path || 'protoc'));
+            this._settings.get<string>('path', this.settingsV1.settings.protoc.path || '?'));
     }
 
     private getProtocOptions(): string[] {
