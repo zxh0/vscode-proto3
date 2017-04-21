@@ -2,6 +2,9 @@ syntax = "proto3";
 
 package v3;
 
+import "google/protobuf/empty.proto";
+import "google/api.proto";
+
 message SearchRequest {
   int32 x = 1;
 }
@@ -12,4 +15,12 @@ message SearchResponse {
 service SearchService {
   rpc Search (SearchRequest) returns (SearchResponse);
   rpc Search2 (stream SearchRequest) returns (stream SearchResponse);
+}
+
+// https://github.com/zxh0/vscode-proto3/issues/16
+message DeleteLogRequest{}
+service LoggingServiceV2 {
+  rpc DeleteLog (DeleteLogRequest) returns (google.protobuf.Empty) {
+    option (google.api.http) = { delete: "/v2beta1/{log_name=projects/*/logs/*}" };
+  }
 }
