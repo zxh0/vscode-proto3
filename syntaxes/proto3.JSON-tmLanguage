@@ -52,14 +52,16 @@
       }
     },
     "optionStmt": {
-      "match": "\\s*(option)\\s*(\\w+|\\(\\w+\\))(\\.\\w+)?\\s*=\\s*((\"[^\"]+\")|([A-Z_]+)|(true|false));",
+      "match": "\\s*(option)\\s*(\\w+|\\(\\w+(\\.\\w+)*\\))(\\.\\w+)*\\s*=\\s*((\"[^\"]+\")|([A-Z_]+)|(true|false)|([+-]?[\\d\\.]+)|\\{.*)\\s*;",
       "captures": {
         "1": {"name": "keyword.other.proto"},
         "2": {"name": "support.other.proto"},
         "3": {"name": "support.other.proto"},
-        "5": {"name": "string.quoted.double.proto"},
-        "6": {"name": "constant.language.proto"},
-        "7": {"name": "constant.language.proto"}
+        "4": {"name": "support.other.proto"},
+        "6": {"name": "string.quoted.double.proto"},
+        "7": {"name": "constant.language.proto"},
+        "8": {"name": "constant.language.proto"},
+        "9": {"name": "constant.numeric.proto"}
       }
     },
     "fieldOptions": {
