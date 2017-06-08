@@ -60,7 +60,7 @@ A very simple parser is written to support code completion.
 
 prefix| body
 ----- | -----
-sp2   | `syntax = "proto3";`
+sp2   | `syntax = "proto2";`
 sp3   | `syntax = "proto3";`
 pkg   | `package package.name;`
 imp   | `import "path/to/other/protos.proto";`
