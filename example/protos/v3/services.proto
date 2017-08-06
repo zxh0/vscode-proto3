@@ -24,3 +24,17 @@ service LoggingServiceV2 {
     option (google.api.http) = { delete: "/v2beta1/{log_name=projects/*/logs/*}" };
   }
 }
+
+// https://github.com/zxh0/vscode-proto3/issues/18
+service LoggingServiceV2_issue18 {
+  rpc DeleteLog (DeleteLogRequest) returns (google.protobuf.Empty) {
+    option (google.api.http) = {
+      delete: "/v2beta1/{log_name=projects}"
+    };
+  }
+  rpc DeleteLog2 (DeleteLogRequest) returns (google.protobuf.Empty) {
+    option (google.api.http) = {
+      delete: "/v2beta1/{log_name=projects/*/logs/*}"
+    };
+  }
+}

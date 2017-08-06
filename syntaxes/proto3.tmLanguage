@@ -128,7 +128,7 @@
           </dict>
         </dict>
       </dict>
-      <key>optionStmt</key>
+      <key>optionStmt2</key>
       <dict>
         <key>match</key>
         <string>\s*(option)\s*(\w+|\(\w+(\.\w+)*\))(\.\w+)*\s*=\s*(("[^"]+")|([A-Z_]+)|(true|false)|([+-]?[\d\.]+)|\{.*)\s*;</string>
@@ -175,6 +175,89 @@
             <string>constant.numeric.proto</string>
           </dict>
         </dict>
+      </dict>
+      <key>optionStmt</key>
+      <dict>
+        <key>begin</key>
+        <string>(option)\s+(\w+|\(\w+(\.\w+)*\))(\.\w+)*\s*=</string>
+        <key>beginCaptures</key>
+        <dict>
+          <key>1</key>
+          <dict>
+            <key>name</key>
+            <string>keyword.other.proto</string>
+          </dict>
+          <key>2</key>
+          <dict>
+            <key>name</key>
+            <string>support.other.proto</string>
+          </dict>
+          <key>3</key>
+          <dict>
+            <key>name</key>
+            <string>support.other.proto</string>
+          </dict>
+          <key>4</key>
+          <dict>
+            <key>name</key>
+            <string>support.other.proto</string>
+          </dict>
+        </dict>
+        <key>end</key>
+        <string>;</string>
+        <key>patterns</key>
+        <array>
+          <dict>
+            <key>include</key>
+            <string>#constants</string>
+          </dict>
+          <dict>
+            <key>include</key>
+            <string>#number</string>
+          </dict>
+          <dict>
+            <key>include</key>
+            <string>#string</string>
+          </dict>
+          <dict>
+            <key>include</key>
+            <string>#subMsgOption</string>
+          </dict>
+        </array>
+      </dict>
+      <key>subMsgOption</key>
+      <dict>
+        <key>begin</key>
+        <string>\{</string>
+        <key>end</key>
+        <string>\}</string>
+        <key>patterns</key>
+        <array>
+          <dict>
+            <key>match</key>
+            <string>(\w+)\s*:</string>
+            <key>captures</key>
+            <dict>
+              <key>1</key>
+              <dict>
+                <key>name</key>
+                <string>variable.other.proto</string>
+              </dict>
+            </dict>
+          </dict>
+          <dict>
+            <key>include</key>
+            <string>#constants</string>
+          </dict>
+          <dict>
+            <key>include</key>
+            <string>#number</string>
+          </dict>
+          <dict>
+            <key>include</key>
+            <string>#string</string>
+          </dict>
+        </array>
       </dict>
       <key>fieldOptions</key>
       <dict>
@@ -577,7 +660,7 @@
       <key>constants</key>
       <dict>
         <key>match</key>
-        <string>\b(true|false|max)\b</string>
+        <string>\b(true|false|max|[A-Z_]+)\b</string>
         <key>name</key>
         <string>constant.language.proto</string>
       </dict>
