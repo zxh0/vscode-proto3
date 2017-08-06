@@ -34,22 +34,30 @@
                 "title": "proto3: Compile All Protos"
             }
         ],
-        "languages": [{
-            "id": "proto3",
-            "extensions": [".proto"],
-            "aliases": [
-                "Protocol Buffers"
-            ]
-        }],
-        "grammars": [{
-            "language": "proto3",
-            "scopeName": "source.proto",
-            "path": "./syntaxes/proto3.tmLanguage"
-        }],
-        "snippets": [{
-            "language": "proto3",
-            "path": "./snippets/proto3.json"
-        }],
+        "languages": [
+            {
+                "id": "proto3",
+                "extensions": [
+                    ".proto"
+                ],
+                "aliases": [
+                    "Protocol Buffers"
+                ]
+            }
+        ],
+        "grammars": [
+            {
+                "language": "proto3",
+                "scopeName": "source.proto",
+                "path": "./syntaxes/proto3.tmLanguage"
+            }
+        ],
+        "snippets": [
+            {
+                "language": "proto3",
+                "path": "./snippets/proto3.json"
+            }
+        ],
         "configuration": {
             "type": "object",
             "title": "vscode-proto3 configuration",
@@ -58,7 +66,7 @@
                     "type": "object",
                     "description": "vscode-proto3 configuration",
                     "properties": {
-                        "path":{
+                        "path": {
                             "type": "string",
                             "default": "protoc",
                             "description": "Path to protoc command"
