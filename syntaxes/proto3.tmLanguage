@@ -221,58 +221,6 @@
         <array>
           <dict>
             <key>include</key>
-            <string>#fieldOption</string>
-          </dict>
-        </array>
-      </dict>
-      <key>fieldOption</key>
-      <dict>
-        <key>match</key>
-        <string>\s*(\w+|\(\w+\))(\.\w+)?\s*=\s*(("[^"]+")|([A-Z_]+)|(-?[0-9.]+)|(true|false))\s*,?</string>
-        <key>captures</key>
-        <dict>
-          <key>1</key>
-          <dict>
-            <key>name</key>
-            <string>support.other.proto</string>
-          </dict>
-          <key>2</key>
-          <dict>
-            <key>name</key>
-            <string>support.other.proto</string>
-          </dict>
-          <key>4</key>
-          <dict>
-            <key>name</key>
-            <string>string.quoted.double.proto</string>
-          </dict>
-          <key>5</key>
-          <dict>
-            <key>name</key>
-            <string>constant.language.proto</string>
-          </dict>
-          <key>6</key>
-          <dict>
-            <key>name</key>
-            <string>constant.numeric.proto</string>
-          </dict>
-          <key>7</key>
-          <dict>
-            <key>name</key>
-            <string>constant.language.proto</string>
-          </dict>
-        </dict>
-      </dict>
-      <key>fieldOptions2</key>
-      <dict>
-        <key>begin</key>
-        <string>\[</string>
-        <key>end</key>
-        <string>\]</string>
-        <key>patterns</key>
-        <array>
-          <dict>
-            <key>include</key>
             <string>#constants</string>
           </dict>
           <dict>

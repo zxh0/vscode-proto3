@@ -86,24 +86,6 @@
       "begin": "\\[",
       "end": "\\]",
       "patterns": [
-        {"include": "#fieldOption"}
-      ]
-    },
-    "fieldOption": {
-      "match": "\\s*(\\w+|\\(\\w+\\))(\\.\\w+)?\\s*=\\s*((\"[^\"]+\")|([A-Z_]+)|(-?[0-9.]+)|(true|false))\\s*,?",
-      "captures": {
-        "1": {"name": "support.other.proto"},
-        "2": {"name": "support.other.proto"},
-        "4": {"name": "string.quoted.double.proto"},
-        "5": {"name": "constant.language.proto"},
-        "6": {"name": "constant.numeric.proto"},
-        "7": {"name": "constant.language.proto"}
-      }
-    },
-    "fieldOptions2": {
-      "begin": "\\[",
-      "end": "\\]",
-      "patterns": [
         {"include": "#constants"},
         {"include": "#number"},
         {"include": "#string"},
