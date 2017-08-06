@@ -104,11 +104,11 @@
       "begin": "\\[",
       "end": "\\]",
       "patterns": [
-        {"include": "#optionName"},
         {"include": "#constants"},
         {"include": "#number"},
         {"include": "#string"},
-        {"include": "#subMsgOption"}
+        {"include": "#subMsgOption"},
+        {"include": "#optionName"}
       ]
     },
     "optionName": {
