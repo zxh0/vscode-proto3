@@ -128,54 +128,6 @@
           </dict>
         </dict>
       </dict>
-      <key>optionStmt2</key>
-      <dict>
-        <key>match</key>
-        <string>\s*(option)\s*(\w+|\(\w+(\.\w+)*\))(\.\w+)*\s*=\s*(("[^"]+")|([A-Z_]+)|(true|false)|([+-]?[\d\.]+)|\{.*)\s*;</string>
-        <key>captures</key>
-        <dict>
-          <key>1</key>
-          <dict>
-            <key>name</key>
-            <string>keyword.other.proto</string>
-          </dict>
-          <key>2</key>
-          <dict>
-            <key>name</key>
-            <string>support.other.proto</string>
-          </dict>
-          <key>3</key>
-          <dict>
-            <key>name</key>
-            <string>support.other.proto</string>
-          </dict>
-          <key>4</key>
-          <dict>
-            <key>name</key>
-            <string>support.other.proto</string>
-          </dict>
-          <key>6</key>
-          <dict>
-            <key>name</key>
-            <string>string.quoted.double.proto</string>
-          </dict>
-          <key>7</key>
-          <dict>
-            <key>name</key>
-            <string>constant.language.proto</string>
-          </dict>
-          <key>8</key>
-          <dict>
-            <key>name</key>
-            <string>constant.language.proto</string>
-          </dict>
-          <key>9</key>
-          <dict>
-            <key>name</key>
-            <string>constant.numeric.proto</string>
-          </dict>
-        </dict>
-      </dict>
       <key>optionStmt</key>
       <dict>
         <key>begin</key>
