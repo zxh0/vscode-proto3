@@ -100,6 +100,25 @@
         "7": {"name": "constant.language.proto"}
       }
     },
+    "fieldOptions2": {
+      "begin": "\\[",
+      "end": "\\]",
+      "patterns": [
+        {"include": "#optionName"},
+        {"include": "#constants"},
+        {"include": "#number"},
+        {"include": "#string"},
+        {"include": "#subMsgOption"}
+      ]
+    },
+    "optionName": {
+      "match": "(\\w+|\\(\\w+(\\.\\w+)*\\))(\\.\\w+)*",
+      "captures": {
+        "1": {"name": "support.other.proto"},
+        "2": {"name": "support.other.proto"},
+        "3": {"name": "support.other.proto"}
+      }
+    },
     "message": {
       "begin": "(message|extend)(\\s+)([A-Za-z][A-Za-z0-9_.]*)(\\s*)(\\{)?",
       "beginCaptures": {

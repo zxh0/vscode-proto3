@@ -263,6 +263,59 @@
           </dict>
         </dict>
       </dict>
+      <key>fieldOptions2</key>
+      <dict>
+        <key>begin</key>
+        <string>\[</string>
+        <key>end</key>
+        <string>\]</string>
+        <key>patterns</key>
+        <array>
+          <dict>
+            <key>include</key>
+            <string>#optionName</string>
+          </dict>
+          <dict>
+            <key>include</key>
+            <string>#constants</string>
+          </dict>
+          <dict>
+            <key>include</key>
+            <string>#number</string>
+          </dict>
+          <dict>
+            <key>include</key>
+            <string>#string</string>
+          </dict>
+          <dict>
+            <key>include</key>
+            <string>#subMsgOption</string>
+          </dict>
+        </array>
+      </dict>
+      <key>optionName</key>
+      <dict>
+        <key>match</key>
+        <string>(\w+|\(\w+(\.\w+)*\))(\.\w+)*</string>
+        <key>captures</key>
+        <dict>
+          <key>1</key>
+          <dict>
+            <key>name</key>
+            <string>support.other.proto</string>
+          </dict>
+          <key>2</key>
+          <dict>
+            <key>name</key>
+            <string>support.other.proto</string>
+          </dict>
+          <key>3</key>
+          <dict>
+            <key>name</key>
+            <string>support.other.proto</string>
+          </dict>
+        </dict>
+      </dict>
       <key>message</key>
       <dict>
         <key>begin</key>
