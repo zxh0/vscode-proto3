@@ -567,7 +567,7 @@
       <key>method</key>
       <dict>
         <key>begin</key>
-        <string>(rpc)\s+([A-Za-z][A-Z-a-z0-9_]+)\s*\((stream\s+)?([A-Za-z0-9_.]+)\)\s+(returns)\s+\((stream\s+)?([A-Za-z0-9_.]+)\)\{?</string>
+        <string>(rpc)\s+([A-Za-z][A-Z-a-z0-9_]+)\s*\((stream\s+)?([A-Za-z0-9_.]+)\)\s+(returns)\s*\((stream\s+)?([A-Za-z0-9_.]+)\)\{?</string>
         <key>beginCaptures</key>
         <dict>
           <key>1</key>
