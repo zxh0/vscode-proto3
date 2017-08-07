@@ -100,6 +100,9 @@ Auto-completion not works in some situations.
 
 ## Release Notes
 
+### 0.1.2
+- Fixed some syntax highlighting issues.
+
 ### 0.1.1
 - Fixed some syntax highlighting issues.
 - Skip the protoc invocation when it's not configured. 
