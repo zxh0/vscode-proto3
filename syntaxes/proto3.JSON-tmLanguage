@@ -184,6 +184,7 @@
       },
       "end": "\\}",
       "patterns": [
+        {"include": "#reserved"},
         {"include": "#optionStmt"},
         {"include": "#comments"},
         {
