@@ -571,7 +571,7 @@
       <key>method</key>
       <dict>
         <key>begin</key>
-        <string>(rpc)\s+([A-Za-z][A-Z-a-z0-9_]+)\s*\((stream\s+)?([A-Za-z0-9_.]+)\)\s+(returns)\s*\((stream\s+)?([A-Za-z0-9_.]+)\)\{?</string>
+        <string>(rpc)\s+([A-Za-z][A-Za-z0-9_]*)</string>
         <key>beginCaptures</key>
         <dict>
           <key>1</key>
@@ -583,21 +583,6 @@
           <dict>
             <key>name</key>
             <string>entity.name.function</string>
-          </dict>
-          <key>3</key>
-          <dict>
-            <key>name</key>
-            <string>keyword.other.proto</string>
-          </dict>
-          <key>5</key>
-          <dict>
-            <key>name</key>
-            <string>keyword.other.proto</string>
-          </dict>
-          <key>6</key>
-          <dict>
-            <key>name</key>
-            <string>keyword.other.proto</string>
           </dict>
         </dict>
         <key>end</key>
@@ -612,7 +597,29 @@
             <key>include</key>
             <string>#optionStmt</string>
           </dict>
+          <dict>
+            <key>include</key>
+            <string>#rpcKeywords</string>
+          </dict>
+          <dict>
+            <key>include</key>
+            <string>#ident</string>
+          </dict>
         </array>
+      </dict>
+      <key>rpcKeywords</key>
+      <dict>
+        <key>match</key>
+        <string>\b(stream|returns)\b</string>
+        <key>name</key>
+        <string>keyword.other.proto</string>
+      </dict>
+      <key>ident</key>
+      <dict>
+        <key>match</key>
+        <string>[A-Za-z][A-Za-z0-9_]*</string>
+        <key>name</key>
+        <string>entity.name.class.proto</string>
       </dict>
       <key>constants</key>
       <dict>

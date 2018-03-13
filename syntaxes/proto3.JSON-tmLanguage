@@ -214,19 +214,26 @@
       ]
     },
     "method": {
-      "begin": "(rpc)\\s+([A-Za-z][A-Z-a-z0-9_]+)\\s*\\((stream\\s+)?([A-Za-z0-9_.]+)\\)\\s+(returns)\\s*\\((stream\\s+)?([A-Za-z0-9_.]+)\\)\\{?",
+      "begin": "(rpc)\\s+([A-Za-z][A-Za-z0-9_]*)",
       "beginCaptures": {
         "1": {"name": "keyword.other.proto"},
-        "2": {"name": "entity.name.function"},
-        "3": {"name": "keyword.other.proto"},
-        "5": {"name": "keyword.other.proto"},
-        "6": {"name": "keyword.other.proto"}
+        "2": {"name": "entity.name.function"}
       },
       "end": "\\}|;",
       "patterns": [
         {"include": "#comments"},
-        {"include": "#optionStmt"}
+        {"include": "#optionStmt"},
+        {"include": "#rpcKeywords"},
+        {"include": "#ident"}
       ]
+    },
+    "rpcKeywords": {
+      "match": "\\b(stream|returns)\\b",
+      "name": "keyword.other.proto"
+    },
+    "ident": {
+      "match": "[A-Za-z][A-Za-z0-9_]*",
+      "name": "entity.name.class.proto"
     },
     "constants": {
       "match": "\\b(true|false|max|[A-Z_]+)\\b",
