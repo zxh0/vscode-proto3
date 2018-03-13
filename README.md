@@ -101,6 +101,9 @@ Auto-completion not works in some situations.
 ## Release Notes
 
 ### 0.1.2
+- Fixed some syntax highlighting issues (issue#2, issue21, issue#42).
+
+### 0.1.2
 - Fixed some syntax highlighting issues.
 
 ### 0.1.1
