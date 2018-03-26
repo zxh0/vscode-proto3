@@ -14,70 +14,14 @@ interface SettingsV1 {
 }
 let defaultSettingsV1 = {protoc:{}};
 
-// Backward compatibility for the configuration file at the workspace root (not in .vscode/).
-// For migrating the release before e041f00456.
-export class Proto3SettingsV1Loader {
-
-    private settingsPath: string;
-    private contents: SettingsV1 | any;
-
-    constructor() {
-        this.settingsPath = path.join(vscode.workspace.rootPath, 'settings.json');
-        this.contents = defaultSettingsV1;
-    }
-
-    public get settings(): SettingsV1 {
-        return this.contents;
-    }
-
-    public doLoad() {
-        if(!fs.existsSync(this.settingsPath)) {
-            return;
-        }
-        fs.readFile(this.settingsPath, (err, data)=>{
-            if (err) {
-                vscode.window.showErrorMessage(err.message);
-                console.error(err)
-                return;
-            }
-            try {
-                this.contents = JSON.parse(data.toString());
-            }catch(err) {
-                if (err instanceof SyntaxError) {
-                    vscode.window.showErrorMessage("Failed to parse settings.json: " + (<SyntaxError>err).message);
-                }
-                console.error(err)
-                return;                    
-            }
-            if ((<SettingsV1>this.contents).protoc === undefined) {
-                this.contents = Object.assign(this.contents, defaultSettingsV1);
-            }
-        });
-    }
-
-    public setWatcher(): vscode.Disposable {
-        this.doLoad();
-        let watcher = fs.watch(path.dirname(this.settingsPath), undefined, (ev, filename)=>{
-            if( filename !== path.basename(this.settingsPath) ) {
-                return;
-            }
-            this.doLoad();
-        });
-
-        return new vscode.Disposable(()=>{ watcher.close(); });
-    }
-}
-
 export class Proto3Compiler {
  
     private _settings: vscode.WorkspaceConfiguration;
     private _configResolver: ConfigurationResolver;
-    private settingsV1: Proto3SettingsV1Loader;
 
-    constructor(v1loader: Proto3SettingsV1Loader) {
+    constructor() {
         this._settings = vscode.workspace.getConfiguration("protoc");
         this._configResolver = new ConfigurationResolver();
-        this.settingsV1 = v1loader;
     }
 
     public compileAllProtos() {
@@ -141,12 +85,12 @@ export class Proto3Compiler {
 
     private getProtocPath(): string {
         return this._configResolver.resolve(
-            this._settings.get<string>('path', this.settingsV1.settings.protoc.path || '?'));
+            this._settings.get<string>('path', '?'));
     }
 
     private getProtocOptions(): string[] {
         return this._configResolver.resolve(
-            this._settings.get<string[]>('options', this.settingsV1.settings.protoc.options || []));
+            this._settings.get<string[]>('options', []));
     }
 
     private getProtoPathOptions(): string[] {

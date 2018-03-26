@@ -6,16 +6,14 @@ import path = require('path');
 import cp = require('child_process');
 import { Proto3CompletionItemProvider } from './proto3Suggest';
 import { Proto3LanguageDiagnosticProvider } from './proto3Diagnostic';
-import { Proto3Compiler, Proto3SettingsV1Loader } from './proto3Compiler';
+import { Proto3Compiler } from './proto3Compiler';
 import { PROTO3_MODE } from './proto3Mode';
 
 export function activate(ctx: vscode.ExtensionContext): void {
 
     ctx.subscriptions.push(vscode.languages.registerCompletionItemProvider(PROTO3_MODE, new Proto3CompletionItemProvider(), '.', '\"'));
 
-    let v1loader = new Proto3SettingsV1Loader();
-    ctx.subscriptions.push(v1loader.setWatcher());
-    let compiler = new Proto3Compiler(v1loader);
+    let compiler = new Proto3Compiler();
 
     let diagnosticProvider = new Proto3LanguageDiagnosticProvider(compiler);
     vscode.workspace.onDidSaveTextDocument(event => {
