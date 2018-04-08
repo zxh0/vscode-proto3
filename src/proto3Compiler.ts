@@ -6,14 +6,6 @@ import path = require('path');
 import cp = require('child_process');
 import os = require('os');
 
-interface SettingsV1 {
-    protoc?: {
-        path?: string;
-        options?: string[];
-    };
-}
-let defaultSettingsV1 = {protoc:{}};
-
 export class Proto3Compiler {
  
     private _settings: vscode.WorkspaceConfiguration;
