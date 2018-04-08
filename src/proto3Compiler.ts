@@ -10,10 +10,17 @@ export class Proto3Compiler {
  
     private _settings: vscode.WorkspaceConfiguration;
     private _configResolver: ConfigurationResolver;
+    private _isProtocInPath: boolean;
 
     constructor() {
         this._settings = vscode.workspace.getConfiguration("protoc");
         this._configResolver = new ConfigurationResolver();
+        try {
+            cp.execFileSync("protoc", ["-h"]);
+            this._isProtocInPath = true;
+        } catch (e) {
+            this._isProtocInPath = false;
+        }
     }
 
     public compileAllProtos() {
@@ -76,8 +83,9 @@ export class Proto3Compiler {
     }
 
     private getProtocPath(): string {
+        let protoc = this._isProtocInPath ? 'protoc' : '?';
         return this._configResolver.resolve(
-            this._settings.get<string>('path', '?'));
+            this._settings.get<string>('path', protoc));
     }
 
     private getProtocOptions(): string[] {
