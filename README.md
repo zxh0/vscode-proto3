@@ -100,6 +100,10 @@ Auto-completion not works in some situations.
 
 ## Release Notes
 
+### 0.2.0
+- Default to look protoc in path (issue#24).
+- Support "Format Document" if clang-format is in path (issue#13).
+
 ### 0.1.3
 - Fixed some syntax highlighting issues (issue#2, issue#21, issue#42).
 
