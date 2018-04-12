@@ -32,7 +32,7 @@ Bellow is the settings.json file comes from
 ```json
 {
     "protoc": {
-        "path": "/path/to/protoc-3.0.0-osx-x86_64/bin/protoc",
+        "path": "/path/to/protoc",
         "options": [
             "--proto_path=protos/v3",
             "--proto_path=protos/v2",
