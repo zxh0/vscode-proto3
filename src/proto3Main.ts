@@ -74,8 +74,8 @@ export function activate(ctx: vscode.ExtensionContext): void {
 
     vscode.languages.registerDocumentFormattingEditProvider('proto3', {
         provideDocumentFormattingEdits(document: vscode.TextDocument): Thenable<vscode.TextEdit[]> {
-            try {
-                return document.save().then(x => {
+            return document.save().then(x => {
+                try {
                     var output = cp.execFileSync("clang-format", [document.fileName]);
                     if (output) {
                         let start = new vscode.Position(0, 0)
@@ -83,10 +83,10 @@ export function activate(ctx: vscode.ExtensionContext): void {
                         let range = new vscode.Range(start, end);
                         return [vscode.TextEdit.replace(range, output.toString())];
                     }
-                })
-            } catch (e) {
-                vscode.window.showErrorMessage(e.message);
-            }
+                } catch (e) {
+                    vscode.window.showErrorMessage(e.message);
+                }
+            })
         }
     });
 
