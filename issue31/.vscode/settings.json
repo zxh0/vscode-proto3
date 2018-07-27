@@ -1,0 +1,9 @@
+{
+    "protoc": {
+        "path": "/usr/local/bin/protoc",
+        "options": [
+            "--proto_path=test",
+            "--java_out=gen/java"
+        ]
+    }
+}

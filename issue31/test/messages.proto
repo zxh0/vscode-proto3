@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+package test;
+
+message MyReq {
+  int32 field1=1;
+}
+
+message MyResp {
+  int32 field1=1;
+}
