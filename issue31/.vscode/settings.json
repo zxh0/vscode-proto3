@@ -2,7 +2,7 @@
     "protoc": {
         "path": "/usr/local/bin/protoc",
         "options": [
-            "--proto_path=test",
+            "--proto_path=rpc",
             "--java_out=gen/java"
         ]
     }
