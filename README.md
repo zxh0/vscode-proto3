@@ -11,6 +11,7 @@ https://github.com/zxh0/vscode-proto3
 - syntax validation.
 - code snippets.
 - code completion.
+- code formatting.
 - brace matching.
 - line and block commenting.
 
@@ -93,6 +94,18 @@ en    | `enum EnumName {}`
 sv    | `service ServiceName {}`
 rpc   | `rpc MethodName (Request) returns (Response);`
 
+## Code Formatting
+
+Support "Format Document" if `clang-format` is in path, including custom `style` options.
+
+By default, `clang-format`'s standard coding style will be used for formatting. To define a custom style or use a supported preset add `"clang-format.style"` in VSCode Settings (`settings.json`)
+
+### Example usage:
+`"clang-format.style": "google"`
+
+This is the equivalent of executing `clang-format -style=google` from the shell.
+
+For further formatting options refer to the [official `clang-format` documentation](https://clang.llvm.org/docs/ClangFormatStyleOptions.html)
 
 ## Known Issues
 

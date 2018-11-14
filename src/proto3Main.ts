@@ -9,6 +9,16 @@ import { Proto3LanguageDiagnosticProvider } from './proto3Diagnostic';
 import { Proto3Compiler } from './proto3Compiler';
 import { PROTO3_MODE } from './proto3Mode';
 
+function getClangFormatStyle(document): string | null {
+    let ret = vscode.workspace.getConfiguration('clang-format').get<string>('style');
+    if (ret && ret.trim()) {
+        return ret.trim();
+    }
+    else {
+        return null;
+    }
+}
+
 export function activate(ctx: vscode.ExtensionContext): void {
 
     ctx.subscriptions.push(vscode.languages.registerCompletionItemProvider(PROTO3_MODE, new Proto3CompletionItemProvider(), '.', '\"'));
@@ -75,8 +85,14 @@ export function activate(ctx: vscode.ExtensionContext): void {
     vscode.languages.registerDocumentFormattingEditProvider('proto3', {
         provideDocumentFormattingEdits(document: vscode.TextDocument): Thenable<vscode.TextEdit[]> {
             return document.save().then(x => {
+
+                const style = getClangFormatStyle(document)
+                let args = [];
+                if (style) args.push(`-style=${style}`);
+                args.push(document.fileName);
+
                 try {
-                    var output = cp.execFileSync("clang-format", [document.fileName]);
+                    var output = cp.execFileSync("clang-format", args);
                     if (output) {
                         let start = new vscode.Position(0, 0)
                         let end = new vscode.Position(document.lineCount, 0)
