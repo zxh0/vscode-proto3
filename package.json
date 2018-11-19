@@ -2,7 +2,7 @@
     "name": "vscode-proto3",
     "displayName": "vscode-proto3",
     "description": "Protobuf 3 support for Visual Studio Code",
-    "version": "0.2.1",
+    "version": "0.2.2",
     "publisher": "zxh404",
     "icon": "images/icon.png",
     "homepage": "https://github.com/zxh0/vscode-proto3/blob/master/README.md",

@@ -1,5 +1,9 @@
 ## Release Notes
 
+### 0.2.2
+- Support clang-format style.
+- Fixed issue#32
+
 ### 0.2.1
 - Fixed issue#26
 
