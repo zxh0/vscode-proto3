@@ -2,7 +2,7 @@
 
 export module Proto3Primitive {
 
-    const primitiveTypes = [
+    export const primitiveTypes = [
         'double',
         'float',
         'int32',
