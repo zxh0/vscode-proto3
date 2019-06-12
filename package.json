@@ -97,6 +97,7 @@
         "@types/mocha": "^2.2.32"
     },
     "dependencies": {
-        "npm": "^5.7.1"
+        "npm": "^5.7.1",
+        "fast-glob": "^2.2.7"
     }
 }

@@ -1,13 +1,12 @@
 'use strict';
 
 import vscode = require('vscode');
-import fs = require('fs');
-import path = require('path');
 import cp = require('child_process');
 import { Proto3CompletionItemProvider } from './proto3Suggest';
 import { Proto3LanguageDiagnosticProvider } from './proto3Diagnostic';
 import { Proto3Compiler } from './proto3Compiler';
 import { PROTO3_MODE } from './proto3Mode';
+import { Proto3DefinitionProvider } from './proto3Definition';
 
 function getClangFormatStyle(document): string | null {
     let ret = vscode.workspace.getConfiguration('clang-format').get<string>('style');
@@ -22,10 +21,11 @@ function getClangFormatStyle(document): string | null {
 export function activate(ctx: vscode.ExtensionContext): void {
 
     ctx.subscriptions.push(vscode.languages.registerCompletionItemProvider(PROTO3_MODE, new Proto3CompletionItemProvider(), '.', '\"'));
+    ctx.subscriptions.push(vscode.languages.registerDefinitionProvider(PROTO3_MODE, new Proto3DefinitionProvider()));
 
-    let compiler = new Proto3Compiler();
+    const compiler = new Proto3Compiler();
 
-    let diagnosticProvider = new Proto3LanguageDiagnosticProvider(compiler);
+    const diagnosticProvider = new Proto3LanguageDiagnosticProvider(compiler);
     vscode.workspace.onDidSaveTextDocument(event => {
         if (event.languageId == 'proto3') {
             diagnosticProvider.createDiagnostics(event);
@@ -50,7 +50,7 @@ export function activate(ctx: vscode.ExtensionContext): void {
             // ^.*\{[^}'']*$
             increaseIndentPattern: /^.*\{[^}'']*$/
         },
-        wordPattern: /(-?\d*\.\d\w*)|([^\`\~\!\@\#\%\^\&\*\(\)\-\=\+\[\{\]\}\\\|\;\:\'\"\,\.\<\>\/\?\s]+)/g,
+        wordPattern: /(-?\d*\.\d\w*)|([^\`\~\!\@\#\%\^\&\*\(\)\-\=\+\[\{\]\}\\\|\;\:\'\"\,\.\<\>\/\?\s]+)(\.proto){0,1}/g,
         comments: {
             lineComment: '//',
             blockComment: ['/*', '*/']
