@@ -3,7 +3,6 @@ syntax = "proto3";
 package issues;
  
 import "google/api/annotations.proto";
-import "google/protobuf/empty.proto";
 
 message MyRequest {}
 message MyResponse {}
@@ -11,9 +10,9 @@ message MyResponse {}
 service MyService {
 
   rpc AuthenticateCustom (MyRequest) returns (MyResponse) {
-    option (MyOption) = {
-      security: {
-        security_requirement: {
+    option (my_option) = {
+      field1: {
+        field2: {
           key: "BasicAuth";
           value: {};
         }
