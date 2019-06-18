@@ -14,7 +14,7 @@ service MyService {
       field1: {
         field2: {
           key: "BasicAuth";
-          value: {};
+          value: {}; // this comma causes the problem
         }
       }
     };
