@@ -20,6 +20,10 @@ message TestOptions {
   int64 y = 8 [ jstype=JS_STRING ];
   int64 z = 9 [lazy=false];
   string s = 100 [deprecated=true, lazy=false];
+
+  string s1 = 200 [default="abc'def\"g"];
+  string s2 = 201 [default='abc"def\'g'];
+  string str_escapes = 202 [default="abc\xa1\xB2\123\a\b\f\n\r\t\v"];
 }
 
 enum TestEnum {
