@@ -244,8 +244,7 @@
       "name": "storage.type.proto"
     },
     "string": {
-      "begin": "\"",
-      "end": "\"",
+      "match": "('([^']|\\')*')|(\"([^\"]|\\\")*\")",
       "name": "string.quoted.double.proto"
     },
     "number": {
