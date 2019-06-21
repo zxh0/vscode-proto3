@@ -1,4 +1,5 @@
 {
+    "disableValidation": true,
     "protoc": {
         "path": "/path/to/protoc",
         "options": [

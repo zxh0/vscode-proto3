@@ -25,9 +25,11 @@ export function activate(ctx: vscode.ExtensionContext): void {
 
     const compiler = new Proto3Compiler();
 
+    let validationDisabled = vscode.workspace.getConfiguration().get<boolean>("disableValidation");
+    console.log("validationDisabled: " + validationDisabled);
     const diagnosticProvider = new Proto3LanguageDiagnosticProvider(compiler);
     vscode.workspace.onDidSaveTextDocument(event => {
-        if (event.languageId == 'proto3') {
+        if (event.languageId == 'proto3' && !validationDisabled) {
             diagnosticProvider.createDiagnostics(event);
         }
     });
