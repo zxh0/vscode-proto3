@@ -1,5 +1,9 @@
 ## Release Notes
 
+### 0.3.0
+- Support "Go to Definition" (issue#34).
+- Fixed string highlighting issues (issue#42).
+
 ### 0.2.2
 - Support clang-format style.
 - Fixed issue#32
@@ -12,7 +16,7 @@
 - Support "Format Document" if clang-format is in path (issue#13).
 
 ### 0.1.3
-- Fixed some syntax highlighting issues (issue#2, issue#21, issue#42).
+- Fixed some syntax highlighting issues (issue#2, issue#21, issue#22).
 
 ### 0.1.2
 - Fixed some syntax highlighting issues.
