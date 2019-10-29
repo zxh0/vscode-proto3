@@ -37,12 +37,12 @@ export class Proto3DefinitionProvider implements vscode.DefinitionProvider {
             }
             vscode.window.showErrorMessage(`Could not find ${targetDefinition} definition.`)
         }
-        const messageOrEnumPattern = `\\s*(\\w+\\.)*${targetDefinition}\\s*`
+        const messageOrEnumPattern = `\\s*(\\w+\\.)*\\w+\\s*`
         const messageFieldPattern = `\\s+\\w+\\s*=\\s*\\d+;.*`
         const rpcReqOrRspPattern = `\\s*\\(\\s*(stream\\s+)?${messageOrEnumPattern}\\s*\\)\\s*`
 
         const messageRegExp = new RegExp(`^\\s*(repeated){0,1}(${messageOrEnumPattern})${messageFieldPattern}$`, 'i')
-        const messageInMap = new RegExp(`^\\s*map\\s*<\\s*${messageOrEnumPattern}\\s*,\\s*${messageOrEnumPattern}\\s*>${messageFieldPattern}$`, 'i');
+        const messageInMap = new RegExp(`^\\s*map\\s*<${messageOrEnumPattern},${messageOrEnumPattern}>${messageFieldPattern}$`, 'i');
         const messageInRpcRegExp = new RegExp(`^\\s*rpc\\s*\\w+${rpcReqOrRspPattern}returns${rpcReqOrRspPattern}[;{].*$`, 'i');
 
         if (messageRegExp.test(lineText) || messageInRpcRegExp.test(lineText) || messageInMap.test(lineText)) {
