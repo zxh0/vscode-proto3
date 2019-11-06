@@ -2,11 +2,11 @@
 	"Create standard service": {
 		"scope": "proto3",
 		"prefix": [
-            "svgapi",
-            "svcrud"
+			"svgapi",
+			"svcrud"
 		],
 		"body": [
-            "// Generated according to https://cloud.google.com/apis/design/standard_methods",
+			"// Generated according to https://cloud.google.com/apis/design/standard_methods",
 			"service ${1:Type}Service {",
 			"  rpc List${1}s(List${1}sRequest) returns (List${1}sResponse) {",
 			"    option (google.api.http) = {",
