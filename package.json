@@ -56,6 +56,10 @@
             {
                 "language": "proto3",
                 "path": "./snippets/proto3.json"
+            },
+            {
+                "language": "proto3",
+                "path": "./snippets/google-api.json"
             }
         ],
         "configuration": {
