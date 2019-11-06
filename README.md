@@ -94,6 +94,15 @@ en    | `enum EnumName {}`
 sv    | `service ServiceName {}`
 rpc   | `rpc MethodName (Request) returns (Response);`
 
+### Google API Design Guide
+
+The following snippets are based on
+[Google API Design Guide](https://cloud.google.com/apis/design/).
+
+prefix | reference
+------ | -----
+svgapi | [Standard Methods](https://cloud.google.com/apis/design/standard_methods)
+
 ## Code Formatting
 
 Support "Format Document" if `clang-format` is in path, including custom `style` options.
