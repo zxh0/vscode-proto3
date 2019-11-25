@@ -49,7 +49,7 @@
             {
                 "language": "proto3",
                 "scopeName": "source.proto",
-                "path": "./syntaxes/proto3.tmLanguage"
+                "path": "./syntaxes/proto3.tmLanguage.json"
             }
         ],
         "snippets": [
