@@ -7,6 +7,7 @@ import { Proto3LanguageDiagnosticProvider } from './proto3Diagnostic';
 import { Proto3Compiler } from './proto3Compiler';
 import { PROTO3_MODE } from './proto3Mode';
 import { Proto3DefinitionProvider } from './proto3Definition';
+import { Proto3Configuration } from './proto3Configuration';
 
 function getClangFormatStyle(document): string | null {
     let ret = vscode.workspace.getConfiguration('clang-format').get<string>('style');
@@ -29,6 +30,9 @@ export function activate(ctx: vscode.ExtensionContext): void {
     vscode.workspace.onDidSaveTextDocument(event => {
         if (event.languageId == 'proto3') {
             diagnosticProvider.createDiagnostics(event);
+            if (Proto3Configuration.Instance().compileOnSave()) {
+                compiler.compileActiveProto();
+            }
         }
     });
 
@@ -39,7 +43,6 @@ export function activate(ctx: vscode.ExtensionContext): void {
     ctx.subscriptions.push(vscode.commands.registerCommand('proto3.compile.all', () => {
         compiler.compileAllProtos();
     }));
-
 
     //console.log('Congratulations, your extension "vscode-pb3" is now active!');
 
