@@ -1,5 +1,7 @@
 # vscode-proto3
 
+![icon](images/vscode_extension_icon.png)
+
 Protobuf 3 support for Visual Studio Code
 
 https://github.com/zxh0/vscode-proto3
