@@ -4,7 +4,7 @@
     "description": "Protobuf 3 support for Visual Studio Code",
     "version": "0.4.0",
     "publisher": "zxh404",
-    "license" : "SEE LICENSE IN LICENSE.txt",
+    "license": "SEE LICENSE IN LICENSE.txt",
     "icon": "images/vscode_extension_icon.png",
     "homepage": "https://github.com/zxh0/vscode-proto3/blob/master/README.md",
     "repository": {
