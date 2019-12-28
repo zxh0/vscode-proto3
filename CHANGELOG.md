@@ -1,5 +1,12 @@
 ## Release Notes
 
+### 0.4.0
+- Updated README.md.
+- Added [`compile_on_save` option](https://github.com/zxh0/vscode-proto3#fields).
+- Updated Icon.
+- Configuration changes no longer require restart.
+- Additional examples.
+
 ### 0.3.0
 - Support "Go to Definition" (issue#34).
 - Fixed string highlighting issues (issue#42).
