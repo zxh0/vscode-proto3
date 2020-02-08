@@ -86,26 +86,23 @@ export function activate(ctx: vscode.ExtensionContext): void {
     });
 
     vscode.languages.registerDocumentFormattingEditProvider('proto3', {
-        provideDocumentFormattingEdits(document: vscode.TextDocument): Thenable<vscode.TextEdit[]> {
-            return document.save().then(x => {
+        provideDocumentFormattingEdits(document: vscode.TextDocument): vscode.TextEdit[] {
+            const style = getClangFormatStyle(document)
+            let args = [];
+            if (style) args.push(`-style=${style}`);
+            args.push(document.fileName);
 
-                const style = getClangFormatStyle(document)
-                let args = [];
-                if (style) args.push(`-style=${style}`);
-                args.push(document.fileName);
-
-                try {
-                    var output = cp.execFileSync("clang-format", args);
-                    if (output) {
-                        let start = new vscode.Position(0, 0)
-                        let end = new vscode.Position(document.lineCount, 0)
-                        let range = new vscode.Range(start, end);
-                        return [vscode.TextEdit.replace(range, output.toString())];
-                    }
-                } catch (e) {
-                    vscode.window.showErrorMessage(e.message);
+            try {
+                var output = cp.execFileSync("clang-format", args);
+                if (output) {
+                    let start = new vscode.Position(0, 0)
+                    let end = new vscode.Position(document.lineCount, 0)
+                    let range = new vscode.Range(start, end);
+                    return [vscode.TextEdit.replace(range, output.toString())];
                 }
-            })
+            } catch (e) {
+                vscode.window.showErrorMessage(e.message);
+            }
         }
     });
 
