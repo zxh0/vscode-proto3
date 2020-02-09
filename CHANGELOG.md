@@ -1,5 +1,8 @@
 ## Release Notes
 
+### 0.4.1
+- Fixed issue#72
+
 ### 0.4.0
 - Updated README.md.
 - Added [`compile_on_save` option](https://github.com/zxh0/vscode-proto3#fields).
