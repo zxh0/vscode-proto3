@@ -2,7 +2,7 @@
     "name": "vscode-proto3",
     "displayName": "vscode-proto3",
     "description": "Protobuf 3 support for Visual Studio Code",
-    "version": "0.4.1",
+    "version": "0.4.2",
     "publisher": "zxh404",
     "license": "SEE LICENSE IN LICENSE.txt",
     "icon": "images/vscode_extension_icon.png",

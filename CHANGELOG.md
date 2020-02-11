@@ -1,5 +1,8 @@
 ## Release Notes
 
+### 0.4.2
+- Fixed issue#74
+
 ### 0.4.1
 - Fixed issue#72
 
