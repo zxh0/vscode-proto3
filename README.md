@@ -141,6 +141,10 @@ By default, `clang-format`'s standard coding style will be used for formatting. 
 
 This is the equivalent of executing `clang-format -style=google` from the shell.
 
+With multiple formatting options
+
+`"clang-format.style": "{ IndentWidth: 4, BasedOnStyle: google, AlignConsecutiveAssignments: true }"`
+
 For further formatting options refer to the [official `clang-format` documentation](https://clang.llvm.org/docs/ClangFormatStyleOptions.html)
 
 ## Known Issues
