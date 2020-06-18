@@ -1,7 +1,5 @@
 'use strict';
 
-import * as fs from 'fs';
-import * as os from 'os';
 import * as path from 'path';
 
 import vscode = require('vscode');
@@ -12,34 +10,6 @@ import { Proto3Compiler } from './proto3Compiler';
 import { PROTO3_MODE } from './proto3Mode';
 import { Proto3DefinitionProvider } from './proto3Definition';
 import { Proto3Configuration } from './proto3Configuration';
-
-function formatDocument(data: string): Promise<string> {
-    return new Promise(function (resolve, reject) {
-        fs.mkdtemp(path.join(os.tmpdir(), 'vscodeproto3'), (e, folder) => {
-            if (e) return reject(e); // not common
-
-            const tmp = path.join(folder, 'tmp.proto');
-            fs.writeFile(tmp, data, function (e) {
-                if (e) return reject(e); // not common
-                
-                const ret = vscode.workspace.getConfiguration('clang-format').get<string>('style');
-                const style = ret && ret.trim() ? ret.trim() : null;
-
-                let args = [];
-                if (style) args.push(`-style=${style}`);
-                args.push(tmp);
-
-                try {
-                    const stdout = cp.execFileSync('clang-format', args);
-                    const output = stdout ? stdout.toString() : "";
-                    resolve(output);
-                } catch (e) {
-                    reject(e);
-                }
-            });
-        });
-    });
-}
 
 export function activate(ctx: vscode.ExtensionContext): void {
 
@@ -108,25 +78,29 @@ export function activate(ctx: vscode.ExtensionContext): void {
     });
 
     vscode.languages.registerDocumentFormattingEditProvider('proto3', {
-        provideDocumentFormattingEdits(document: vscode.TextDocument): Thenable<vscode.TextEdit[]> {
-            return formatDocument(document.getText())
-                .then(
-                    function(result) {
-                        if (result) {
-                            return [new vscode.TextEdit(document.validateRange(new vscode.Range(0, 0, Infinity, Infinity)), result)];
-                        }
-                    },
-                    function (e) {
-                        vscode.window.showErrorMessage(e.message);
-                        return [];
-                    }
-                )
-        }
-    });
+        provideDocumentFormattingEdits(document: vscode.TextDocument): vscode.TextEdit[] {
 
-    if (vscode.window.activeTextEditor) {
-        // 
-    }
+            let opts = { input: document.getText() };
+
+            // In order for clang-format to find the correct formatting file we need to have cwd set appropriately
+            switch(document.uri.scheme) {
+                case "untitled": // File has not yet been saved to disk use workspace path
+                    opts['cwd'] = vscode.workspace.rootPath;
+                    break;
+                case "file": // File is on disk use it's directory
+                    opts['cwd'] = path.dirname(document.uri.fsPath);
+                    break;
+            }
+
+            let args = [];
+            let style = vscode.workspace.getConfiguration('clang-format').get<string>('style');
+            style = style && style.trim();
+            if (style) args.push(`-style=${style}`);
+
+            let stdout = cp.execFileSync('clang-format', args, opts);
+            return [new vscode.TextEdit(document.validateRange(new vscode.Range(0, 0, Infinity, Infinity)), stdout ? stdout.toString() : '')];
+        },
+    });
 }
 
 function deactivate() {
