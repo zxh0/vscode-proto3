@@ -73,9 +73,7 @@ export class Proto3DefinitionProvider implements vscode.DefinitionProvider {
                 const messageDefinitionRegexMatch = new RegExp(`\\s*(message|enum)\\s*${target}\\s*{`).exec(line);
                 if (messageDefinitionRegexMatch && messageDefinitionRegexMatch.length) {
                     const uri = vscode.Uri.file(file.toString());
-                    const definitionStartPosition = new vscode.Position(lineIndex, messageDefinitionRegexMatch.index);
-                    const definitionEndPosition = new vscode.Position(lineIndex, messageDefinitionRegexMatch.index + target.length);
-                    const range = new vscode.Range(definitionStartPosition, definitionEndPosition);
+                    const range = this.getTargetLocationInline(lineIndex, line, target, messageDefinitionRegexMatch)
                     return new vscode.Location(uri, range);
                 }
             }
@@ -95,5 +93,12 @@ export class Proto3DefinitionProvider implements vscode.DefinitionProvider {
         return new vscode.Location(uri, range);
     }
 
+    private getTargetLocationInline(lineIndex: number, line: string, target: string, definitionRegexMatch: RegExpExecArray): vscode.Range {
+        const matchedStr = definitionRegexMatch[0];
+        const index = line.indexOf(matchedStr) + matchedStr.indexOf(target);
+        const definitionStartPosition = new vscode.Position(lineIndex, index);
+        const definitionEndPosition = new vscode.Position(lineIndex, index + target.length);
+        return new vscode.Range(definitionStartPosition, definitionEndPosition);
+    }
 }
 
