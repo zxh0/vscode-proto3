@@ -63,11 +63,12 @@ Below is an example settings.json file which comes from
 
 The possible fields under the `protoc` extension settings which can be defined in a `settings.json` file.
 
-| Field           | Type     | Default          | Description                                                                    |
-| --------------- | -------- | ---------------- | ------------------------------------------------------------------------------ |
-| path            | string   | _protoc in PATH_ | Path to protoc. Defaults to protoc in PATH if omitted.                         |
-| compile_on_save | boolean  | false            | On `.proto` file save, compiles to `--*_out` location within `options`         |
-| options         | string[] | []               | protoc compiler arguments/flags, required for proto validation and compilation |
+| Field            | Type     | Default          | Description                                                                    |
+| ---------------- | -------- | ---------------- | ------------------------------------------------------------------------------ |
+| path             | string   | _protoc in PATH_ | Path to protoc. Defaults to protoc in PATH if omitted.                         |
+| compile_on_save  | boolean  | false            | On `.proto` file save, compiles to `--*_out` location within `options`         |
+| compile_all_path | string   | Workspace Root   | Search Path for `Compile All Protos` action. Defaults to the Workspace Root    |
+| options          | string[] | []               | protoc compiler arguments/flags, required for proto validation and compilation |
 
 
 #### In-Line Variables
