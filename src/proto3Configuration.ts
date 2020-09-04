@@ -33,6 +33,11 @@ export class Proto3Configuration {
             this._config.get<string>('path', protoc));
     }
 
+    public getProtoSourcePath(): string {
+        return this._configResolver.resolve(
+            this._config.get<string>('compile_all_path', vscode.workspace.rootPath));
+    }
+
     public getProtocArgs(): string[] {
         return this._configResolver.resolve(
             this._config.get<string[]>('options', []));
@@ -52,7 +57,7 @@ export class Proto3Configuration {
     }
 
     public getAllProtoPaths(): string[] {
-        return this.getProtocArgFiles().concat(ProtoFinder.fromDir(vscode.workspace.rootPath));
+        return this.getProtocArgFiles().concat(ProtoFinder.fromDir(this.getProtoSourcePath()));
     }
 
     public getTmpJavaOutOption(): string {
