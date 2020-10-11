@@ -138,7 +138,7 @@
       ]
     },
     "field": {
-      "begin": "\\s*(optional|repeated|required)?\\s*\\b([\\w.]+)\\s+(\\w+)\\s*=\\s*(\\d+)",
+      "begin": "\\s*(optional|repeated|required)?\\s*\\b([\\w.]+)\\s+(\\w+)\\s*=\\s*(0[xX][0-9a-fA-F]+|[0-9]+)",
       "beginCaptures": {
         "1": {"name": "storage.modifier.proto"},
         "2": {"name": "storage.type.proto"},
@@ -188,9 +188,9 @@
         {"include": "#optionStmt"},
         {"include": "#comments"},
         {
-          "begin": "([A-Za-z][A-Za-z0-9_]*)\\s*=\\s*([0-9]*)",
+          "begin": "([A-Za-z][A-Za-z0-9_]*)\\s*=\\s*(0[xX][0-9a-fA-F]+|[0-9]+)",
           "beginCaptures": {
-            "1": {"name": "constant.other.proto"},
+            "1": {"name": "variable.other.proto"},
             "2": {"name": "constant.numeric.proto"}
           },
           "end": ";",
