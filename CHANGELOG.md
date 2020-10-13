@@ -1,5 +1,13 @@
 ## Release Notes
 
+### 0.5.0
+- Fixed some highlighting issues (issue#45 and issue#91)
+- doc(clang-format): add documentation on multiple formatting options (pr#81)
+- Update format to respect pwd so formatting files are used properly (pr#82)
+- Include instructions for fixing "spawnsync clang-format enoent" on MacOS. (pr#83)
+- Fixed issue#84 (pr#85)
+- Add configuration option for compile all action (pr#89)
+
 ### 0.4.2
 - Fixed issue#74
 
