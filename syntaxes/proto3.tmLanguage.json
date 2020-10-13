@@ -80,7 +80,7 @@
       "beginCaptures": {
         "1": {"name": "keyword.other.proto"}
       },
-      "end": ";|,",
+      "end": ";|,|(?=[}/_a-zA-Z])",
       "patterns": [
         {"include": "#constants"},
         {"include": "#number"},

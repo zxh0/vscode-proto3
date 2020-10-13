@@ -1,5 +1,8 @@
 ## Release Notes
 
+### 0.5.1
+- Fixed highlighting issues custom options.
+
 ### 0.5.0
 - Fixed some highlighting issues (issue#45 and issue#91)
 - doc(clang-format): add documentation on multiple formatting options (pr#81)
