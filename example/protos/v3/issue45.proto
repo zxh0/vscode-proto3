@@ -2,26 +2,31 @@ syntax = "proto3";
 
 package issues;
  
-import "google/api/annotations.proto";
+// import "google/api/annotations.proto";
 
 message MyRequest {}
 message MyResponse {}
 
 service MyService {
 
-  rpc AuthenticateCustom (MyRequest) returns (MyResponse) {
+  rpc m1 (MyRequest) returns (MyResponse) {
     option (my_option) = {
       field1: {
         field2: {
-          key: "BasicAuth";
-          value: {}; // this semicolon causes the problem
-        }
-      }
-    };
+          key: "key"; // comment
+          val: {};    // comment
+        };            // comment
+        field3: 456;  // comment
+      };              // comment
+      field4: 789;    // comment
+    };                // comment
   }
  
-  rpc AuthenticateDevice (MyRequest) returns (MyResponse) {
+  rpc m2 (MyRequest) returns (MyResponse) {
     // empty
   }
- 
+  rpc m3 (MyRequest) returns (MyResponse) {
+    // empty
+  }
+
  }

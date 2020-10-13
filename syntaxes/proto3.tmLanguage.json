@@ -71,15 +71,21 @@
       "begin": "\\{",
       "end": "\\}",
       "patterns": [
-        {
-          "match": "(\\w+)\\s*:",
-          "captures": {
-            "1": {"name": "variable.other.proto"}
-          }
-        },
+        {"include": "#kv"},
+        {"include": "#comments"}
+      ]
+    },
+    "kv": {
+      "begin": "(\\w+)\\s*:",
+      "beginCaptures": {
+        "1": {"name": "keyword.other.proto"}
+      },
+      "end": ";|,",
+      "patterns": [
         {"include": "#constants"},
         {"include": "#number"},
-        {"include": "#string"}
+        {"include": "#string"},
+        {"include": "#subMsgOption"}
       ]
     },
     "fieldOptions": {
@@ -167,7 +173,8 @@
     "oneof": {
       "begin": "(oneof)\\s+([A-Za-z][A-Za-z0-9_]*)\\s*\\{?",
       "beginCaptures": {
-        "1": {"name": "keyword.other.proto"}
+        "1": {"name": "keyword.other.proto"},
+        "2": {"name": "variable.other.proto"}
       },
       "end": "\\}",
       "patterns": [
