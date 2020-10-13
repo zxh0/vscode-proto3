@@ -1,6 +1,6 @@
 ## Release Notes
 
-### 0.5.1
+### 0.5.2
 - Fixed highlighting issues regarding custom options.
 
 ### 0.5.0
