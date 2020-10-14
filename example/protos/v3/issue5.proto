@@ -18,5 +18,5 @@ enum Foo {
     reserved 2, 15, 9 to 11, 40 to max;
     reserved "FOO", "BAR";
 
-    Bar = 1;
+    Bar = 0; // The first enum value must be zero in proto3
 }

@@ -19,6 +19,10 @@ message TestOptions {
   repeated int32 x = 7 [ packed = true ];
   optional int64 y = 8 [ jstype=JS_STRING ];
   optional int64 z = 9 [lazy=false];
+
+  optional string s1 = 200 [default="abc'def\"g"];
+  optional string s2 = 201 [default='abc"def\'g'];
+  optional string str_escapes = 202 [default="abc\xa1\xB2\123\a\b\f\n\r\t\v"];
 }
 
 enum TestEnum {
