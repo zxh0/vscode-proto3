@@ -182,4 +182,11 @@ class ConfigurationResolver {
     private get workspaceRoot(): string {
 		return vscode.workspace.rootPath;
     }
+    
+    private get workspaceFolder(): string {
+        let activeEditor = vscode.window.activeTextEditor;
+        let activeEditorUri = activeEditor.document.uri;
+        let activeWorkspaceFolder = vscode.workspace.getWorkspaceFolder(activeEditorUri);
+        return activeWorkspaceFolder.uri.path;
+    }
 }
