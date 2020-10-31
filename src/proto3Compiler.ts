@@ -35,8 +35,7 @@ export class Proto3Compiler {
         let editor = vscode.window.activeTextEditor;
         if (editor && editor.document.languageId == 'proto3') {
             let fileName = editor.document.fileName;
-            let proto = path.relative(vscode.workspace.rootPath, fileName);
-            let args = this._config.getProtocOptions().concat(proto);
+            let args = this._config.getProtocOptions().concat(fileName);
 
             this.runProtoc(args, undefined, (stdout, stderr) => {
                 vscode.window.showErrorMessage(stderr);
