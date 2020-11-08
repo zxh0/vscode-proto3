@@ -34,8 +34,11 @@ export class Proto3Configuration {
     }
 
     public getProtoSourcePath(): string {
+        let activeEditor = vscode.window.activeTextEditor;
+        let activeEditorUri = activeEditor.document.uri;
+        let activeWorkspaceFolder = vscode.workspace.getWorkspaceFolder(activeEditorUri);
         return this._configResolver.resolve(
-            this._config.get<string>('compile_all_path', vscode.workspace.rootPath));
+            this._config.get<string>('compile_all_path', activeWorkspaceFolder.uri.path));
     }
 
     public getProtocArgs(): string[] {
@@ -178,5 +181,12 @@ class ConfigurationResolver {
 
     private get workspaceRoot(): string {
 		return vscode.workspace.rootPath;
-	}
+    }
+    
+    private get workspaceFolder(): string {
+        let activeEditor = vscode.window.activeTextEditor;
+        let activeEditorUri = activeEditor.document.uri;
+        let activeWorkspaceFolder = vscode.workspace.getWorkspaceFolder(activeEditorUri);
+        return activeWorkspaceFolder.uri.path;
+    }
 }
