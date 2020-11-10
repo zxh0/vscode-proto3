@@ -51,7 +51,14 @@
                 "language": "proto3",
                 "scopeName": "source.proto",
                 "path": "./syntaxes/proto3.tmLanguage.json"
-            }
+            },
+			{
+				"scopeName": "markdown.codeblock.proto",
+				"path": "./syntaxes/proto3.codeblock.json",
+				"injectTo": [
+					"text.html.markdown"
+				]
+			}
         ],
         "snippets": [
             {
