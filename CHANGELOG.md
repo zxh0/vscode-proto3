@@ -1,5 +1,10 @@
 ## Release Notes
 
+### 0.5.3
+- Add syntax highlighting for markdown fenced code block (pr#95)
+- Little improvements so it works for multi folder workspace (pr#94)
+- Add assume filename flag to clang-format arguments (pr#93)
+
 ### 0.5.2
 - Fixed highlighting issues regarding custom options.
 
