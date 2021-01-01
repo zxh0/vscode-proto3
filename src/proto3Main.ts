@@ -16,23 +16,29 @@ export function activate(ctx: vscode.ExtensionContext): void {
     ctx.subscriptions.push(vscode.languages.registerCompletionItemProvider(PROTO3_MODE, new Proto3CompletionItemProvider(), '.', '\"'));
     ctx.subscriptions.push(vscode.languages.registerDefinitionProvider(PROTO3_MODE, new Proto3DefinitionProvider()));
 
-    const compiler = new Proto3Compiler();
-
-    const diagnosticProvider = new Proto3LanguageDiagnosticProvider(compiler);
     vscode.workspace.onDidSaveTextDocument(event => {
         if (event.languageId == 'proto3') {
+            const workspaceFolder = vscode.workspace.getWorkspaceFolder(event.uri);
+            const compiler = new Proto3Compiler(workspaceFolder);
+            const diagnosticProvider = new Proto3LanguageDiagnosticProvider(compiler);
             diagnosticProvider.createDiagnostics(event);
-            if (Proto3Configuration.Instance().compileOnSave()) {
+            if (Proto3Configuration.Instance(workspaceFolder).compileOnSave()) {
                 compiler.compileActiveProto();
             }
         }
     });
 
     ctx.subscriptions.push(vscode.commands.registerCommand('proto3.compile.one', () => {
+        const currentFile = vscode.window.activeTextEditor?.document;
+        const workspaceFolder = vscode.workspace.getWorkspaceFolder(currentFile.uri)
+        const compiler = new Proto3Compiler(workspaceFolder);
         compiler.compileActiveProto();
     }));
 
     ctx.subscriptions.push(vscode.commands.registerCommand('proto3.compile.all', () => {
+        const currentFile = vscode.window.activeTextEditor?.document;
+        const workspaceFolder = vscode.workspace.getWorkspaceFolder(currentFile.uri)
+        const compiler = new Proto3Compiler(workspaceFolder);
         compiler.compileAllProtos();
     }));
 
@@ -94,7 +100,7 @@ export function activate(ctx: vscode.ExtensionContext): void {
                     break;
             }
 
-            let style = vscode.workspace.getConfiguration('clang-format').get<string>('style');
+            let style = vscode.workspace.getConfiguration('clang-format', document).get<string>('style');
             style = style && style.trim();
             if (style) args.push(`-style=${style}`);
 
