@@ -16,12 +16,13 @@ export function activate(ctx: vscode.ExtensionContext): void {
     ctx.subscriptions.push(vscode.languages.registerCompletionItemProvider(PROTO3_MODE, new Proto3CompletionItemProvider(), '.', '\"'));
     ctx.subscriptions.push(vscode.languages.registerDefinitionProvider(PROTO3_MODE, new Proto3DefinitionProvider()));
 
+    const diagnosticProvider = new Proto3LanguageDiagnosticProvider();
+
     vscode.workspace.onDidSaveTextDocument(event => {
         if (event.languageId == 'proto3') {
             const workspaceFolder = vscode.workspace.getWorkspaceFolder(event.uri);
             const compiler = new Proto3Compiler(workspaceFolder);
-            const diagnosticProvider = new Proto3LanguageDiagnosticProvider(compiler);
-            diagnosticProvider.createDiagnostics(event);
+            diagnosticProvider.createDiagnostics(event, compiler);
             if (Proto3Configuration.Instance(workspaceFolder).compileOnSave()) {
                 compiler.compileActiveProto();
             }
