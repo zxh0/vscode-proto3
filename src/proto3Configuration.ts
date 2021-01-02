@@ -8,23 +8,16 @@ import os = require('os');
 export class Proto3Configuration {
 
     private readonly _configSection: string = 'protoc';
-    private static _instance: Proto3Configuration = null;
     private _config: vscode.WorkspaceConfiguration;
     private _configResolver: ConfigurationResolver;
 
-    public static Instance(): Proto3Configuration {
-        if (Proto3Configuration._instance == null) {
-            this._instance = new Proto3Configuration();
-        }
-        return Proto3Configuration._instance;
+    public static Instance(workspaceFolder?: vscode.WorkspaceFolder): Proto3Configuration {
+        return new Proto3Configuration(workspaceFolder);
     }
 
-    private constructor() {
-        this._config = vscode.workspace.getConfiguration(this._configSection);
-        vscode.workspace.onDidChangeConfiguration(event => {
-            this._config = vscode.workspace.getConfiguration(this._configSection);
-        });
-        this._configResolver = new ConfigurationResolver();
+    private constructor(workspaceFolder?: vscode.WorkspaceFolder) {
+        this._config = vscode.workspace.getConfiguration(this._configSection, workspaceFolder);
+        this._configResolver = new ConfigurationResolver(workspaceFolder);
     }
 
     public getProtocPath(protocInPath: boolean): string {
@@ -101,7 +94,7 @@ class ProtoFinder {
 // src/vs/workbench/services/configurationResolver/node/configurationResolverService.ts
 class ConfigurationResolver {
 
-    constructor(){
+    constructor(private readonly workspaceFolder?: vscode.WorkspaceFolder) {
         Object.keys(process.env).forEach(key => {
 			this[`env.${key}`] = process.env[key];
 		});
@@ -152,7 +145,7 @@ class ConfigurationResolver {
     private resolveConfigVariable(value: string, originalValue: string): string {
 		let regexp = /\$\{config\.(.+?)\}/g;
 		return value.replace(regexp, (match: string, name: string) => {
-			let config = vscode.workspace.getConfiguration();
+			let config = vscode.workspace.getConfiguration(undefined, this.workspaceFolder);
 			let newValue: any;
 			try {
 				const keys: string[] = name.split('.');
@@ -181,12 +174,5 @@ class ConfigurationResolver {
 
     private get workspaceRoot(): string {
 		return vscode.workspace.rootPath;
-    }
-    
-    private get workspaceFolder(): string {
-        let activeEditor = vscode.window.activeTextEditor;
-        let activeEditorUri = activeEditor.document.uri;
-        let activeWorkspaceFolder = vscode.workspace.getWorkspaceFolder(activeEditorUri);
-        return activeWorkspaceFolder.uri.path;
     }
 }

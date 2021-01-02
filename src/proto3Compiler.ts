@@ -11,8 +11,8 @@ export class Proto3Compiler {
     private _config: Proto3Configuration;
     private _isProtocInPath: boolean;
 
-    constructor() {
-        this._config = Proto3Configuration.Instance();
+    constructor(workspaceFolder?: vscode.WorkspaceFolder) {
+        this._config = Proto3Configuration.Instance(workspaceFolder);
         try {
             cp.execFileSync("protoc", ["-h"]);
             this._isProtocInPath = true;
