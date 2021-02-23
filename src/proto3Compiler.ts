@@ -7,7 +7,7 @@ import cp = require('child_process');
 import { Proto3Configuration } from './proto3Configuration';
 
 export class Proto3Compiler {
- 
+
     private _config: Proto3Configuration;
     private _isProtocInPath: boolean;
 
@@ -46,8 +46,7 @@ export class Proto3Compiler {
     public compileProtoToTmp(fileName: string, callback?: (stderr: string) =>void) {
         let proto = path.relative(vscode.workspace.rootPath, fileName);
 
-        let args = this._config.getProtoPathOptions()
-                .concat(this._config.getTmpJavaOutOption(), proto);
+        let args = this._config.getProtoPathOptions().concat(proto);
 
         this.runProtoc(args, undefined, (stdout, stderr) => {
             if (callback) {
@@ -61,7 +60,7 @@ export class Proto3Compiler {
         if (protocPath == "?") {
             return // protoc is not configured
         }
-        
+
         if( !opts ) {
             opts = {};
         }
@@ -77,6 +76,6 @@ export class Proto3Compiler {
             if (callback) {
                 callback(stdout, stderr);
             }
-        });       
+        });
     }
 }
