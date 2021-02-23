@@ -56,10 +56,6 @@ export class Proto3Configuration {
         return this.getProtocArgFiles().concat(ProtoFinder.fromDir(this.getProtoSourcePath()));
     }
 
-    public getTmpJavaOutOption(): string {
-        return '--java_out=' + os.tmpdir();
-    }
-
     public compileOnSave(): boolean {
         return this._config.get<boolean>('compile_on_save', false);
     }
@@ -70,7 +66,7 @@ class ProtoFinder {
     static fromDir(root: string): string[] {
         let search = function(dir: string): string[] {
             let files = fs.readdirSync(dir);
-            
+
             let protos = files.filter(file => file.endsWith('.proto'))
                           .map(file => path.join(path.relative(root, dir), file));
 
@@ -89,7 +85,7 @@ class ProtoFinder {
 // Workaround to substitute variable keywords in the configuration value until
 // workbench/services/configurationResolver is available on Extention API.
 //
-// 
+//
 // Some codes are copied from:
 // src/vs/workbench/services/configurationResolver/node/configurationResolverService.ts
 class ConfigurationResolver {
@@ -122,7 +118,7 @@ class ConfigurationResolver {
 
         return false;
     }
-	
+
     private resolveArray(value: string[]): string[] {
 		return value.map(s => this.resolveString(s));
 	}
@@ -141,7 +137,7 @@ class ConfigurationResolver {
 
 		return this.resolveConfigVariable(resolvedString, originalValue);
 	}
-    
+
     private resolveConfigVariable(value: string, originalValue: string): string {
 		let regexp = /\$\{config\.(.+?)\}/g;
 		return value.replace(regexp, (match: string, name: string) => {
