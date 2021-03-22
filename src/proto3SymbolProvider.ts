@@ -40,7 +40,7 @@ export class Proto3DocumentSymbolProvider implements DocumentSymbolProvider {
             continue;
           }
 
-          if (/^[a-zA-Z_]+\w*/.test(tok)) {
+          if (!/^[a-zA-Z_]+\w*/.test(tok)) {
             // identifier expected but found other token
             this.state = "free";
             continue;
