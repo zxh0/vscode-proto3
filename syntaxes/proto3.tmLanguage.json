@@ -108,7 +108,7 @@
       }
     },
     "message": {
-      "begin": "(message|extend)(\\s+)([A-Za-z][A-Za-z0-9_.]*)(\\s*)(\\{)?",
+      "begin": "(message|extend)(\\s+)([A-Za-z_][A-Za-z0-9_.]*)(\\s*)(\\{)?",
       "beginCaptures": {
         "1": {"name": "keyword.other.proto"},
         "3": {"name": "entity.name.class.message.proto"}
