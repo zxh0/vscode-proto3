@@ -40,6 +40,12 @@ export class Proto3DocumentSymbolProvider implements DocumentSymbolProvider {
             continue;
           }
 
+          if (/^[a-zA-Z_]+\w*/.test(tok)) {
+            // identifier expected but found other token
+            this.state = "free";
+            continue;
+          }
+
           const location = new Location(doc.uri, new Position(tokenizer.line - 1, 0));
           const kind = this.state === "message" ? SymbolKind.Class : SymbolKind.Method;
           ret.push(new SymbolInformation(tok, kind, "", location));
