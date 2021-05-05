@@ -56,6 +56,10 @@ export class Proto3Configuration {
         return this.getProtocArgFiles().concat(ProtoFinder.fromDir(this.getProtoSourcePath()));
     }
 
+    public getTmpJavaOutOption(): string {
+        return '--java_out=' + os.tmpdir();
+    }
+
     public compileOnSave(): boolean {
         return this._config.get<boolean>('compile_on_save', false);
     }

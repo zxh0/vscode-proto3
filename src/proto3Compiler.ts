@@ -46,7 +46,8 @@ export class Proto3Compiler {
     public compileProtoToTmp(fileName: string, callback?: (stderr: string) =>void) {
         let proto = path.relative(vscode.workspace.rootPath, fileName);
 
-        let args = this._config.getProtoPathOptions().concat(proto);
+        let args = this._config.getProtoPathOptions()
+                .concat(this._config.getTmpJavaOutOption(), proto);
 
         this.runProtoc(args, undefined, (stdout, stderr) => {
             if (callback) {
