@@ -1,5 +1,11 @@
 ## Release Notes
 
+### 0.5.4
+- Fix snippets tabstop (pr#109)
+- Add underscore as legal first char of message names (pr#105)
+- Add basic symbol provider for message/rpc (pr#104)
+- Make extension mutli-root aware (pr#99)
+
 ### 0.5.3
 - Add syntax highlighting for markdown fenced code block (pr#95)
 - Little improvements so it works for multi folder workspace (pr#94)
