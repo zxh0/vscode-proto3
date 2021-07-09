@@ -53,7 +53,9 @@ export class Proto3Configuration {
     }
 
     public getAllProtoPaths(): string[] {
-        return this.getProtocArgFiles().concat(ProtoFinder.fromDir(this.getProtoSourcePath()));
+        return this.useAbsolutePath() ?
+            ProtoFinder.fromDirAbsolute(this.getProtoSourcePath()) :
+            this.getProtocArgFiles().concat(ProtoFinder.fromDir(this.getProtoSourcePath()));
     }
 
     public getTmpJavaOutOption(): string {
@@ -64,6 +66,9 @@ export class Proto3Configuration {
         return this._config.get<boolean>('compile_on_save', false);
     }
 
+    public useAbsolutePath(): boolean {
+        return this._config.get<boolean>('use_absolute_path', false);
+    }
 }
 
 class ProtoFinder {
@@ -83,6 +88,20 @@ class ProtoFinder {
             return protos;
         }
         return search(root);
+    }
+
+    static fromDirAbsolute(root: string): string[] {
+        let files : string[] = [];
+        const getFilesRecursively = (directory) => {
+            const filesInDirectory = fs.readdirSync(directory);
+            for (const file of filesInDirectory) {
+                const absolute = path.join(directory, file);
+                if (fs.statSync(absolute).isDirectory()) getFilesRecursively(absolute);
+                else files.push(absolute);
+            }
+        };
+        getFilesRecursively(root);
+        return files;
     }
 }
 
