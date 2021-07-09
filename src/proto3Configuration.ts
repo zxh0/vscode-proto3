@@ -72,7 +72,7 @@ class ProtoFinder {
             let files = fs.readdirSync(dir);
 
             let protos = files.filter(file => file.endsWith('.proto'))
-                          .map(file => path.join(path.relative(root, dir), file));
+                          .map(file => path.posix.join(path.relative(root, dir), file));
 
             files.map(file => path.join(dir, file))
                 .filter(file => fs.statSync(file).isDirectory())
