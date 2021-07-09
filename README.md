@@ -68,6 +68,7 @@ The possible fields under the `protoc` extension settings which can be defined i
 | path             | string   | _protoc in PATH_ | Path to protoc. Defaults to protoc in PATH if omitted.                         |
 | compile_on_save  | boolean  | false            | On `.proto` file save, compiles to `--*_out` location within `options`         |
 | compile_all_path | string   | Workspace Root   | Search Path for `Compile All Protos` action. Defaults to the Workspace Root    |
+| use_absolute_path| boolean  | false            | Set `true` for `compile_all_path` search files using absolute path             |
 | options          | string[] | []               | protoc compiler arguments/flags, required for proto validation and compilation |
 
 
