@@ -14,18 +14,13 @@ import { tokenize } from "protobufjs";
 type ProvideSymbolsResult = ProviderResult<SymbolInformation[] | DocumentSymbol[]>;
 
 export class Proto3DocumentSymbolProvider implements DocumentSymbolProvider {
-  constructor(private state: "free" | "rpc" | "message" = "free") {}
+  constructor(private state: "free" | "rpc" | "message" | 'service' = "free") { }
 
   provideDocumentSymbols(doc: TextDocument, token: CancellationToken): ProvideSymbolsResult {
     const ret: SymbolInformation[] = [];
 
     const tokenizer = tokenize(doc.getText(), false);
-    for (;;) {
-      const tok = tokenizer.next();
-      if (tok === null) {
-        break;
-      }
-
+    for (let tok = tokenizer.next(); tok !== null; tok = tokenizer.next()) {
       switch (tok) {
         case "message":
           this.state = "message";
@@ -33,6 +28,10 @@ export class Proto3DocumentSymbolProvider implements DocumentSymbolProvider {
 
         case "rpc":
           this.state = "rpc";
+          break;
+
+        case 'service':
+          this.state = 'service';
           break;
 
         default:
@@ -47,7 +46,18 @@ export class Proto3DocumentSymbolProvider implements DocumentSymbolProvider {
           }
 
           const location = new Location(doc.uri, new Position(tokenizer.line - 1, 0));
-          const kind = this.state === "message" ? SymbolKind.Class : SymbolKind.Method;
+          let kind = SymbolKind.Struct;
+          switch (this.state) {
+            case 'message':
+              kind = SymbolKind.Struct;
+              break;
+            case 'rpc':
+              kind = SymbolKind.Method;
+              break
+            case 'service':
+              kind = SymbolKind.Class;
+              break;
+          }
           ret.push(new SymbolInformation(tok, kind, "", location));
           this.state = "free";
           break;
