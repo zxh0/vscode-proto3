@@ -1,5 +1,6 @@
 'use strict';
 
+import { tokenize } from 'protobufjs';
 import vscode = require('vscode');
 import { guessScope, Proto3ScopeKind } from './proto3ScopeGuesser';
 
@@ -265,14 +266,32 @@ function createCompletionOption(option: string, doc: string): vscode.CompletionI
     return item
 }
 
+// not very efficiently.
+function findMessages(document: vscode.TextDocument): vscode.CompletionItem[] {
+    const result: vscode.CompletionItem[] = [];
+    const tokenizer = tokenize(document.getText(), false)
+    for (let tok = tokenizer.next(); tok !== null; tok = tokenizer.next()) {
+        if (tok === 'message') {
+            // find identifiers after `message` keyword
+            const identifier = tokenizer.peek();
+            if (identifier !== null && /^[a-zA-Z_]+\w*$/.test(identifier)) {
+                const item = new vscode.CompletionItem(identifier, vscode.CompletionItemKind.Struct);
+                // should extract message declaration and comments here
+                result.push(item);
+            }
+        }
+    }
+
+    return result
+}
 
 export class Proto3CompletionItemProvider implements vscode.CompletionItemProvider {
 
     public provideCompletionItems(document: vscode.TextDocument,
-                                  position: vscode.Position,
-                                  token: vscode.CancellationToken)
-            : Thenable<vscode.CompletionItem[]> {
-        
+        position: vscode.Position,
+        token: vscode.CancellationToken)
+        : Thenable<vscode.CompletionItem[]> {
+
         return new Promise<vscode.CompletionItem[]>((resolve, reject) => {
             let filename = document.fileName;
             let lineText = document.lineAt(position.line).text;
@@ -318,9 +337,9 @@ export class Proto3CompletionItemProvider implements vscode.CompletionItemProvid
                         } else {
                             suggestions.push(fieldRules[0]);
                         }
-                        suggestions.push(...scalaTypes);
+                        suggestions.push(...scalaTypes, ...findMessages(document));
                     } else if (textBeforeCursor.match(/(repeated|required|optional)\s*\w*$/)) {
-                        suggestions.push(...scalaTypes);
+                        suggestions.push(...scalaTypes, ...findMessages(document));
                     } else if (textBeforeCursor.match(/^\s*option\s+\w*$/)) {
                         suggestions.push(...msgOptions);
                     } else if (textBeforeCursor.match(/.*\[.*/)) {
