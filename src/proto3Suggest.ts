@@ -391,8 +391,6 @@ export class Proto3CompletionItemProvider implements vscode.CompletionItemProvid
       const suggestions: vscode.CompletionItem[] = [];
       const scope = SyntacticGuessScope(document, position);
 
-      console.log(scope);
-
       if (scope === null) {
         suggestions.push(kwSyntax);
         suggestions.push(kwPackage);
