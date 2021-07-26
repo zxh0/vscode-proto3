@@ -356,22 +356,34 @@ function createCompletionOption(option: string, doc: string): vscode.CompletionI
 }
 
 // not very efficiently.
-function findMessages(document: vscode.TextDocument): vscode.CompletionItem[] {
-  const result: vscode.CompletionItem[] = [];
+function findMessageEnum(document: vscode.TextDocument): Record<"message" | "enum", vscode.CompletionItem[]> {
+  const msgCompletionItems: vscode.CompletionItem[] = [];
+  const enumCompletionItems: vscode.CompletionItem[] = [];
+
   const tokenizer = tokenize(document.getText(), false);
   for (let tok = tokenizer.next(); tok !== null; tok = tokenizer.next()) {
-    if (tok === "message") {
+    if (tok === "message" || tok === "enum") {
       // find identifiers after `message` keyword
       const identifier = tokenizer.peek();
       if (identifier !== null && /^[a-zA-Z_]+\w*$/.test(identifier)) {
-        const item = new vscode.CompletionItem(identifier, vscode.CompletionItemKind.Struct);
-        // should extract message declaration and comments here
-        result.push(item);
+        if (tok === "message") {
+          const item = new vscode.CompletionItem(identifier, vscode.CompletionItemKind.Struct);
+          item.detail = "message " + identifier;
+          // should extract message declaration and comments here
+          msgCompletionItems.push(item);
+        } else {
+          const item = new vscode.CompletionItem(identifier, vscode.CompletionItemKind.Enum);
+          item.detail = "enum " + identifier;
+          enumCompletionItems.push(item);
+        }
       }
     }
   }
 
-  return result;
+  return {
+    message: msgCompletionItems,
+    enum: enumCompletionItems,
+  };
 }
 
 export class Proto3CompletionItemProvider implements vscode.CompletionItemProvider {
@@ -407,7 +419,8 @@ export class Proto3CompletionItemProvider implements vscode.CompletionItemProvid
       switch (scope.name) {
         case "message":
           if (textBeforeCursor.match(/(repeated|required|optional)\s*\w*$/)) {
-            suggestions.push(...scalarTypes, ...findMessages(document));
+            const result = findMessageEnum(document);
+            suggestions.push(...scalarTypes, ...result.enum, ...result.message);
             return resolve(suggestions);
           } else if (textBeforeCursor.match(/^\s*option\s+\w*$/)) {
             suggestions.push(...msgOptions);
@@ -429,7 +442,8 @@ export class Proto3CompletionItemProvider implements vscode.CompletionItemProvid
           } else {
             suggestions.push(fieldRules[0]);
           }
-          suggestions.push(...scalarTypes, ...findMessages(document));
+          const result = findMessageEnum(document);
+          suggestions.push(...scalarTypes, ...result.enum, ...result.message);
           break;
         case "enum":
           if (textBeforeCursor.match(/^\s*option\s+\w*$/)) {
@@ -447,7 +461,7 @@ export class Proto3CompletionItemProvider implements vscode.CompletionItemProvid
           break;
         case "rpc":
         case "returns":
-          suggestions.push(...scalarTypes, ...findMessages(document));
+          suggestions.push(...scalarTypes, ...findMessageEnum(document).message);
           break;
         default:
           break;
