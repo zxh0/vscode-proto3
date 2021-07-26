@@ -408,13 +408,16 @@ export class Proto3CompletionItemProvider implements vscode.CompletionItemProvid
         case "message":
           if (textBeforeCursor.match(/(repeated|required|optional)\s*\w*$/)) {
             suggestions.push(...scalarTypes, ...findMessages(document));
+            return resolve(suggestions);
           } else if (textBeforeCursor.match(/^\s*option\s+\w*$/)) {
             suggestions.push(...msgOptions);
+            return resolve(suggestions);
           } else if (textBeforeCursor.match(/.*\[.*/)) {
             suggestions.push(...fieldOptions);
             if (syntax == 2) {
               suggestions.push(fieldDefault);
             }
+            return resolve(suggestions);
           }
 
           suggestions.push(kwOption);
