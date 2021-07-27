@@ -419,7 +419,7 @@ export class Proto3CompletionItemProvider implements vscode.CompletionItemProvid
 
       switch (scope.name) {
         case "service":
-          if (textBeforeCursor.match(/^\s*option\s+\(?\w*$/)) {
+          if (textBeforeCursor.match(/^\s*option(\s*\(?|\s)\s*\w*$/)) {
             suggestions.push(...serviceOptions);
           } else {
             suggestions.push(kwRpc);
@@ -431,7 +431,7 @@ export class Proto3CompletionItemProvider implements vscode.CompletionItemProvid
             const result = findMessageEnum(document);
             suggestions.push(...scalarTypes, ...result.enum, ...result.message);
             return resolve(suggestions);
-          } else if (textBeforeCursor.match(/^\s*option\s+\w*$/)) {
+          } else if (textBeforeCursor.match(/^\s*option(\s*\(?|\s)\s*\w*$/)) {
             suggestions.push(...msgOptions);
             return resolve(suggestions);
           } else if (textBeforeCursor.match(/.*\[.*/)) {
@@ -455,14 +455,14 @@ export class Proto3CompletionItemProvider implements vscode.CompletionItemProvid
           suggestions.push(...scalarTypes, ...result.enum, ...result.message);
           break;
         case "enum":
-          if (textBeforeCursor.match(/^\s*option\s+\w*$/)) {
+          if (textBeforeCursor.match(/^\s*option(\s*\(?|\s)\s*\w*$/)) {
             suggestions.push(...enumOptions);
           } else {
             suggestions.push(kwOption);
           }
           break;
         case "rpcbody":
-          if (textBeforeCursor.match(/^\s*option\s+\w*$/)) {
+          if (textBeforeCursor.match(/^\s*option(\s*\(?|\s)\s*\w*$/)) {
             suggestions.push(...serviceOptions);
           } else {
             suggestions.push(kwOption);
