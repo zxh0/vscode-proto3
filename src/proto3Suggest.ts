@@ -11,6 +11,7 @@ let kwImport = createCompletionKeyword("import");
 let kwMessage = createCompletionKeyword("message");
 let kwEnum = createCompletionKeyword("enum");
 let kwReserved = createCompletionKeyword("reserved");
+let kwRpc = createCompletionKeyword("rpc");
 
 let fileOptions = [
   createCompletionOption(
@@ -417,6 +418,14 @@ export class Proto3CompletionItemProvider implements vscode.CompletionItemProvid
       }
 
       switch (scope.name) {
+        case "service":
+          if (textBeforeCursor.match(/^\s*option\s+\(?\w*$/)) {
+            suggestions.push(...serviceOptions);
+          } else {
+            suggestions.push(kwRpc);
+            suggestions.push(kwOption);
+          }
+          break;
         case "message":
           if (textBeforeCursor.match(/(repeated|required|optional)\s*\w*$/)) {
             const result = findMessageEnum(document);
