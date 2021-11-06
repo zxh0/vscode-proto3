@@ -1,5 +1,9 @@
 ## Release Notes
 
+### 0.5.5
+- improve code completion experience, support go to service symbol in editor (pr#113, pr#115)
+- fix issue #101 and #102 (pr#111)
+
 ### 0.5.4
 - Fix snippets tabstop (pr#109)
 - Add underscore as legal first char of message names (pr#105)
