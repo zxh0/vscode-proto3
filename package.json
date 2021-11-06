@@ -112,7 +112,7 @@
     "typescript": "^4.1.3"
   },
   "dependencies": {
-    "fast-glob": "^2.2.7",
+    "fast-glob": "^3.2.7",
     "npm": "^6.14.6",
     "protobufjs": "^6.10.2"
   }

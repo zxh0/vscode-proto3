@@ -62,7 +62,7 @@ export class Proto3DefinitionProvider implements vscode.DefinitionProvider {
 
         const files = [
             document.uri.fsPath,
-            ...(await fg.async(searchPaths))
+            ...(await fg(searchPaths))
         ];
 
         for (const file of files) {
@@ -81,7 +81,7 @@ export class Proto3DefinitionProvider implements vscode.DefinitionProvider {
     }
 
     private async findImportDefinition(importFileName: string): Promise<vscode.Location> {
-        const files = await fg.async(path.join(vscode.workspace.rootPath, '**', importFileName));
+        const files = await fg(path.join(vscode.workspace.rootPath, '**', importFileName));
         const importPath = files[0].toString();
         // const data = fs.readFileSync(importPath);
         // const lines = data.toString().split('\n');
