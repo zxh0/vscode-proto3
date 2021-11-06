@@ -44,7 +44,7 @@ export class Proto3Configuration {
     }
 
     public getProtocOptions(): string[] {
-        return this.getProtocArgs().filter(arg => arg.startsWith('-'));
+        return this.getProtocArgs();
     }
 
     public getProtoPathOptions(): string[] {
