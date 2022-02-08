@@ -176,10 +176,10 @@
       "begin": "\\s*(map)\\s*(<)\\s*([\\w.]+)\\s*,\\s*([\\w.]+)\\s*(>)\\s+(\\w+)\\s*=\\s*(\\d+)",
       "beginCaptures": {
         "1": {"name": "storage.type.proto"},
-        "2": {"name": "punctuation.definition.typeparameters.proto"},
+        "2": {"name": "punctuation.definition.typeparameters.begin.proto"},
         "3": {"name": "storage.type.proto"},
         "4": {"name": "storage.type.proto"},
-        "5": {"name": "punctuation.definition.typeparameters.proto"},
+        "5": {"name": "punctuation.definition.typeparameters.end.proto"},
         "6": {"name": "variable.other.proto"},
         "7": {"name": "constant.numeric.proto"}
       },
