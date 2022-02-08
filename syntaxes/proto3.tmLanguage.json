@@ -82,9 +82,10 @@
       ]
     },
     "kv": {
-      "begin": "(\\w+)\\s*:",
+      "begin": "(\\w+)\\s*(:)",
       "beginCaptures": {
-        "1": {"name": "keyword.other.proto"}
+        "1": {"name": "keyword.other.proto"},
+        "2": {"name": "punctuation.separator.key-value.proto"}
       },
       "end": "(;)|,|(?=[}/_a-zA-Z])",
       "endCaptures": {
