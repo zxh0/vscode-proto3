@@ -172,13 +172,15 @@
       ]
     },
     "mapfield": {
-      "begin": "\\s*(map)\\s*<\\s*([\\w.]+)\\s*,\\s*([\\w.]+)\\s*>\\s+(\\w+)\\s*=\\s*(\\d+)",
+      "begin": "\\s*(map)\\s*(<)\\s*([\\w.]+)\\s*,\\s*([\\w.]+)\\s*(>)\\s+(\\w+)\\s*=\\s*(\\d+)",
       "beginCaptures": {
         "1": {"name": "storage.type.proto"},
-        "2": {"name": "storage.type.proto"},
+        "2": {"name": "punctuation.definition.typeparameters.proto"},
         "3": {"name": "storage.type.proto"},
-        "4": {"name": "variable.other.proto"},
-        "5": {"name": "constant.numeric.proto"}
+        "4": {"name": "storage.type.proto"},
+        "5": {"name": "punctuation.definition.typeparameters.proto"},
+        "6": {"name": "variable.other.proto"},
+        "7": {"name": "constant.numeric.proto"}
       },
       "end": "(;)",
       "endCaptures": {
