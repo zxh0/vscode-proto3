@@ -30,11 +30,12 @@
       ]
     },
     "syntax": {
-      "match": "\\s*(syntax)\\s*=\\s*(\"proto[23]\")\\s*(;)",
+      "match": "\\s*(syntax)\\s*(=)\\s*(\"proto[23]\")\\s*(;)",
       "captures": {
         "1": {"name": "keyword.other.proto"},
-        "2": {"name": "string.quoted.double.proto.syntax"},
-        "3": {"name": "punctuation.terminator.proto"}
+        "2": {"name": "keyword.operator.assignment.proto"},
+        "3": {"name": "string.quoted.double.proto.syntax"},
+        "4": {"name": "punctuation.terminator.proto"}
       }
     },
     "package": {
@@ -55,12 +56,13 @@
       }
     },
     "optionStmt": {
-      "begin": "(option)\\s+(\\w+|\\(\\w+(\\.\\w+)*\\))(\\.\\w+)*\\s*=",
+      "begin": "(option)\\s+(\\w+|\\(\\w+(\\.\\w+)*\\))(\\.\\w+)*\\s*(=)",
       "beginCaptures": {
         "1": {"name": "keyword.other.proto"},
         "2": {"name": "support.other.proto"},
         "3": {"name": "support.other.proto"},
-        "4": {"name": "support.other.proto"}
+        "4": {"name": "support.other.proto"},
+        "5": {"name": "keyword.operator.assignment.proto"}
       },
       "end": "(;)",
       "endCaptures": {
@@ -157,12 +159,13 @@
       ]
     },
     "field": {
-      "begin": "\\s*(optional|repeated|required)?\\s*\\b([\\w.]+)\\s+(\\w+)\\s*=\\s*(0[xX][0-9a-fA-F]+|[0-9]+)",
+      "begin": "\\s*(optional|repeated|required)?\\s*\\b([\\w.]+)\\s+(\\w+)\\s*(=)\\s*(0[xX][0-9a-fA-F]+|[0-9]+)",
       "beginCaptures": {
         "1": {"name": "storage.modifier.proto"},
         "2": {"name": "storage.type.proto"},
         "3": {"name": "variable.other.proto"},
-        "4": {"name": "constant.numeric.proto"}
+        "4": {"name": "keyword.operator.assignment.proto"},
+        "5": {"name": "constant.numeric.proto"}
       },
       "end": "(;)",
       "endCaptures": {
@@ -173,7 +176,7 @@
       ]
     },
     "mapfield": {
-      "begin": "\\s*(map)\\s*(<)\\s*([\\w.]+)\\s*,\\s*([\\w.]+)\\s*(>)\\s+(\\w+)\\s*=\\s*(\\d+)",
+      "begin": "\\s*(map)\\s*(<)\\s*([\\w.]+)\\s*,\\s*([\\w.]+)\\s*(>)\\s+(\\w+)\\s*(=)\\s*(\\d+)",
       "beginCaptures": {
         "1": {"name": "storage.type.proto"},
         "2": {"name": "punctuation.definition.typeparameters.begin.proto"},
@@ -181,7 +184,8 @@
         "4": {"name": "storage.type.proto"},
         "5": {"name": "punctuation.definition.typeparameters.end.proto"},
         "6": {"name": "variable.other.proto"},
-        "7": {"name": "constant.numeric.proto"}
+        "7": {"name": "keyword.operator.assignment.proto"},
+        "8": {"name": "constant.numeric.proto"}
       },
       "end": "(;)",
       "endCaptures": {
@@ -216,10 +220,11 @@
         {"include": "#optionStmt"},
         {"include": "#comments"},
         {
-          "begin": "([A-Za-z][A-Za-z0-9_]*)\\s*=\\s*(0[xX][0-9a-fA-F]+|[0-9]+)",
+          "begin": "([A-Za-z][A-Za-z0-9_]*)\\s*(=)\\s*(0[xX][0-9a-fA-F]+|[0-9]+)",
           "beginCaptures": {
             "1": {"name": "variable.other.proto"},
-            "2": {"name": "constant.numeric.proto"}
+            "2": {"name": "keyword.operator.assignment.proto"},
+            "3": {"name": "constant.numeric.proto"}
           },
           "end": "(;)",
           "endCaptures": {
