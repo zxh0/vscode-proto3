@@ -30,25 +30,28 @@
       ]
     },
     "syntax": {
-      "match": "\\s*(syntax)\\s*=\\s*(\"proto[23]\")\\s*;",
+      "match": "\\s*(syntax)\\s*=\\s*(\"proto[23]\")\\s*(;)",
       "captures": {
         "1": {"name": "keyword.other.proto"},
-        "2": {"name": "string.quoted.double.proto.syntax"}
+        "2": {"name": "string.quoted.double.proto.syntax"},
+        "3": {"name": "punctuation.terminator.proto"}
       }
     },
     "package": {
-      "match": "\\s*(package)\\s+([\\w.]+)\\s*;",
+      "match": "\\s*(package)\\s+([\\w.]+)\\s*(;)",
       "captures": {
         "1": {"name": "keyword.other.proto"},
-        "2": {"name": "string.unquoted.proto.package"}
+        "2": {"name": "string.unquoted.proto.package"},
+        "3": {"name": "punctuation.terminator.proto"}
       }
     },
     "import": {
-      "match": "\\s*(import)\\s+(weak|public)?\\s*(\"[^\"]+\")\\s*;",
+      "match": "\\s*(import)\\s+(weak|public)?\\s*(\"[^\"]+\")\\s*(;)",
       "captures": {
         "1": {"name": "keyword.other.proto"},
         "2": {"name": "keyword.other.proto"},
-        "3": {"name": "string.quoted.double.proto.import"}
+        "3": {"name": "string.quoted.double.proto.import"},
+        "4": {"name": "punctuation.terminator.proto"}
       }
     },
     "optionStmt": {
@@ -59,7 +62,10 @@
         "3": {"name": "support.other.proto"},
         "4": {"name": "support.other.proto"}
       },
-      "end": ";",
+      "end": "(;)",
+      "endCaptures": {
+        "1": {"name": "punctuation.terminator.proto"}
+      },
       "patterns": [
         {"include": "#constants"},
         {"include": "#number"},
@@ -80,7 +86,10 @@
       "beginCaptures": {
         "1": {"name": "keyword.other.proto"}
       },
-      "end": ";|,|(?=[}/_a-zA-Z])",
+      "end": "(;)|,|(?=[}/_a-zA-Z])",
+      "endCaptures": {
+        "1": {"name": "punctuation.terminator.proto"}
+      },
       "patterns": [
         {"include": "#constants"},
         {"include": "#number"},
@@ -130,7 +139,10 @@
       "beginCaptures": {
         "1": {"name": "keyword.other.proto"}
       },
-      "end": ";",
+      "end": "(;)",
+      "endCaptures": {
+        "1": {"name": "punctuation.terminator.proto"}
+      },
       "patterns": [
         {
           "match": "(\\d+)(\\s+(to)\\s+(\\d+))?",
@@ -151,7 +163,10 @@
         "3": {"name": "variable.other.proto"},
         "4": {"name": "constant.numeric.proto"}
       },
-      "end": ";",
+      "end": "(;)",
+      "endCaptures": {
+        "1": {"name": "punctuation.terminator.proto"}
+      },
       "patterns": [
         {"include": "#fieldOptions"}
       ]
@@ -165,7 +180,10 @@
         "4": {"name": "variable.other.proto"},
         "5": {"name": "constant.numeric.proto"}
       },
-      "end": ";",
+      "end": "(;)",
+      "endCaptures": {
+        "1": {"name": "punctuation.terminator.proto"}
+      },
       "patterns": [
         {"include": "#fieldOptions"}
       ]
@@ -200,7 +218,10 @@
             "1": {"name": "variable.other.proto"},
             "2": {"name": "constant.numeric.proto"}
           },
-          "end": ";",
+          "end": "(;)",
+          "endCaptures": {
+            "1": {"name": "punctuation.terminator.proto"}
+          },
           "patterns": [
             {"include": "#fieldOptions"}
           ]
@@ -226,7 +247,10 @@
         "1": {"name": "keyword.other.proto"},
         "2": {"name": "entity.name.function"}
       },
-      "end": "\\}|;",
+      "end": "\\}|(;)",
+      "endCaptures": {
+        "1": {"name": "punctuation.terminator.proto"}
+      },
       "patterns": [
         {"include": "#comments"},
         {"include": "#optionStmt"},
