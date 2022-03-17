@@ -30,6 +30,26 @@
       "description": "option java_outer_classname",
       "body": "option java_outer_classname = \"${1:ClassName}\";"
     },
+    "option java_multiple_files": {
+      "prefix": "ojmf",
+      "description": "option java_multiple_files",
+      "body": "option java_multiple_files = ${1:true};"
+    },
+    "option golang_package": {
+      "prefix": "ogp",
+      "description": "option go_package",
+      "body": "option go_package = \"${1}\";"
+    },
+    "option cc_enable_arenas": {
+      "prefix": "ocea",
+      "description": "option cc_enable_arenas",
+      "body": "option cc_enable_arenas = ${1:true};"
+    },
+    "option objc_class_prefix": {
+      "prefix": "oocp",
+      "description": "option objc_class_prefix",
+      "body": "option objc_class_prefix = \"${1}\";"
+    },
     "option optimize_for SPEED": {
       "prefix": "o4s",
       "description": "option optimize_for SPEED",
