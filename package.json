@@ -114,6 +114,6 @@
   "dependencies": {
     "fast-glob": "^3.2.7",
     "npm": "^6.14.6",
-    "protobufjs": "^6.10.2"
+    "protobufjs": "^6.11.3"
   }
 }
