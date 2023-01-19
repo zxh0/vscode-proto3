@@ -7,9 +7,15 @@ import fg = require('fast-glob');
 import { guessScope, Proto3ScopeKind } from './proto3ScopeGuesser';
 import { Proto3Import } from './proto3Import';
 import { Proto3Primitive } from './proto3Primitive';
+import { Proto3Configuration } from './proto3Configuration';
 
 
 export class Proto3DefinitionProvider implements vscode.DefinitionProvider {
+    private _config: Proto3Configuration;
+
+    constructor(workspaceFolder?: vscode.WorkspaceFolder) {
+        this._config = Proto3Configuration.Instance(workspaceFolder);
+    }
 
     public async provideDefinition(document: vscode.TextDocument, position: vscode.Position, token: vscode.CancellationToken): Promise<vscode.Definition> {
 
@@ -58,7 +64,7 @@ export class Proto3DefinitionProvider implements vscode.DefinitionProvider {
 
     private async findEnumOrMessageDefinition(document: vscode.TextDocument, target: string): Promise<vscode.Location> {
 
-        const searchPaths = Proto3Import.getImportedFilePathsOnDocument(document);
+        const searchPaths = Proto3Import.getImportedFilePathsOnDocument(document, this._config.getProtoSrcsDir());
 
         const files = [
             document.uri.fsPath,
@@ -81,7 +87,7 @@ export class Proto3DefinitionProvider implements vscode.DefinitionProvider {
     }
 
     private async findImportDefinition(importFileName: string): Promise<vscode.Location> {
-        const files = await fg(path.join(vscode.workspace.rootPath, '**', importFileName));
+        const files = await fg(path.join(vscode.workspace.rootPath, this._config.getProtoSrcsDir(), '**', importFileName));
         const importPath = files[0].toString();
         // const data = fs.readFileSync(importPath);
         // const lines = data.toString().split('\n');

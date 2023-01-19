@@ -7,13 +7,13 @@ export module Proto3Import {
 
     export const importStatementRegex = new RegExp(/^\s*import\s+('|")(.+\.proto)('|")\s*;\s*$/gim);
 
-    export const getImportedFilePathsOnDocument = (document: vscode.TextDocument) => {
+    export const getImportedFilePathsOnDocument = (document: vscode.TextDocument, protoSrcsDir: string) => {
         const fullDocument = document.getText();
         let importStatement: RegExpExecArray;
         let importPaths = [];
         while (importStatement = importStatementRegex.exec(fullDocument)) {
             const protoFileName = importStatement[2];
-            const searchPath = path.join(vscode.workspace.rootPath, '**', protoFileName);
+            const searchPath = path.join(vscode.workspace.rootPath, protoSrcsDir, '**', protoFileName);
             importPaths.push(searchPath);
         }
         return importPaths;

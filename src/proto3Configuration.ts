@@ -34,6 +34,11 @@ export class Proto3Configuration {
             this._config.get<string>('compile_all_path', activeWorkspaceFolder.uri.path));
     }
 
+    public getProtoSrcsDir(): string {
+        return this._configResolver.resolve(
+            this._config.get<string>('protoSrcsDir', ''));
+    }
+
     public getProtocArgs(): string[] {
         return this._configResolver.resolve(
             this._config.get<string[]>('options', []));
