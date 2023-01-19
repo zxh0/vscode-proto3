@@ -81,7 +81,7 @@ export class Proto3DefinitionProvider implements vscode.DefinitionProvider {
     }
 
     private async findImportDefinition(importFileName: string): Promise<vscode.Location> {
-        const files = await fg(path.join(vscode.workspace.rootPath, vscode.WorkspaceConfiguration.get<string>('protosSubdir', '**'), importFileName));
+        const files = await fg(path.join(vscode.workspace.rootPath, 'common', 'proto', '**', importFileName));
         const importPath = files[0].toString();
         // const data = fs.readFileSync(importPath);
         // const lines = data.toString().split('\n');
