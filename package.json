@@ -84,6 +84,11 @@
               "default": "protoc",
               "description": "Path to protoc command"
             },
+            "protosSubdir": {
+              "type": "string",
+              "default": "**",
+              "description": "Path to subdirectory containing the protos"
+            },
             "options": {
               "type": "array",
               "items": {
