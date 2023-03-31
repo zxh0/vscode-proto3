@@ -11,11 +11,13 @@ import { PROTO3_MODE } from './proto3Mode';
 import { Proto3DefinitionProvider } from './proto3Definition';
 import { Proto3Configuration } from './proto3Configuration';
 import { Proto3DocumentSymbolProvider } from './proto3SymbolProvider';
+import { Proto3RenameProvider } from './proto3Rename';
 
 export function activate(ctx: vscode.ExtensionContext): void {
 
     ctx.subscriptions.push(vscode.languages.registerCompletionItemProvider(PROTO3_MODE, new Proto3CompletionItemProvider(), '.', '\"'));
     ctx.subscriptions.push(vscode.languages.registerDefinitionProvider(PROTO3_MODE, new Proto3DefinitionProvider()));
+    ctx.subscriptions.push(vscode.languages.registerRenameProvider(PROTO3_MODE, new Proto3RenameProvider()));
 
     const diagnosticProvider = new Proto3LanguageDiagnosticProvider();
 
