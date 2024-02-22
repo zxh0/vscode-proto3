@@ -56,10 +56,10 @@
       }
     },
     "optionStmt": {
-      "begin": "(option)\\s+(\\w+|\\(\\w+(\\.\\w+)*\\))(\\.\\w+)*\\s*(=)",
+      "begin": "(option)\\s+(\\w+|\\((\\.\\w+)*\\))(\\.\\w+)*\\s*(=)",
       "beginCaptures": {
         "1": {"name": "keyword.other.proto"},
-        "2": {"name": "support.other.proto"},
+        "2": {"name": "keyword.other.proto"},
         "3": {"name": "support.other.proto"},
         "4": {"name": "support.other.proto"},
         "5": {"name": "keyword.operator.assignment.proto"}
