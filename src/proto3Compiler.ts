@@ -65,7 +65,7 @@ export class Proto3Compiler {
     cp.execFile(protocPath, args, opts, (err, stdout, stderr) => {
       if (err && stdout.length == 0 && stderr.length == 0) {
         // Assume the OS error if no messages to buffers because
-        // "err" does not provide error type info.
+        // 'err' does not provide error type info.
         vscode.window.showErrorMessage(err.message);
         console.error(err);
         return;
