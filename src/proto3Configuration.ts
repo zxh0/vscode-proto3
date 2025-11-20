@@ -66,6 +66,10 @@ export class Proto3Configuration {
         return this._config.get<boolean>('compile_on_save', false);
     }
 
+    public renumberOnSave(): boolean {
+        return this._config.get<boolean>('renumber_on_save', true);
+    }
+
     public useAbsolutePath(): boolean {
         return this._config.get<boolean>('use_absolute_path', false);
     }

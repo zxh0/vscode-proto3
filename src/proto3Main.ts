@@ -12,6 +12,7 @@ import { Proto3DefinitionProvider } from './proto3Definition';
 import { Proto3Configuration } from './proto3Configuration';
 import { Proto3DocumentSymbolProvider } from './proto3SymbolProvider';
 import { Proto3RenameProvider } from './proto3Rename';
+import { Proto3RenumberCommand } from './proto3Renumber';
 
 export function activate(ctx: vscode.ExtensionContext): void {
 
@@ -22,6 +23,24 @@ export function activate(ctx: vscode.ExtensionContext): void {
     const diagnosticProvider = new Proto3LanguageDiagnosticProvider();
 
     vscode.languages.registerDocumentSymbolProvider('proto3', new Proto3DocumentSymbolProvider())
+
+    ctx.subscriptions.push(vscode.workspace.onWillSaveTextDocument(event => {
+        if (event.document.languageId !== 'proto3') {
+            return;
+        }
+
+        const workspaceFolder = vscode.workspace.getWorkspaceFolder(event.document.uri);
+        if (!Proto3Configuration.Instance(workspaceFolder).renumberOnSave()) {
+            return;
+        }
+
+        const edits = Proto3RenumberCommand.getDocumentTextEdits(event.document);
+        if (edits.length === 0) {
+            return;
+        }
+
+        event.waitUntil(Promise.resolve(edits));
+    }));
 
     vscode.workspace.onDidSaveTextDocument(event => {
         if (event.languageId == 'proto3') {
@@ -46,6 +65,10 @@ export function activate(ctx: vscode.ExtensionContext): void {
         const workspaceFolder = vscode.workspace.getWorkspaceFolder(currentFile.uri)
         const compiler = new Proto3Compiler(workspaceFolder);
         compiler.compileAllProtos();
+    }));
+
+    ctx.subscriptions.push(vscode.commands.registerCommand('proto3.renumber.scope', () => {
+        Proto3RenumberCommand.run();
     }));
 
     //console.log('Congratulations, your extension "vscode-pb3" is now active!');

@@ -14,6 +14,7 @@ _By default **ctrl-shift-p** opens the command prompt._
 |---------|-------------|
 | `proto3: Compile All Protos` | Compiles all workspace protos using [configurations](#extension-settings) defined with `protoc.options`. |
 | `proto3: Compile This Proto` | Compiles the active proto using [configurations](#extension-settings) defined with `protoc.options`. |
+| `proto3: Renumber Fields/Enum Values` | Renumbers field tags within the selected message (starting from 1) or enum values (starting from 0). |
 
 
 ## Features
@@ -26,8 +27,13 @@ _By default **ctrl-shift-p** opens the command prompt._
 - brace matching.
 - line and block commenting.
 - compilation.
+- one-click renumbering for message fields and enum values.
 
 ![gif1](images/gif1.gif)
+
+### Renumbering tags
+
+Use the `proto3: Renumber Fields/Enum Values` command (via **Ctrl+Shift+P**) while the cursor is inside a message or enum. The command rewrites the numeric tags so that message fields count up from `1` and enum values start at `0`, saving the effort of manually editing values after inserting or removing entries.
 
 ### Syntax Highlighting
 
@@ -35,13 +41,13 @@ The grammar is written in tmLanguage JSON format.
 
 ### Syntax Validation
 
-The validation is triggered when you save the proto file. You need protoc 
-compiler to enable syntax validation. You also need a settings.json file 
-to tell the extension the full path of protoc if it is not in `path`. 
+The validation is triggered when you save the proto file. You need protoc
+compiler to enable syntax validation. You also need a settings.json file
+to tell the extension the full path of protoc if it is not in `path`.
 
 ### Extension Settings
 
-Below is an example settings.json file which comes from 
+Below is an example settings.json file which comes from
 [example/.vscode](https://github.com/zxh0/vscode-proto3/tree/master/example/.vscode):
 ```json
 {
@@ -67,6 +73,7 @@ The possible fields under the `protoc` extension settings which can be defined i
 | ---------------- | -------- | ---------------- | ------------------------------------------------------------------------------ |
 | path             | string   | _protoc in PATH_ | Path to protoc. Defaults to protoc in PATH if omitted.                         |
 | compile_on_save  | boolean  | false            | On `.proto` file save, compiles to `--*_out` location within `options`         |
+| renumber_on_save | boolean  | true             | Automatically renumbers message fields and enum values whenever you save       |
 | compile_all_path | string   | Workspace Root   | Search Path for `Compile All Protos` action. Defaults to the Workspace Root    |
 | use_absolute_path| boolean  | false            | Set `true` for `compile_all_path` search files using absolute path             |
 | options          | string[] | []               | protoc compiler arguments/flags, required for proto validation and compilation |
@@ -84,7 +91,7 @@ These variables can be used to inject variables strings within the `protoc` exte
 
 ### Code Completion
 
-A very simple parser is written to support code completion. 
+A very simple parser is written to support code completion.
 
 ### Code Snippets
 
