@@ -6,6 +6,18 @@ Protobuf 3 support for Visual Studio Code
 
 https://github.com/zxh0/vscode-proto3
 
+
+
+
+
+⚠️ Project is looking for new maintainers.
+If you're interested in helping maintain this VSCode extension, please comment on issue #184.
+
+
+[![Help Wanted](https://img.shields.io/badge/maintainer-wanted-red)](...)
+
+
+
 ### VSCode Commands
 
 _By default **ctrl-shift-p** opens the command prompt._
