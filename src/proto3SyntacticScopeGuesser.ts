@@ -1,8 +1,11 @@
-import { ITokenizerHandle, tokenize } from "protobufjs";
-import * as vscode from "vscode";
+import { ITokenizerHandle, tokenize } from 'protobufjs';
+import * as vscode from 'vscode';
 
 class position {
-  constructor(public line: number, public col: number) {}
+  constructor(
+    public line: number,
+    public col: number
+  ) {}
 
   static from(pos: position): position {
     return Object.assign(new position(0, 0), pos);
@@ -10,7 +13,10 @@ class position {
 }
 
 class token {
-  constructor(public tok: string, public pos: position) {}
+  constructor(
+    public tok: string,
+    public pos: position
+  ) {}
 }
 
 class tokenizer {
@@ -28,8 +34,8 @@ class tokenizer {
       return null;
     }
 
-    let row = this._handler.line,
-      col = this._pos.col;
+    const row = this._handler.line;
+    let col = this._pos.col;
     if (row !== this._pos.line) {
       col = 0;
     }
@@ -50,7 +56,9 @@ class tokenizer {
     }
 
     // 注意 vscode 的行号是从0开始的，protobufjs 的 tokenize 返回的行号是从 1 开始的
-    this._pos.col = this.doc.lineAt(lineno - 1).text.indexOf(tok, this._pos.col + this._token_width);
+    this._pos.col = this.doc
+      .lineAt(lineno - 1)
+      .text.indexOf(tok, this._pos.col + this._token_width);
     this._token_width = tok.length;
 
     return new token(tok, position.from(this._pos));
@@ -75,7 +83,7 @@ class tokenizer {
       return null;
     }
     if (regexp.test(t.tok)) {
-      throw new Error("unexpected token");
+      throw new Error('unexpected token');
     }
     return t;
   }
@@ -87,10 +95,10 @@ class tokenizer {
 
 class scope {
   constructor(
-    public name: "message" | "enum" | "service" | "rpc" | "returns" | "rpcbody" | "",
-    public sym: "(" | "{",
+    public name: 'message' | 'enum' | 'service' | 'rpc' | 'returns' | 'rpcbody' | '',
+    public sym: '(' | '{',
     public pos: position,
-    public end: position = null
+    public end: position | null = null
   ) {}
 }
 
@@ -98,7 +106,10 @@ class scope {
 function isContains(pos: position, begin: position, end: position) {
   // scope 起止都在同一行，光标在起止范围内
   return (
-    (begin.line === end.line && begin.line === pos.line && pos.col >= begin.col && pos.col <= end.col) ||
+    (begin.line === end.line &&
+      begin.line === pos.line &&
+      pos.col >= begin.col &&
+      pos.col <= end.col) ||
     // scope 不在同一行，光标在起始行的起始token后
     (begin.line !== end.line && begin.line === pos.line && pos.col >= begin.col) ||
     // scope 不在同一行，光标在结束行的结束token前
@@ -110,63 +121,92 @@ function isContains(pos: position, begin: position, end: position) {
 
 // 全局返回 null
 // 其他情况返回 scope
-export function SyntacticGuessScope(document: vscode.TextDocument, cursorPosition: vscode.Position): scope | null {
+export function SyntacticGuessScope(
+  document: vscode.TextDocument,
+  cursorPosition: vscode.Position
+): scope | null {
   const stack: scope[] = [];
   const tkn = new tokenizer(document);
   for (let tok = tkn.next(); tok !== null; tok = tkn.next()) {
     switch (tok.tok) {
-      case "message": {
+      case 'message': {
         // take next token until reach left brace
         let t = tkn.next();
-        for (; t !== null && t.tok !== "{"; t = tkn.next()) {}
-        stack.push(new scope("message", "{", position.from(t.pos)));
+        for (; t !== null && t.tok !== '{'; t = tkn.next()) {
+          /* advance tokenizer */
+        }
+        if (t) {
+          stack.push(new scope('message', '{', position.from(t.pos)));
+        }
 
         break;
       }
-      case "enum": {
+      case 'enum': {
         // take next token until reach left brace
         let t = tkn.next();
-        for (; t !== null && t.tok !== "{"; t = tkn.next()) {}
-        stack.push(new scope("enum", "{", position.from(t.pos)));
+        for (; t !== null && t.tok !== '{'; t = tkn.next()) {
+          /* advance tokenizer */
+        }
+        if (t) {
+          stack.push(new scope('enum', '{', position.from(t.pos)));
+        }
         break;
       }
-      case "rpc": {
+      case 'rpc': {
         // take next token until reach left paren
         let t = tkn.next();
-        for (; t !== null && t.tok !== "("; t = tkn.next()) {}
-        stack.push(new scope("rpc", "(", position.from(t.pos)));
+        for (; t !== null && t.tok !== '('; t = tkn.next()) {
+          /* advance tokenizer */
+        }
+        if (t) {
+          stack.push(new scope('rpc', '(', position.from(t.pos)));
+        }
         break;
       }
-      case "returns": {
+      case 'returns': {
         // take next token until reach left paren
         let t = tkn.next();
-        for (; t !== null && t.tok !== "("; t = tkn.next()) {}
-        stack.push(new scope("returns", "(", position.from(t.pos)));
+        for (; t !== null && t.tok !== '('; t = tkn.next()) {
+          /* advance tokenizer */
+        }
+        if (t) {
+          stack.push(new scope('returns', '(', position.from(t.pos)));
+        }
         break;
       }
-      case "service": {
+      case 'service': {
         // take next token until reach left brace
         let t = tkn.next();
-        for (; t !== null && t.tok !== "{"; t = tkn.next()) {}
-        stack.push(new scope("service", "{", position.from(t.pos)));
+        for (; t !== null && t.tok !== '{'; t = tkn.next()) {
+          /* advance tokenizer */
+        }
+        if (t) {
+          stack.push(new scope('service', '{', position.from(t.pos)));
+        }
         break;
       }
-      case "(":
-        stack.push(new scope("", "(", position.from(tok.pos)));
+      case '(':
+        stack.push(new scope('', '(', position.from(tok.pos)));
         break;
-      case "{":
-        stack.push(new scope("", "{", position.from(tok.pos)));
+      case '{':
+        stack.push(new scope('', '{', position.from(tok.pos)));
         break;
-      case "}": {
+      case '}': {
         // 匹配栈顶的符号并且是我们关注的 scope 类型 (name!=='')，此时才开始检查光标位置是不是在 scope 区间内
         const lastScope = stack[stack.length - 1];
-        if (lastScope.sym === "{") {
+        if (lastScope && lastScope.sym === '{') {
           stack.pop();
 
-          if (lastScope.name !== "") {
+          if (lastScope.name !== '') {
             // 光标在范围内直接返回
             // 注意 vscode 的行号是从0开始的，protobufjs 的 tokenize 返回的行号是从 1 开始的
-            if (isContains(new position(cursorPosition.line + 1, cursorPosition.character), lastScope.pos, tok.pos)) {
+            if (
+              isContains(
+                new position(cursorPosition.line + 1, cursorPosition.character),
+                lastScope.pos,
+                tok.pos
+              )
+            ) {
               lastScope.end = position.from(tok.pos);
               return lastScope;
             }
@@ -177,13 +217,13 @@ export function SyntacticGuessScope(document: vscode.TextDocument, cursorPositio
         }
         break;
       }
-      case ")": {
+      case ')': {
         // 匹配栈顶的符号并且是我们关注的 scope 类型 (name!=='')，此时才开始检查光标位置是不是在 scope 区间内
         const lastScope = stack[stack.length - 1];
-        if (lastScope.sym === "(") {
+        if (lastScope && lastScope.sym === '(') {
           stack.pop();
 
-          if (lastScope.name !== "") {
+          if (lastScope.name !== '') {
             // 光标在范围内直接返回
             // 注意 vscode 的行号是从0开始的，protobufjs 的 tokenize 返回的行号是从 1 开始的
             const cursor = new position(cursorPosition.line + 1, cursorPosition.character);
@@ -193,10 +233,13 @@ export function SyntacticGuessScope(document: vscode.TextDocument, cursorPositio
             }
 
             // 针对rpc 的 option
-            if (lastScope.name === "returns") {
-              if (tkn.peek().tok === "{") {
+            if (lastScope.name === 'returns') {
+              const peeked = tkn.peek();
+              if (peeked && peeked.tok === '{') {
                 const t = tkn.next();
-                stack.push(new scope("rpcbody", "{", position.from(t.pos)));
+                if (t) {
+                  stack.push(new scope('rpcbody', '{', position.from(t.pos)));
+                }
               }
             }
           }
@@ -211,7 +254,7 @@ export function SyntacticGuessScope(document: vscode.TextDocument, cursorPositio
 
   while (stack.length > 0) {
     const lastScope = stack.pop();
-    if (lastScope.name !== "") {
+    if (lastScope && lastScope.name !== '') {
       return lastScope;
     }
   }

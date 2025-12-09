@@ -1,21 +1,21 @@
-"use strict";
+'use strict';
 
-import { tokenize } from "protobufjs";
-import vscode = require("vscode");
-import { SyntacticGuessScope } from "./proto3SyntacticScopeGuesser";
+import { tokenize } from 'protobufjs';
+import vscode = require('vscode');
+import { SyntacticGuessScope } from './proto3SyntacticScopeGuesser';
 
-let kwSyntax = createCompletionKeyword("syntax");
-let kwPackage = createCompletionKeyword("package");
-let kwOption = createCompletionKeyword("option");
-let kwImport = createCompletionKeyword("import");
-let kwMessage = createCompletionKeyword("message");
-let kwEnum = createCompletionKeyword("enum");
-let kwReserved = createCompletionKeyword("reserved");
-let kwRpc = createCompletionKeyword("rpc");
+const kwSyntax = createCompletionKeyword('syntax');
+const kwPackage = createCompletionKeyword('package');
+const kwOption = createCompletionKeyword('option');
+const kwImport = createCompletionKeyword('import');
+const kwMessage = createCompletionKeyword('message');
+const kwEnum = createCompletionKeyword('enum');
+const kwReserved = createCompletionKeyword('reserved');
+const kwRpc = createCompletionKeyword('rpc');
 
-let fileOptions = [
+const fileOptions = [
   createCompletionOption(
-    "java_package",
+    'java_package',
     `
 Sets the Java package where classes generated from this .proto will be
 placed.  By default, the proto package is used, but this is often
@@ -24,7 +24,7 @@ domain names.
     `
   ),
   createCompletionOption(
-    "java_outer_classname",
+    'java_outer_classname',
     `
 If set, all the classes from the .proto file are wrapped in a single
 outer class with the given name.  This applies to both Proto1
@@ -34,7 +34,7 @@ explicitly choose the class name).
     `
   ),
   createCompletionOption(
-    "java_multiple_files",
+    'java_multiple_files',
     `
 If set true, then the Java code generator will generate a separate .java
 file for each top-level message, enum, and service defined in the .proto
@@ -45,7 +45,7 @@ top-level extensions defined in the file.
     `
   ),
   createCompletionOption(
-    "java_generate_equals_and_hash",
+    'java_generate_equals_and_hash',
     `
 If set true, then the Java code generator will generate equals() and
 hashCode() methods for all messages defined in the .proto file.
@@ -62,7 +62,7 @@ will be consistent across runtimes or versions of the protocol compiler.)
     `
   ),
   createCompletionOption(
-    "java_string_check_utf8",
+    'java_string_check_utf8',
     `
 If set true, then the Java2 code generator will generate code that
 throws an exception whenever an attempt is made to assign a non-UTF-8
@@ -73,13 +73,13 @@ This option has no effect on when used with the lite runtime.
     `
   ),
   createCompletionOption(
-    "optimize_for",
+    'optimize_for',
     `
 Generated classes can be optimized for speed or code size.
     `
   ),
   createCompletionOption(
-    "go_package",
+    'go_package',
     `
 Sets the Go package where structs generated from this .proto will be
 placed. If omitted, the Go package will be derived from the following:
@@ -92,7 +92,7 @@ placed. If omitted, the Go package will be derived from the following:
   //createCompletionOption('java_generic_services'),
   //createCompletionOption('py_generic_services'),
   createCompletionOption(
-    "deprecated",
+    'deprecated',
     `
 Is this file deprecated?
 Depending on the target platform, this can emit Deprecated annotations
@@ -101,30 +101,30 @@ least, this is a formalization for deprecating files.
     `
   ),
   createCompletionOption(
-    "cc_enable_arenas",
+    'cc_enable_arenas',
     `
 Enables the use of arenas for the proto messages in this file. This applies
 only to generated classes for C++.
     `
   ),
   createCompletionOption(
-    "objc_class_prefix",
+    'objc_class_prefix',
     `
 Sets the objective c class prefix which is prepended to all objective c
 generated classes from this .proto. There is no default.
     `
   ),
   createCompletionOption(
-    "csharp_namespace",
+    'csharp_namespace',
     `
 Namespace for generated classes; defaults to the package.
     `
   ),
 ];
 
-let msgOptions = [
+const msgOptions = [
   createCompletionOption(
-    "message_set_wire_format",
+    'message_set_wire_format',
     `
 Set true to use the old proto1 MessageSet wire format for extensions.
 This is provided for backwards-compatibility with the MessageSet wire
@@ -133,7 +133,7 @@ efficient, has fewer features, and is more complicated.
     `
   ),
   createCompletionOption(
-    "no_standard_descriptor_accessor",
+    'no_standard_descriptor_accessor',
     `
 Disables the generation of the standard "descriptor()" accessor, which can
 conflict with a field of the same name.  This is meant to make migration
@@ -141,7 +141,7 @@ from proto1 easier; new code should avoid fields named "descriptor".
     `
   ),
   createCompletionOption(
-    "deprecated",
+    'deprecated',
     `
 Is this message deprecated?
 Depending on the target platform, this can emit Deprecated annotations
@@ -152,10 +152,10 @@ this is a formalization for deprecating messages.
   //createCompletionOption('map_entry', ``),
 ];
 
-let fieldOptions = [
+const fieldOptions = [
   //createCompletionOption('ctype', ``),
   createCompletionOption(
-    "packed",
+    'packed',
     `
 The packed option can be enabled for repeated primitive fields to enable
 a more efficient representation on the wire. Rather than repeatedly
@@ -165,7 +165,7 @@ false will avoid using packed encoding.
     `
   ),
   createCompletionOption(
-    "jstype",
+    'jstype',
     `
 The jstype option determines the JavaScript type used for values of the
 field.  The option is permitted only for 64 bit integral and fixed types
@@ -179,7 +179,7 @@ e.g. goog.math.Integer.
     `
   ),
   createCompletionOption(
-    "lazy",
+    'lazy',
     `
 Should this field be parsed lazily?  Lazy applies only to message-type
 fields.  It means that when the outer message is initially parsed, the
@@ -212,7 +212,7 @@ been parsed.
     `
   ),
   createCompletionOption(
-    "deprecated",
+    'deprecated',
     `
 Is this field deprecated?
 Depending on the target platform, this can emit Deprecated annotations
@@ -222,18 +222,18 @@ is a formalization for deprecating fields.
   ),
 ];
 
-let fieldDefault = createCompletionOption("default", ``);
+const fieldDefault = createCompletionOption('default', ``);
 
-let enumOptions = [
+const enumOptions = [
   createCompletionOption(
-    "allow_alias",
+    'allow_alias',
     `
 Set this option to true to allow mapping different tag names to the same
 value.
     `
   ),
   createCompletionOption(
-    "deprecated",
+    'deprecated',
     `
 Is this enum deprecated?
 Depending on the target platform, this can emit Deprecated annotations
@@ -243,9 +243,9 @@ is a formalization for deprecating enums.
   ),
 ];
 
-let enumValueOptions = [
+const _enumValueOptions = [
   createCompletionOption(
-    "deprecated",
+    'deprecated',
     `
 Is this enum value deprecated?
 Depending on the target platform, this can emit Deprecated annotations
@@ -255,9 +255,9 @@ this is a formalization for deprecating enum values.
   ),
 ];
 
-let serviceOptions = [
+const serviceOptions = [
   createCompletionOption(
-    "deprecated",
+    'deprecated',
     `
 Is this service deprecated?
 Depending on the target platform, this can emit Deprecated annotations
@@ -267,73 +267,73 @@ this is a formalization for deprecating services.
   ),
 ];
 
-let fieldRules = [
-  createCompletionKeyword("repeated"),
-  createCompletionKeyword("required"),
-  createCompletionKeyword("optional"),
+const fieldRules = [
+  createCompletionKeyword('repeated'),
+  createCompletionKeyword('required'),
+  createCompletionKeyword('optional'),
 ];
 
-let scalarTypes = [
-  createCompletionKeyword("bool", ``),
+const scalarTypes = [
+  createCompletionKeyword('bool', ``),
   createCompletionKeyword(
-    "int32",
+    'int32',
     `
-Uses variable-length encoding. 
-Inefficient for encoding negative numbers – if your field is likely to have 
+Uses variable-length encoding.
+Inefficient for encoding negative numbers – if your field is likely to have
 negative values, use sint32 instead.`
   ),
   createCompletionKeyword(
-    "int64",
+    'int64',
     `
-Uses variable-length encoding. 
-Inefficient for encoding negative numbers – if your field is likely to have 
-negative values, use sint64 instead.    
-    `
-  ),
-  createCompletionKeyword("uint32", `Uses variable-length encoding.`),
-  createCompletionKeyword("uint64", `Uses variable-length encoding.`),
-  createCompletionKeyword(
-    "sint32",
-    `
-Uses variable-length encoding. 
-Signed int value. 
-These more efficiently encode negative numbers than regular int32s.    
+Uses variable-length encoding.
+Inefficient for encoding negative numbers – if your field is likely to have
+negative values, use sint64 instead.
     `
   ),
+  createCompletionKeyword('uint32', `Uses variable-length encoding.`),
+  createCompletionKeyword('uint64', `Uses variable-length encoding.`),
   createCompletionKeyword(
-    "sint64",
+    'sint32',
     `
-Uses variable-length encoding. 
-Signed int value. 
-These more efficiently encode negative numbers than regular int64s.    
+Uses variable-length encoding.
+Signed int value.
+These more efficiently encode negative numbers than regular int32s.
     `
   ),
   createCompletionKeyword(
-    "fixed32",
+    'sint64',
     `
-Always four bytes. 
-More efficient than uint32 if values are often greater than 2^28.    
+Uses variable-length encoding.
+Signed int value.
+These more efficiently encode negative numbers than regular int64s.
     `
   ),
   createCompletionKeyword(
-    "fixed64",
+    'fixed32',
     `
-Always eight bytes. 
-More efficient than uint64 if values are often greater than 2^56.    
+Always four bytes.
+More efficient than uint32 if values are often greater than 2^28.
     `
   ),
-  createCompletionKeyword("sfixed32", `Always four bytes.`),
-  createCompletionKeyword("sfixed64", `Always eight bytes.`),
-  createCompletionKeyword("float", ``),
-  createCompletionKeyword("double", ``),
   createCompletionKeyword(
-    "string",
+    'fixed64',
+    `
+Always eight bytes.
+More efficient than uint64 if values are often greater than 2^56.
+    `
+  ),
+  createCompletionKeyword('sfixed32', `Always four bytes.`),
+  createCompletionKeyword('sfixed64', `Always eight bytes.`),
+  createCompletionKeyword('float', ``),
+  createCompletionKeyword('double', ``),
+  createCompletionKeyword(
+    'string',
     `
 A string must always contain UTF-8 encoded or 7-bit ASCII text.
     `
   ),
   createCompletionKeyword(
-    "bytes",
+    'bytes',
     `
 May contain any arbitrary sequence of bytes.
     `
@@ -341,7 +341,7 @@ May contain any arbitrary sequence of bytes.
 ];
 
 function createCompletionKeyword(label: string, doc?: string): vscode.CompletionItem {
-  let item = new vscode.CompletionItem(label);
+  const item = new vscode.CompletionItem(label);
   item.kind = vscode.CompletionItemKind.Keyword;
   if (doc) {
     item.documentation = doc;
@@ -350,31 +350,33 @@ function createCompletionKeyword(label: string, doc?: string): vscode.Completion
 }
 
 function createCompletionOption(option: string, doc: string): vscode.CompletionItem {
-  let item = new vscode.CompletionItem(option);
+  const item = new vscode.CompletionItem(option);
   item.kind = vscode.CompletionItemKind.Value;
   item.documentation = doc;
   return item;
 }
 
 // not very efficiently.
-function findMessageEnum(document: vscode.TextDocument): Record<"message" | "enum", vscode.CompletionItem[]> {
+function findMessageEnum(
+  document: vscode.TextDocument
+): Record<'message' | 'enum', vscode.CompletionItem[]> {
   const msgCompletionItems: vscode.CompletionItem[] = [];
   const enumCompletionItems: vscode.CompletionItem[] = [];
 
   const tokenizer = tokenize(document.getText(), false);
   for (let tok = tokenizer.next(); tok !== null; tok = tokenizer.next()) {
-    if (tok === "message" || tok === "enum") {
+    if (tok === 'message' || tok === 'enum') {
       // find identifiers after `message` keyword
       const identifier = tokenizer.peek();
       if (identifier !== null && /^[a-zA-Z_]+\w*$/.test(identifier)) {
-        if (tok === "message") {
+        if (tok === 'message') {
           const item = new vscode.CompletionItem(identifier, vscode.CompletionItemKind.Struct);
-          item.detail = "message " + identifier;
+          item.detail = 'message ' + identifier;
           // should extract message declaration and comments here
           msgCompletionItems.push(item);
         } else {
           const item = new vscode.CompletionItem(identifier, vscode.CompletionItemKind.Enum);
-          item.detail = "enum " + identifier;
+          item.detail = 'enum ' + identifier;
           enumCompletionItems.push(item);
         }
       }
@@ -391,16 +393,18 @@ export class Proto3CompletionItemProvider implements vscode.CompletionItemProvid
   public provideCompletionItems(
     document: vscode.TextDocument,
     position: vscode.Position,
-    token: vscode.CancellationToken
+    _token: vscode.CancellationToken
   ): Thenable<vscode.CompletionItem[]> {
-    return new Promise<vscode.CompletionItem[]>((resolve, reject) => {
+    return new Promise<vscode.CompletionItem[]>(resolve => {
       let syntax = 2;
       const matches = document.getText().match(/syntax\s*=\s*"(proto2|proto3)"/);
-      if (matches.length >= 2 && matches[1] === "proto3") {
+      if (matches && matches.length >= 2 && matches[1] === 'proto3') {
         syntax = 3;
       }
 
-      const textBeforeCursor = document.lineAt(position.line).text.substring(0, position.character - 1);
+      const textBeforeCursor = document
+        .lineAt(position.line)
+        .text.substring(0, position.character - 1);
       const suggestions: vscode.CompletionItem[] = [];
       const scope = SyntacticGuessScope(document, position);
 
@@ -418,7 +422,7 @@ export class Proto3CompletionItemProvider implements vscode.CompletionItemProvid
       }
 
       switch (scope.name) {
-        case "service":
+        case 'service':
           if (textBeforeCursor.match(/^\s*option(\s*\(?|\s)\s*\w*$/)) {
             suggestions.push(...serviceOptions);
           } else {
@@ -426,7 +430,7 @@ export class Proto3CompletionItemProvider implements vscode.CompletionItemProvid
             suggestions.push(kwOption);
           }
           break;
-        case "message":
+        case 'message':
           if (textBeforeCursor.match(/(repeated|required|optional)\s*\w*$/)) {
             const result = findMessageEnum(document);
             suggestions.push(...scalarTypes, ...result.enum, ...result.message);
@@ -454,22 +458,22 @@ export class Proto3CompletionItemProvider implements vscode.CompletionItemProvid
           const result = findMessageEnum(document);
           suggestions.push(...scalarTypes, ...result.enum, ...result.message);
           break;
-        case "enum":
+        case 'enum':
           if (textBeforeCursor.match(/^\s*option(\s*\(?|\s)\s*\w*$/)) {
             suggestions.push(...enumOptions);
           } else {
             suggestions.push(kwOption);
           }
           break;
-        case "rpcbody":
+        case 'rpcbody':
           if (textBeforeCursor.match(/^\s*option(\s*\(?|\s)\s*\w*$/)) {
             suggestions.push(...serviceOptions);
           } else {
             suggestions.push(kwOption);
           }
           break;
-        case "rpc":
-        case "returns":
+        case 'rpc':
+        case 'returns':
           suggestions.push(...scalarTypes, ...findMessageEnum(document).message);
           break;
         default:
