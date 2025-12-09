@@ -8,38 +8,40 @@ import {
   SymbolInformation,
   SymbolKind,
   TextDocument,
-} from "vscode";
-import { tokenize } from "protobufjs";
+} from 'vscode';
+import { tokenize } from 'protobufjs';
 
 type ProvideSymbolsResult = ProviderResult<SymbolInformation[] | DocumentSymbol[]>;
 
-const cache = {}
+const cache: Record<string, SymbolInformation[]> = {};
 
 export class Proto3DocumentSymbolProvider implements DocumentSymbolProvider {
-  provideDocumentSymbols(doc: TextDocument, token: CancellationToken): ProvideSymbolsResult {
+  provideDocumentSymbols(doc: TextDocument, _token: CancellationToken): ProvideSymbolsResult {
     const ret: SymbolInformation[] = [];
+    const cacheKey = `${doc.uri}__${doc.version}`;
+    const prevCacheKey = `${doc.uri}__${doc.version - 1}`;
 
     // Retrieve tokens if previously cached
-    if (cache[doc.uri+'__'+doc.version]) {
-      return cache[doc.uri+'__'+doc.version]
+    if (cache[cacheKey]) {
+      return cache[cacheKey];
     }
 
     // remove preceding cache entry
-    if (cache[doc.uri+'__'+(doc.version - 1)]) {
-      delete cache[doc.uri+'__'+(doc.version - 1)]
+    if (cache[prevCacheKey]) {
+      delete cache[prevCacheKey];
     }
 
     // create cache entry
     const tokenizer = tokenize(doc.getText(), false);
-    let state: "free" | "rpc" | "message" | 'service' = "free"
+    let state: 'free' | 'rpc' | 'message' | 'service' = 'free';
     for (let tok = tokenizer.next(); tok !== null; tok = tokenizer.next()) {
       switch (tok) {
-        case "message":
-          state = "message";
+        case 'message':
+          state = 'message';
           break;
 
-        case "rpc":
-          state = "rpc";
+        case 'rpc':
+          state = 'rpc';
           break;
 
         case 'service':
@@ -47,13 +49,13 @@ export class Proto3DocumentSymbolProvider implements DocumentSymbolProvider {
           break;
 
         default:
-          if (state === "free") {
+          if (state === 'free') {
             continue;
           }
 
           if (!/^[a-zA-Z_]+\w*/.test(tok)) {
             // identifier expected but found other token
-            state = "free";
+            state = 'free';
             continue;
           }
 
@@ -65,18 +67,18 @@ export class Proto3DocumentSymbolProvider implements DocumentSymbolProvider {
               break;
             case 'rpc':
               kind = SymbolKind.Method;
-              break
+              break;
             case 'service':
               kind = SymbolKind.Class;
               break;
           }
-          ret.push(new SymbolInformation(tok, kind, "", location));
-          state = "free";
+          ret.push(new SymbolInformation(tok, kind, '', location));
+          state = 'free';
           break;
       }
     }
 
-    cache[doc.uri+'__'+doc.version] = ret
+    cache[cacheKey] = ret;
 
     return ret;
   }

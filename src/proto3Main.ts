@@ -15,130 +15,143 @@ import { Proto3RenameProvider } from './proto3Rename';
 import { Proto3RenumberCommand } from './proto3Renumber';
 
 export function activate(ctx: vscode.ExtensionContext): void {
+  ctx.subscriptions.push(
+    vscode.languages.registerCompletionItemProvider(
+      PROTO3_MODE,
+      new Proto3CompletionItemProvider(),
+      '.',
+      '"'
+    )
+  );
+  ctx.subscriptions.push(
+    vscode.languages.registerDefinitionProvider(PROTO3_MODE, new Proto3DefinitionProvider())
+  );
+  ctx.subscriptions.push(
+    vscode.languages.registerRenameProvider(PROTO3_MODE, new Proto3RenameProvider())
+  );
 
-    ctx.subscriptions.push(vscode.languages.registerCompletionItemProvider(PROTO3_MODE, new Proto3CompletionItemProvider(), '.', '\"'));
-    ctx.subscriptions.push(vscode.languages.registerDefinitionProvider(PROTO3_MODE, new Proto3DefinitionProvider()));
-    ctx.subscriptions.push(vscode.languages.registerRenameProvider(PROTO3_MODE, new Proto3RenameProvider()));
+  const diagnosticProvider = new Proto3LanguageDiagnosticProvider();
 
-    const diagnosticProvider = new Proto3LanguageDiagnosticProvider();
+  vscode.languages.registerDocumentSymbolProvider('proto3', new Proto3DocumentSymbolProvider());
 
-    vscode.languages.registerDocumentSymbolProvider('proto3', new Proto3DocumentSymbolProvider())
+  ctx.subscriptions.push(
+    vscode.workspace.onWillSaveTextDocument(event => {
+      if (event.document.languageId !== 'proto3') {
+        return;
+      }
 
-    ctx.subscriptions.push(vscode.workspace.onWillSaveTextDocument(event => {
-        if (event.document.languageId !== 'proto3') {
-            return;
-        }
+      const workspaceFolder = vscode.workspace.getWorkspaceFolder(event.document.uri);
+      if (!Proto3Configuration.Instance(workspaceFolder).renumberOnSave()) {
+        return;
+      }
 
-        const workspaceFolder = vscode.workspace.getWorkspaceFolder(event.document.uri);
-        if (!Proto3Configuration.Instance(workspaceFolder).renumberOnSave()) {
-            return;
-        }
+      const edits = Proto3RenumberCommand.getDocumentTextEdits(event.document);
+      if (edits.length === 0) {
+        return;
+      }
 
-        const edits = Proto3RenumberCommand.getDocumentTextEdits(event.document);
-        if (edits.length === 0) {
-            return;
-        }
+      event.waitUntil(Promise.resolve(edits));
+    })
+  );
 
-        event.waitUntil(Promise.resolve(edits));
-    }));
-
-    vscode.workspace.onDidSaveTextDocument(event => {
-        if (event.languageId == 'proto3') {
-            const workspaceFolder = vscode.workspace.getWorkspaceFolder(event.uri);
-            const compiler = new Proto3Compiler(workspaceFolder);
-            diagnosticProvider.createDiagnostics(event, compiler);
-            if (Proto3Configuration.Instance(workspaceFolder).compileOnSave()) {
-                compiler.compileActiveProto();
-            }
-        }
-    });
-
-    ctx.subscriptions.push(vscode.commands.registerCommand('proto3.compile.one', () => {
-        const currentFile = vscode.window.activeTextEditor?.document;
-        const workspaceFolder = vscode.workspace.getWorkspaceFolder(currentFile.uri)
-        const compiler = new Proto3Compiler(workspaceFolder);
+  vscode.workspace.onDidSaveTextDocument(event => {
+    if (event.languageId == 'proto3') {
+      const workspaceFolder = vscode.workspace.getWorkspaceFolder(event.uri);
+      const compiler = new Proto3Compiler(workspaceFolder);
+      diagnosticProvider.createDiagnostics(event, compiler);
+      if (Proto3Configuration.Instance(workspaceFolder).compileOnSave()) {
         compiler.compileActiveProto();
-    }));
+      }
+    }
+  });
 
-    ctx.subscriptions.push(vscode.commands.registerCommand('proto3.compile.all', () => {
-        const currentFile = vscode.window.activeTextEditor?.document;
-        const workspaceFolder = vscode.workspace.getWorkspaceFolder(currentFile.uri)
-        const compiler = new Proto3Compiler(workspaceFolder);
-        compiler.compileAllProtos();
-    }));
+  ctx.subscriptions.push(
+    vscode.commands.registerCommand('proto3.compile.one', () => {
+      const currentFile = vscode.window.activeTextEditor?.document;
+      if (!currentFile) {
+        return;
+      }
+      const workspaceFolder = vscode.workspace.getWorkspaceFolder(currentFile.uri);
+      const compiler = new Proto3Compiler(workspaceFolder);
+      compiler.compileActiveProto();
+    })
+  );
 
-    ctx.subscriptions.push(vscode.commands.registerCommand('proto3.renumber.scope', () => {
-        Proto3RenumberCommand.run();
-    }));
+  ctx.subscriptions.push(
+    vscode.commands.registerCommand('proto3.compile.all', () => {
+      const currentFile = vscode.window.activeTextEditor?.document;
+      if (!currentFile) {
+        return;
+      }
+      const workspaceFolder = vscode.workspace.getWorkspaceFolder(currentFile.uri);
+      const compiler = new Proto3Compiler(workspaceFolder);
+      compiler.compileAllProtos();
+    })
+  );
 
-    //console.log('Congratulations, your extension "vscode-pb3" is now active!');
+  ctx.subscriptions.push(
+    vscode.commands.registerCommand('proto3.renumber.scope', () => {
+      Proto3RenumberCommand.run();
+    })
+  );
 
+  //console.log('Congratulations, your extension "vscode-pb3" is now active!');
+
+  if (PROTO3_MODE.language) {
     vscode.languages.setLanguageConfiguration(PROTO3_MODE.language, {
-        indentationRules: {
-            // ^(.*\*/)?\s*\}.*$
-            decreaseIndentPattern: /^(.*\*\/)?\s*\}.*$/,
-            // ^.*\{[^}'']*$
-            increaseIndentPattern: /^.*\{[^}'']*$/
-        },
-        wordPattern: /(-?\d*\.\d\w*)|([^\`\~\!\@\#\%\^\&\*\(\)\-\=\+\[\{\]\}\\\|\;\:\'\"\,\.\<\>\/\?\s]+)(\.proto){0,1}/g,
-        comments: {
-            lineComment: '//',
-            blockComment: ['/*', '*/']
-        },
-        brackets: [
-            ['{', '}'],
-            ['[', ']'],
-            ['(', ')'],
-            ['<', '>'],
-        ],
-
-        __electricCharacterSupport: {
-            brackets: [
-                { tokenType: 'delimiter.curly.ts', open: '{', close: '}', isElectric: true },
-                { tokenType: 'delimiter.square.ts', open: '[', close: ']', isElectric: true },
-                { tokenType: 'delimiter.paren.ts', open: '(', close: ')', isElectric: true }
-            ]
-        },
-
-        __characterPairSupport: {
-            autoClosingPairs: [
-                { open: '{', close: '}' },
-                { open: '[', close: ']' },
-                { open: '(', close: ')' },
-                { open: '`', close: '`', notIn: ['string'] },
-                { open: '"', close: '"', notIn: ['string'] },
-                { open: '\'', close: '\'', notIn: ['string', 'comment'] }
-            ]
-        }
+      indentationRules: {
+        // ^(.*\*/)?\s*\}.*$
+        decreaseIndentPattern: /^(.*\*\/)?\s*\}.*$/,
+        // ^.*\{[^}'']*$
+        increaseIndentPattern: /^.*\{[^}'']*$/,
+      },
+      wordPattern:
+        /(-?\d*\.\d\w*)|([^\`\~\!\@\#\%\^\&\*\(\)\-\=\+\[\{\]\}\\\|\;\:\'\"\,\.\<\>\/\?\s]+)(\.proto){0,1}/g,
+      comments: {
+        lineComment: '//',
+        blockComment: ['/*', '*/'],
+      },
+      brackets: [
+        ['{', '}'],
+        ['[', ']'],
+        ['(', ')'],
+        ['<', '>'],
+      ],
     });
+  }
 
-    vscode.languages.registerDocumentFormattingEditProvider('proto3', {
-        provideDocumentFormattingEdits(document: vscode.TextDocument): vscode.TextEdit[] {
-            let args = [];
-            let opts = { input: document.getText() };
+  vscode.languages.registerDocumentFormattingEditProvider('proto3', {
+    provideDocumentFormattingEdits(document: vscode.TextDocument): vscode.TextEdit[] {
+      const args: string[] = [];
+      const opts: { input: string; cwd?: string } = { input: document.getText() };
 
-            // In order for clang-format to find the correct formatting file we need to have cwd set appropriately
-            switch (document.uri.scheme) {
-                case "untitled": // File has not yet been saved to disk use workspace path
-                    opts['cwd'] = vscode.workspace.rootPath;
-                    args.push(`--assume-filename=untitled.proto`);
-                    break;
-                case "file": // File is on disk use it's directory
-                    opts['cwd'] = path.dirname(document.uri.fsPath);
-                    args.push(`--assume-filename=${document.uri.fsPath}`);
-                    break;
-            }
+      // In order for clang-format to find the correct formatting file we need to have cwd set appropriately
+      switch (document.uri.scheme) {
+        case 'untitled': // File has not yet been saved to disk use workspace path
+          opts.cwd = vscode.workspace.rootPath;
+          args.push(`--assume-filename=untitled.proto`);
+          break;
+        case 'file': // File is on disk use it's directory
+          opts.cwd = path.dirname(document.uri.fsPath);
+          args.push(`--assume-filename=${document.uri.fsPath}`);
+          break;
+      }
 
-            let style = vscode.workspace.getConfiguration('clang-format', document).get<string>('style');
-            style = style && style.trim();
-            if (style) args.push(`-style=${style}`);
+      let style = vscode.workspace.getConfiguration('clang-format', document).get<string>('style');
+      style = style && style.trim();
+      if (style) args.push(`-style=${style}`);
 
-            let stdout = cp.execFileSync('clang-format', args, opts);
-            return [new vscode.TextEdit(document.validateRange(new vscode.Range(0, 0, Infinity, Infinity)), stdout ? stdout.toString() : '')];
-        },
-    });
+      const stdout = cp.execFileSync('clang-format', args, opts);
+      return [
+        new vscode.TextEdit(
+          document.validateRange(new vscode.Range(0, 0, Infinity, Infinity)),
+          stdout ? stdout.toString() : ''
+        ),
+      ];
+    },
+  });
 }
 
-function deactivate() {
-    //
+export function deactivate() {
+  //
 }

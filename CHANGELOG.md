@@ -1,5 +1,23 @@
 # Release Notes
 
+## 0.5.7 (Unreleased)
+
+### Development Infrastructure
+
+- Modernized build tooling and dependencies
+  - Updated TypeScript to 5.7 with strict mode enabled
+  - Updated ESLint to 9.x with flat config format
+  - Updated Mocha to 11.x and added c8 for coverage reporting
+  - Updated Prettier to 3.4 with best practices config
+  - Updated Husky to 9.x with lint-staged for pre-commit hooks
+- Added GitHub Actions CI workflow
+  - Runs on Node.js 18.x, 20.x, and 22.x
+  - Includes formatting, linting, build, and test checks
+  - Uploads coverage reports to Codecov
+- Added markdownlint for markdown file linting
+- Expanded test suite from 5 to 85 tests (~95% coverage on core modules)
+- Added badges to README (CI status, coverage, marketplace)
+
 ## 0.5.6
 
 - Added automatic field and enum renumbering on save, enabled by the new `protoc.renumber_on_save` setting.

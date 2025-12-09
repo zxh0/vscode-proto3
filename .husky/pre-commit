@@ -1,4 +1,3 @@
-#!/bin/sh
-. "$(dirname "$0")/_/husky.sh"
-
-npx pretty-quick --staged
+npx lint-staged
+npm run lint
+npm run build

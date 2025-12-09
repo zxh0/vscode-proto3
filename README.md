@@ -1,33 +1,30 @@
 # vscode-proto3
 
+[![CI](https://github.com/zxh0/vscode-proto3/actions/workflows/ci.yml/badge.svg)](https://github.com/zxh0/vscode-proto3/actions/workflows/ci.yml)
+[![codecov](https://codecov.io/gh/zxh0/vscode-proto3/branch/master/graph/badge.svg)](https://codecov.io/gh/zxh0/vscode-proto3)
+[![VS Code Marketplace](https://img.shields.io/visual-studio-marketplace/v/zxh404.vscode-proto3?label=VS%20Code%20Marketplace)](https://marketplace.visualstudio.com/items?itemName=zxh404.vscode-proto3)
+[![VS Code Marketplace Installs](https://img.shields.io/visual-studio-marketplace/i/zxh404.vscode-proto3)](https://marketplace.visualstudio.com/items?itemName=zxh404.vscode-proto3)
+
 ![icon](images/vscode_extension_icon.png)
 
 Protobuf 3 support for Visual Studio Code
 
-https://github.com/zxh0/vscode-proto3
+<https://github.com/zxh0/vscode-proto3>
 
-
-
-
-
-⚠️ Project is looking for new maintainers.
-If you're interested in helping maintain this VSCode extension, please comment on issue #184.
-
+> ⚠️ **Project is looking for new maintainers.**
+> If you're interested in helping maintain this VSCode extension, please comment on issue #184.
 
 [![Help Wanted](https://img.shields.io/badge/maintainer-wanted-red)](...)
 
-
-
-### VSCode Commands
+## VSCode Commands
 
 _By default **ctrl-shift-p** opens the command prompt._
 
-| Command | Description |
-|---------|-------------|
-| `proto3: Compile All Protos` | Compiles all workspace protos using [configurations](#extension-settings) defined with `protoc.options`. |
-| `proto3: Compile This Proto` | Compiles the active proto using [configurations](#extension-settings) defined with `protoc.options`. |
-| `proto3: Renumber Fields/Enum Values` | Renumbers field tags within the selected message (starting from 1) or enum values (starting from 0). |
-
+| Command                               | Description                                                                                              |
+| ------------------------------------- | -------------------------------------------------------------------------------------------------------- |
+| `proto3: Compile All Protos`          | Compiles all workspace protos using [configurations](#extension-settings) defined with `protoc.options`. |
+| `proto3: Compile This Proto`          | Compiles the active proto using [configurations](#extension-settings) defined with `protoc.options`.     |
+| `proto3: Renumber Fields/Enum Values` | Renumbers field tags within the selected message (starting from 1) or enum values (starting from 0).     |
 
 ## Features
 
@@ -45,7 +42,9 @@ _By default **ctrl-shift-p** opens the command prompt._
 
 ### Renumbering tags
 
-Use the `proto3: Renumber Fields/Enum Values` command (via **Ctrl+Shift+P**) while the cursor is inside a message or enum. The command rewrites the numeric tags so that message fields count up from `1` and enum values start at `0`, saving the effort of manually editing values after inserting or removing entries.
+Use the `proto3: Renumber Fields/Enum Values` command (via **Ctrl+Shift+P**) while the cursor is inside
+a message or enum. The command rewrites the numeric tags so that message fields count up from `1` and
+enum values start at `0`, saving the effort of manually editing values after inserting or removing entries.
 
 ### Syntax Highlighting
 
@@ -61,19 +60,20 @@ to tell the extension the full path of protoc if it is not in `path`.
 
 Below is an example settings.json file which comes from
 [example/.vscode](https://github.com/zxh0/vscode-proto3/tree/master/example/.vscode):
+
 ```json
 {
-    "protoc": {
-        "path": "/path/to/protoc",
-        "compile_on_save": false,
-        "options": [
-            "--proto_path=protos/v3",
-            "--proto_path=protos/v2",
-            "--proto_path=${workspaceRoot}/proto",
-            "--proto_path=${env.GOPATH}/src",
-            "--java_out=gen/java"
-        ]
-    }
+  "protoc": {
+    "path": "/path/to/protoc",
+    "compile_on_save": false,
+    "options": [
+      "--proto_path=protos/v3",
+      "--proto_path=protos/v2",
+      "--proto_path=${workspaceRoot}/proto",
+      "--proto_path=${env.GOPATH}/src",
+      "--java_out=gen/java"
+    ]
+  }
 }
 ```
 
@@ -81,25 +81,24 @@ Below is an example settings.json file which comes from
 
 The possible fields under the `protoc` extension settings which can be defined in a `settings.json` file.
 
-| Field            | Type     | Default          | Description                                                                    |
-| ---------------- | -------- | ---------------- | ------------------------------------------------------------------------------ |
-| path             | string   | _protoc in PATH_ | Path to protoc. Defaults to protoc in PATH if omitted.                         |
-| compile_on_save  | boolean  | false            | On `.proto` file save, compiles to `--*_out` location within `options`         |
-| renumber_on_save | boolean  | true             | Automatically renumbers message fields and enum values whenever you save       |
-| compile_all_path | string   | Workspace Root   | Search Path for `Compile All Protos` action. Defaults to the Workspace Root    |
-| use_absolute_path| boolean  | false            | Set `true` for `compile_all_path` search files using absolute path             |
-| options          | string[] | []               | protoc compiler arguments/flags, required for proto validation and compilation |
-
+| Field             | Type     | Default          | Description                                                                    |
+| ----------------- | -------- | ---------------- | ------------------------------------------------------------------------------ |
+| path              | string   | _protoc in PATH_ | Path to protoc. Defaults to protoc in PATH if omitted.                         |
+| compile_on_save   | boolean  | false            | On `.proto` file save, compiles to `--*_out` location within `options`         |
+| renumber_on_save  | boolean  | true             | Automatically renumbers message fields and enum values whenever you save       |
+| compile_all_path  | string   | Workspace Root   | Search Path for `Compile All Protos` action. Defaults to the Workspace Root    |
+| use_absolute_path | boolean  | false            | Set `true` for `compile_all_path` search files using absolute path             |
+| options           | string[] | []               | protoc compiler arguments/flags, required for proto validation and compilation |
 
 #### In-Line Variables
 
 These variables can be used to inject variables strings within the `protoc` extension configurations. See above for examples.
 
-| Variable      | Description                              |
-| ------------- | ---------------------------------------- |
-| config.*      | Refer settings items in ``Preferences``. |
-| env.*         | Refer environment variable.              |
-| workspaceRoot | Returns current workspace root path.     |
+| Variable      | Description                            |
+| ------------- | -------------------------------------- |
+| config.\*     | Refer settings items in `Preferences`. |
+| env.\*        | Refer environment variable.            |
+| workspaceRoot | Returns current workspace root path.   |
 
 ### Code Completion
 
@@ -155,9 +154,11 @@ The following snippets are based on
 
 Support "Format Document" if `clang-format` is in path, including custom `style` options.
 
-By default, `clang-format`'s standard coding style will be used for formatting. To define a custom style or use a supported preset add `"clang-format.style"` in VSCode Settings (`settings.json`)
+By default, `clang-format`'s standard coding style will be used for formatting. To define a custom
+style or use a supported preset add `"clang-format.style"` in VSCode Settings (`settings.json`).
 
-### Example usage:
+### Example usage
+
 `"clang-format.style": "google"`
 
 This is the equivalent of executing `clang-format -style=google` from the shell.
@@ -172,7 +173,8 @@ For further formatting options refer to the [official `clang-format` documentati
 
 Auto-completion not works in some situations.
 
-Some users consistently see an error like `spawnsync clang-format enoent` when they save. This happens when the "formatOnSave"-setting is enabled in VSCode and "clang-format" cannot be found. To fix this:
+Some users consistently see an error like `spawnsync clang-format enoent` when they save. This happens
+when the "formatOnSave"-setting is enabled in VSCode and "clang-format" cannot be found. To fix this:
 
 ### On MacOS
 
