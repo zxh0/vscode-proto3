@@ -1,0 +1,182 @@
+name: 🐛 Bug Report
+description: Report a bug or unexpected behavior in vscode-proto3
+title: '[Bug]: '
+labels: ['bug', 'needs-triage']
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ## Thanks for taking the time to report a bug! 🙏
+
+        Please fill out the sections below to help us understand and fix the issue.
+        The more details you provide, the faster we can help!
+
+  - type: checkboxes
+    id: existing-issue
+    attributes:
+      label: Is there an existing issue for this?
+      description: Please search to see if an issue already exists for the bug you encountered.
+      options:
+        - label: I have searched the existing issues and this is a new bug
+          required: true
+
+  - type: textarea
+    id: description
+    attributes:
+      label: Bug Description
+      description: A clear and concise description of what the bug is.
+      placeholder: Tell us what happened...
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected Behavior
+      description: What did you expect to happen?
+      placeholder: I expected...
+    validations:
+      required: true
+
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual Behavior
+      description: What actually happened?
+      placeholder: Instead, what happened was...
+    validations:
+      required: true
+
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Steps to Reproduce
+      description: Steps to reproduce the behavior
+      placeholder: |
+        1. Open a .proto file with...
+        2. Type '...'
+        3. Press Ctrl+Click on...
+        4. See error
+    validations:
+      required: true
+
+  - type: textarea
+    id: proto-sample
+    attributes:
+      label: Proto File Sample
+      description: If applicable, provide a minimal proto file that reproduces the issue
+      render: protobuf
+      placeholder: |
+        syntax = "proto3";
+
+        package example;
+
+        message MyMessage {
+          string field = 1;
+        }
+
+  - type: input
+    id: vscode-version
+    attributes:
+      label: VS Code Version
+      description: 'Run `code --version` in terminal'
+      placeholder: 'e.g., 1.85.0'
+    validations:
+      required: true
+
+  - type: input
+    id: extension-version
+    attributes:
+      label: Extension Version
+      description: 'Find in Extensions panel (Ctrl+Shift+X)'
+      placeholder: 'e.g., 0.5.6'
+    validations:
+      required: true
+
+  - type: dropdown
+    id: os
+    attributes:
+      label: Operating System
+      options:
+        - Windows 11
+        - Windows 10
+        - macOS (Apple Silicon)
+        - macOS (Intel)
+        - Linux (Ubuntu/Debian)
+        - Linux (Fedora/RHEL)
+        - Linux (Arch)
+        - Linux (Other)
+        - WSL
+        - Remote - SSH
+        - Remote - Containers
+        - GitHub Codespaces
+        - Other
+    validations:
+      required: true
+
+  - type: dropdown
+    id: protoc-installed
+    attributes:
+      label: Is protoc installed?
+      description: 'Check with `protoc --version` in terminal'
+      options:
+        - 'Yes'
+        - 'No'
+        - 'Not sure'
+    validations:
+      required: true
+
+  - type: input
+    id: protoc-version
+    attributes:
+      label: protoc Version (if installed)
+      description: 'Output of `protoc --version`'
+      placeholder: 'e.g., libprotoc 25.1'
+
+  - type: dropdown
+    id: clang-format-installed
+    attributes:
+      label: Is clang-format installed?
+      description: 'Check with `clang-format --version` in terminal'
+      options:
+        - 'Yes'
+        - 'No'
+        - 'Not sure'
+        - 'N/A (not using formatting)'
+
+  - type: textarea
+    id: settings
+    attributes:
+      label: Relevant Settings
+      description: Any relevant settings from your `.vscode/settings.json` or user settings
+      render: json
+      placeholder: |
+        {
+          "protoc": {
+            "path": "/usr/local/bin/protoc",
+            "options": ["--proto_path=."]
+          }
+        }
+
+  - type: textarea
+    id: logs
+    attributes:
+      label: Error Logs
+      description: |
+        Any error messages from:
+        - Output panel (View → Output → select "Proto3" or "Extension Host")
+        - Developer Tools Console (Help → Toggle Developer Tools)
+      render: shell
+
+  - type: textarea
+    id: screenshots
+    attributes:
+      label: Screenshots
+      description: If applicable, add screenshots to help explain your problem.
+      placeholder: Drag and drop images here...
+
+  - type: textarea
+    id: additional
+    attributes:
+      label: Additional Context
+      description: Add any other context about the problem here.

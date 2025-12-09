@@ -1,0 +1,124 @@
+name: ✨ Feature Request
+description: Suggest a new feature or enhancement for vscode-proto3
+title: '[Feature]: '
+labels: ['enhancement', 'needs-triage']
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ## Thanks for suggesting a feature! 💡
+
+        We love hearing ideas to make vscode-proto3 better.
+        Please describe your feature request in detail below.
+
+  - type: checkboxes
+    id: existing-issue
+    attributes:
+      label: Is there an existing feature request for this?
+      description: Please search to see if a feature request already exists.
+      options:
+        - label: I have searched the existing issues and this is a new feature request
+          required: true
+
+  - type: dropdown
+    id: feature-area
+    attributes:
+      label: Feature Area
+      description: What area of the extension does this relate to?
+      options:
+        - Syntax Highlighting
+        - Code Completion / IntelliSense
+        - Go to Definition
+        - Find References
+        - Formatting (clang-format)
+        - Diagnostics / Error Checking
+        - Document Symbols / Outline
+        - Snippets
+        - Field Renumbering
+        - Linting (protolint, buf, etc.)
+        - Compilation (protoc)
+        - Configuration / Settings
+        - Performance
+        - Documentation
+        - Other
+    validations:
+      required: true
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem Description
+      description: Is your feature request related to a problem? Describe it here.
+      placeholder: |
+        I'm always frustrated when...
+
+        Currently, I have to manually...
+
+  - type: textarea
+    id: solution
+    attributes:
+      label: Proposed Solution
+      description: Describe the solution you'd like to see.
+      placeholder: |
+        It would be great if the extension could...
+
+        When I press Ctrl+Shift+... it should...
+    validations:
+      required: true
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives Considered
+      description: Describe any alternative solutions or workarounds you've considered.
+      placeholder: |
+        I've tried using... but it doesn't work because...
+
+        Another approach could be...
+
+  - type: textarea
+    id: examples
+    attributes:
+      label: Examples
+      description: |
+        Provide examples of how this feature would work.
+        Include proto file samples, expected behavior, or mockups.
+      placeholder: |
+        Given this proto file:
+        ```protobuf
+        message Example {
+          string field = 1;
+        }
+        ```
+
+        The feature should...
+
+  - type: dropdown
+    id: priority
+    attributes:
+      label: How important is this feature to you?
+      options:
+        - Nice to have
+        - Would improve my workflow
+        - Important for my use case
+        - Critical - blocking my work
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: contribution
+    attributes:
+      label: Contribution
+      description: Would you be willing to help implement this feature?
+      options:
+        - label: I would be willing to submit a PR to implement this feature
+
+  - type: textarea
+    id: additional
+    attributes:
+      label: Additional Context
+      description: Add any other context, screenshots, or references about the feature request.
+      placeholder: |
+        - Links to similar features in other extensions
+        - Related protobuf documentation
+        - Screenshots or mockups

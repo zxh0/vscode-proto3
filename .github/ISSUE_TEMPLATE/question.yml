@@ -1,0 +1,85 @@
+name: ❓ Question / Help
+description: Ask a question or get help with using vscode-proto3
+title: '[Question]: '
+labels: ['question', 'needs-triage']
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ## Need help? We're here for you! 🤝
+
+        Before asking, please check:
+        - [README](https://github.com/zxh0/vscode-proto3#readme) for setup instructions
+        - [Existing issues](https://github.com/zxh0/vscode-proto3/issues) for similar questions
+
+        If you still need help, fill out the form below.
+
+  - type: dropdown
+    id: question-type
+    attributes:
+      label: Question Type
+      options:
+        - Setup / Installation
+        - Configuration
+        - How to use a feature
+        - Troubleshooting
+        - Compatibility
+        - Other
+    validations:
+      required: true
+
+  - type: textarea
+    id: question
+    attributes:
+      label: Your Question
+      description: What would you like to know?
+      placeholder: |
+        How do I...?
+
+        What's the best way to...?
+    validations:
+      required: true
+
+  - type: textarea
+    id: tried
+    attributes:
+      label: What have you tried?
+      description: Tell us what you've already attempted.
+      placeholder: |
+        I've tried...
+
+        I read the documentation about... but...
+
+  - type: textarea
+    id: context
+    attributes:
+      label: Context
+      description: Any relevant context (settings, proto files, environment)
+      placeholder: |
+        My settings.json contains...
+
+        I'm trying to work with proto files that...
+
+  - type: input
+    id: vscode-version
+    attributes:
+      label: VS Code Version
+      placeholder: 'e.g., 1.85.0'
+
+  - type: input
+    id: extension-version
+    attributes:
+      label: Extension Version
+      placeholder: 'e.g., 0.5.6'
+
+  - type: dropdown
+    id: os
+    attributes:
+      label: Operating System
+      options:
+        - Windows
+        - macOS
+        - Linux
+        - WSL
+        - Remote Environment
+        - Other

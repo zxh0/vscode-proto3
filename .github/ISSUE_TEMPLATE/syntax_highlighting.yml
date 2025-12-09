@@ -1,0 +1,103 @@
+name: 🎨 Syntax Highlighting Issue
+description: Report problems with syntax highlighting or coloring
+title: '[Syntax]: '
+labels: ['bug', 'syntax-highlighting', 'needs-triage']
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ## Syntax Highlighting Issue 🎨
+
+        Report problems with how proto files are colored/highlighted.
+        Screenshots are very helpful for these issues!
+
+  - type: textarea
+    id: description
+    attributes:
+      label: Issue Description
+      description: What syntax is not being highlighted correctly?
+      placeholder: |
+        The `reserved` keyword in enums is not highlighted...
+
+        Comments inside strings break highlighting...
+    validations:
+      required: true
+
+  - type: textarea
+    id: proto-sample
+    attributes:
+      label: Proto File Sample
+      description: Minimal proto code that shows the issue
+      render: protobuf
+      placeholder: |
+        syntax = "proto3";
+
+        // Paste your proto code here
+    validations:
+      required: true
+
+  - type: textarea
+    id: screenshot
+    attributes:
+      label: Screenshot
+      description: |
+        Please provide a screenshot showing the highlighting issue.
+
+        **Tip:** Use VS Code's "Developer: Inspect Editor Tokens and Scopes" command
+        to see how tokens are being classified.
+      placeholder: Drag and drop screenshot here...
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected Highlighting
+      description: How should this be highlighted?
+      placeholder: |
+        The keyword should be colored as a keyword (purple/blue)...
+
+        The string should end at the closing quote...
+
+  - type: dropdown
+    id: color-theme
+    attributes:
+      label: Color Theme
+      description: What VS Code color theme are you using?
+      options:
+        - Dark+ (default dark)
+        - Light+ (default light)
+        - Monokai
+        - One Dark Pro
+        - Dracula
+        - Solarized
+        - GitHub Theme
+        - Other (please specify in additional context)
+    validations:
+      required: true
+
+  - type: input
+    id: vscode-version
+    attributes:
+      label: VS Code Version
+      placeholder: 'e.g., 1.85.0'
+    validations:
+      required: true
+
+  - type: input
+    id: extension-version
+    attributes:
+      label: Extension Version
+      placeholder: 'e.g., 0.5.6'
+    validations:
+      required: true
+
+  - type: textarea
+    id: additional
+    attributes:
+      label: Additional Context
+      description: Any other relevant information
+      placeholder: |
+        This started happening after...
+
+        Other extensions that might affect this...

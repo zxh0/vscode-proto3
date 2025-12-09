@@ -1,0 +1,40 @@
+syntax = "proto3";
+
+package issues;
+
+// Test case for Issue #180 - Go to Definition with optional label
+// The "optional" keyword was reintroduced in proto3 for explicit field presence
+
+message MyMessage {
+	string value = 1;
+}
+
+message AnotherMessage {
+	int32 count = 1;
+}
+
+message TestOptional {
+	// Go to Definition should work for MyMessage here
+	optional MyMessage      optional_field   = 1;
+
+	// Standard field for comparison
+	MyMessage regular_field = 2;
+
+	// Repeated still works
+	repeated MyMessage repeated_field = 3;
+
+	// Optional with another type
+	optional AnotherMessage another_optional = 4;
+
+	// Optional primitive
+	optional string         optional_string  = 5;
+
+	// Optional in map value (edge case)
+	map<string, MyMessage> map_field = 6;
+}
+
+// Test in RPC context
+service TestService {
+	// Optional in request/response types should also work
+	rpc GetMessage(MyMessage) returns (AnotherMessage);
+}

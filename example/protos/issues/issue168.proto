@@ -1,0 +1,14 @@
+syntax = "proto3";
+
+package issues;
+
+// Test case for Issue #168 - Negative enum values
+// These should all be valid and properly highlighted
+// Note: In proto3, the first enum value must be 0
+enum NegativeEnumValues {
+	ZERO = 0;
+	NEGATIVE_ONE = -1;
+	NEGATIVE_TWO = -2;
+	NEGATIVE_THREE = -3;
+	POSITIVE_ONE = 1;
+}

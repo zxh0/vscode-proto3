@@ -2,6 +2,24 @@
 
 ## 0.5.7 (Unreleased)
 
+### Bug Fixes
+
+- Fixed syntax highlighting for negative enum values (issue #168)
+- Fixed syntax highlighting for fully-qualified type names with leading dot (issue #167)
+- Fixed "Go to Definition" not working with `optional` keyword (issue #180)
+- Added `clang-format.style` and `clang-format.executable` to configuration schema (issue #152)
+- Added `compile_on_save` to configuration schema
+
+### Enhancements
+
+- Enhanced DocumentSymbolProvider to show hierarchical outline (issue #166)
+  - Messages now show nested fields, enums, and nested messages
+  - Enums now show their values as children
+  - Services now show RPC methods as children
+  - Fields show their type in the detail field
+- Added support for `optional`, `repeated`, `required` fields in symbol outline
+- Added support for `map` and `oneof` fields in symbol outline
+
 ### Development Infrastructure
 
 - Modernized build tooling and dependencies
@@ -15,7 +33,7 @@
   - Includes formatting, linting, build, and test checks
   - Uploads coverage reports to Codecov
 - Added markdownlint for markdown file linting
-- Expanded test suite from 5 to 85 tests (~95% coverage on core modules)
+- Expanded test suite from 5 to 119 tests (~95% coverage on core modules)
 - Added badges to README (CI status, coverage, marketplace)
 
 ## 0.5.6

@@ -1,0 +1,14 @@
+blank_issues_enabled: false
+contact_links:
+  - name: 📖 VS Code Extension Documentation
+    url: https://code.visualstudio.com/api
+    about: Official VS Code extension development documentation
+  - name: 📘 Protocol Buffers Documentation
+    url: https://protobuf.dev/
+    about: Official Protocol Buffers documentation from Google
+  - name: 💬 VS Code Discussions
+    url: https://github.com/microsoft/vscode-discussions/discussions
+    about: General VS Code questions and discussions
+  - name: 🔍 Search Existing Issues
+    url: https://github.com/zxh0/vscode-proto3/issues?q=is%3Aissue
+    about: Search through existing issues before creating a new one

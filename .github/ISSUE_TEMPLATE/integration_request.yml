@@ -1,0 +1,103 @@
+name: 🔌 Integration Request
+description: Request integration with other tools (protolint, buf, prototool, etc.)
+title: '[Integration]: '
+labels: ['enhancement', 'integration', 'needs-triage']
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ## Tool Integration Request 🔧
+
+        Want vscode-proto3 to work with another tool? Let us know!
+
+        **Currently supported:**
+        - protoc (Protocol Buffer Compiler)
+        - clang-format (Formatting)
+
+        **Commonly requested:**
+        - [Buf](https://buf.build/) - See issue #138
+        - [protolint](https://github.com/yoheimuta/protolint) - See issue #173
+
+  - type: checkboxes
+    id: existing-request
+    attributes:
+      label: Have you checked existing requests?
+      description: Please search existing issues for integration requests.
+      options:
+        - label: I have searched existing issues and this tool hasn't been requested
+          required: true
+
+  - type: input
+    id: tool-name
+    attributes:
+      label: Tool Name
+      description: What tool would you like integrated?
+      placeholder: 'e.g., buf, protolint, grpc-tools'
+    validations:
+      required: true
+
+  - type: input
+    id: tool-url
+    attributes:
+      label: Tool URL
+      description: Link to the tool's homepage or repository
+      placeholder: 'https://github.com/...'
+    validations:
+      required: true
+
+  - type: textarea
+    id: tool-description
+    attributes:
+      label: What does this tool do?
+      description: Brief description of the tool and its purpose
+      placeholder: |
+        This tool provides...
+
+        It helps with...
+    validations:
+      required: true
+
+  - type: textarea
+    id: integration-benefits
+    attributes:
+      label: Why should we integrate this?
+      description: How would this integration benefit users?
+      placeholder: |
+        This integration would allow users to...
+
+        It would improve the workflow by...
+    validations:
+      required: true
+
+  - type: textarea
+    id: integration-ideas
+    attributes:
+      label: Integration Ideas
+      description: How do you envision this integration working?
+      placeholder: |
+        The extension could run the tool on save...
+
+        Errors could be shown as VS Code diagnostics...
+
+        A new command could be added to...
+
+  - type: dropdown
+    id: tool-status
+    attributes:
+      label: Tool Status
+      description: Is this tool actively maintained?
+      options:
+        - Actively maintained
+        - Maintenance mode
+        - Deprecated
+        - Not sure
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: contribution
+    attributes:
+      label: Contribution
+      description: Would you be willing to help implement this integration?
+      options:
+        - label: I would be willing to submit a PR to implement this integration

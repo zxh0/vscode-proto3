@@ -46,7 +46,7 @@ export class Proto3DefinitionProvider implements vscode.DefinitionProvider {
     const rpcReqOrRspPattern = `\\s*\\(\\s*(stream\\s+)?${messageOrEnumPattern}\\s*\\)\\s*`;
 
     const messageRegExp = new RegExp(
-      `^\\s*(repeated){0,1}(${messageOrEnumPattern})${messageFieldPattern}$`,
+      `^\\s*(optional|repeated)?\\s*(${messageOrEnumPattern})${messageFieldPattern}$`,
       'i'
     );
     const messageInMap = new RegExp(

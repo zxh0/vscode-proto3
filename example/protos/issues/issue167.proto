@@ -1,0 +1,31 @@
+syntax = "proto3";
+
+package issues;
+
+import "google/protobuf/timestamp.proto";
+
+// Test case for Issue #167 - Fully-qualified type names with leading dot
+// These should all be valid and properly highlighted
+
+message TestFullyQualified {
+	// Leading dot indicates absolute path from root
+	.google.protobuf.Timestamp absolute_time = 1;
+
+	// Without leading dot (relative)
+	google.protobuf.Timestamp relative_time = 2;
+}
+
+// Define a nested message for testing
+message Outer {
+	message Inner {
+		string value = 1;
+	}
+}
+
+message TestLocalFullyQualified {
+	// Fully qualified local type
+	.issues.Outer.Inner fully_qualified = 1;
+
+	// Relative reference
+	Outer.Inner relative = 2;
+}

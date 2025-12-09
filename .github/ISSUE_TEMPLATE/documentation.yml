@@ -1,0 +1,59 @@
+name: 📚 Documentation Issue
+description: Report missing, incorrect, or unclear documentation
+title: '[Docs]: '
+labels: ['documentation', 'needs-triage']
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ## Help us improve our documentation! 📖
+
+        Good documentation makes everyone's life easier.
+        Let us know what's missing or could be improved.
+
+  - type: dropdown
+    id: doc-type
+    attributes:
+      label: Documentation Type
+      description: What type of documentation is this about?
+      options:
+        - README
+        - Extension settings documentation
+        - Code comments
+        - Changelog
+        - Contributing guide
+        - Marketplace description
+        - Error messages
+        - Other
+    validations:
+      required: true
+
+  - type: textarea
+    id: description
+    attributes:
+      label: What's the issue?
+      description: Describe what's missing, incorrect, or unclear.
+      placeholder: |
+        The documentation says... but actually...
+
+        I couldn't find information about...
+    validations:
+      required: true
+
+  - type: textarea
+    id: suggestion
+    attributes:
+      label: Suggested Improvement
+      description: How would you improve the documentation?
+      placeholder: |
+        It would be helpful to add...
+
+        The documentation should explain...
+
+  - type: checkboxes
+    id: contribution
+    attributes:
+      label: Contribution
+      description: Would you be willing to help improve the documentation?
+      options:
+        - label: I would be willing to submit a PR to improve this documentation

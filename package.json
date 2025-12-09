@@ -101,8 +101,23 @@
               "type": "boolean",
               "default": true,
               "description": "Automatically renumber message fields and enum values whenever a proto3 file is saved"
+            },
+            "compile_on_save": {
+              "type": "boolean",
+              "default": false,
+              "description": "Compile proto file on save using protoc"
             }
           }
+        },
+        "clang-format.style": {
+          "type": "string",
+          "default": "file",
+          "description": "Clang-format style for formatting proto files. Can be 'file' to use .clang-format, or a style name like 'Google', 'LLVM', 'Chromium', 'Mozilla', 'WebKit', or an inline style configuration."
+        },
+        "clang-format.executable": {
+          "type": "string",
+          "default": "clang-format",
+          "description": "Path to the clang-format executable"
         }
       }
     }
