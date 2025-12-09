@@ -31,19 +31,14 @@ export class Proto3DocumentSymbolProvider implements DocumentSymbolProvider {
 
     // create cache entry
     const tokenizer = tokenize(doc.getText(), false);
-    let state: "free" | "rpc" | "message" | 'service' = "free"
+    let state: "free" | "rpc" | "message" | "service" | "enum" = "free"
     for (let tok = tokenizer.next(); tok !== null; tok = tokenizer.next()) {
       switch (tok) {
         case "message":
-          state = "message";
-          break;
-
         case "rpc":
-          state = "rpc";
-          break;
-
-        case 'service':
-          state = 'service';
+        case "service":
+        case "enum":
+          state = tok;
           break;
 
         default:
@@ -68,6 +63,9 @@ export class Proto3DocumentSymbolProvider implements DocumentSymbolProvider {
               break
             case 'service':
               kind = SymbolKind.Class;
+              break;
+            case 'enum':
+              kind = SymbolKind.Enum;
               break;
           }
           ret.push(new SymbolInformation(tok, kind, "", location));
