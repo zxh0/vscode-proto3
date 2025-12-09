@@ -2,7 +2,7 @@
   "name": "vscode-proto3",
   "displayName": "vscode-proto3",
   "description": "Protobuf 3 support for Visual Studio Code",
-  "version": "0.5.5",
+  "version": "0.5.6",
   "publisher": "zxh404",
   "license": "SEE LICENSE IN LICENSE.txt",
   "icon": "images/vscode_extension_icon.png",
@@ -21,7 +21,8 @@
   "activationEvents": [
     "onLanguage:proto3",
     "onCommand:proto3.compile.one",
-    "onCommand:proto3.compile.all"
+    "onCommand:proto3.compile.all",
+    "onCommand:proto3.renumber.scope"
   ],
   "main": "./out/src/proto3Main",
   "contributes": {
@@ -33,6 +34,10 @@
       {
         "command": "proto3.compile.all",
         "title": "proto3: Compile All Protos"
+      },
+      {
+        "command": "proto3.renumber.scope",
+        "title": "proto3: Renumber Fields/Enum Values"
       }
     ],
     "languages": [
@@ -91,6 +96,11 @@
               },
               "default": [],
               "description": "Command line options for protoc"
+            },
+            "renumber_on_save": {
+              "type": "boolean",
+              "default": true,
+              "description": "Automatically renumber message fields and enum values whenever a proto3 file is saved"
             }
           }
         }
@@ -100,6 +110,8 @@
   "scripts": {
     "vscode:prepublish": "tsc -p ./",
     "compile": "tsc -watch -p ./",
+    "build": "tsc -p ./",
+    "test": "npm run build && mocha --ui tdd \"out/test/**/*.test.js\"",
     "prepare": "husky install"
   },
   "devDependencies": {
