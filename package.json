@@ -135,7 +135,7 @@
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "format:check": "prettier --check \"src/**/*.ts\" \"test/**/*.ts\"",
     "verify": "npm run lint && npm run lint:md && npm run format:check && npm test -- --forbid-only",
-    "package:vsix": "@vscode/vsce package --out vscode-proto3-${npm_package_version}.vsix"
+    "package:vsix": "vsce package --out vscode-proto3-${npm_package_version}.vsix"
   },
   "devDependencies": {
     "@vscode/vsce": "^2.32.0",
