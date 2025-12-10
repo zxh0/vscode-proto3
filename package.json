@@ -134,9 +134,11 @@
     "lint:md:fix": "markdownlint **/*.md --ignore node_modules --fix",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "format:check": "prettier --check \"src/**/*.ts\" \"test/**/*.ts\"",
-    "prepare": "husky"
+    "verify": "npm run lint && npm run lint:md && npm run format:check && npm test -- --forbid-only",
+    "package:vsix": "@vscode/vsce package --out vscode-proto3-${npm_package_version}.vsix"
   },
   "devDependencies": {
+    "@vscode/vsce": "^2.32.0",
     "@eslint/js": "^9.39.1",
     "@types/mocha": "^10.0.10",
     "@types/node": "^20.17.12",
@@ -145,7 +147,6 @@
     "@typescript-eslint/parser": "^8.19.1",
     "c8": "^10.1.3",
     "eslint": "^9.17.0",
-    "husky": "^9.1.7",
     "lint-staged": "^16.2.7",
     "markdownlint-cli": "^0.46.0",
     "mocha": "^11.0.1",

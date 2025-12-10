@@ -27,7 +27,7 @@
   - Updated ESLint to 9.x with flat config format
   - Updated Mocha to 11.x and added c8 for coverage reporting
   - Updated Prettier to 3.4 with best practices config
-  - Updated Husky to 9.x with lint-staged for pre-commit hooks
+  - Added `npm run verify` for local lint/format/test without hook tooling
 - Added GitHub Actions CI workflow
   - Runs on Node.js 18.x, 20.x, and 22.x
   - Includes formatting, linting, build, and test checks

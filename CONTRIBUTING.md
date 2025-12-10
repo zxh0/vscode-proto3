@@ -61,7 +61,7 @@ npm run test:coverage
 - Prettier handles code formatting
 - Markdownlint enforces markdown style
 
-Pre-commit hooks automatically run linting and formatting on staged files.
+Run `npm run verify` before committing to lint, markdown-lint, format-check, and run tests without extra tooling.
 
 ## Submitting Changes
 
