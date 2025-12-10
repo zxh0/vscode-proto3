@@ -33,7 +33,8 @@ Open the command palette (**Ctrl+Shift+P** / **Cmd+Shift+P**) and run:
 
 ### Renumbering
 
-While inside a message or enum, run `proto3: Renumber Fields/Enum Values`. Tags are rewritten so fields count up from `1` and enums from `0`.
+While inside a message or enum, run `proto3: Renumber Fields/Enum Values`.
+Tags are rewritten so fields count up from `1` and enums from `0`.
 
 ### Snippets
 
@@ -135,7 +136,7 @@ See [CONTRIBUTING](CONTRIBUTING.md). PRs that add tests and keep `npm run verify
 
 ![Top contributors](https://contrib.rocks/image?repo=zxh0/vscode-proto3)
 
-See the full list at https://github.com/zxh0/vscode-proto3/graphs/contributors.
+See the full list on GitHub in the [contributors graph](https://github.com/zxh0/vscode-proto3/graphs/contributors).
 
 ## Release Notes
 
