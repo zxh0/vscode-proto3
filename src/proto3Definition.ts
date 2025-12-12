@@ -39,7 +39,8 @@ export class Proto3DefinitionProvider implements vscode.DefinitionProvider {
       if (location) {
         return location;
       }
-      vscode.window.showErrorMessage(`Could not find ${targetDefinition} definition.`);
+      // Show subtle status bar message for missing reference
+      vscode.window.setStatusBarMessage(`Could not find ${targetDefinition} definition`, 3000);
     }
     const messageOrEnumPattern = `\\s*(\\w+\\.)*\\w+\\s*`;
     const messageFieldPattern = `\\s+\\w+\\s*=\\s*\\d+;.*`;
@@ -67,7 +68,8 @@ export class Proto3DefinitionProvider implements vscode.DefinitionProvider {
       if (location) {
         return location;
       }
-      vscode.window.showErrorMessage(`Could not find ${targetDefinition} definition.`);
+      // Show subtle status bar message for missing reference
+      vscode.window.setStatusBarMessage(`Could not find ${targetDefinition} definition`, 3000);
     }
 
     return undefined;
