@@ -110,6 +110,7 @@ export class Proto3Configuration {
           }
         }
       }
+    }
 
     // Remove duplicates and resolve relative paths
     const uniquePaths = new Set<string>();
