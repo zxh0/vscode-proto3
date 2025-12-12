@@ -87,36 +87,46 @@ export class Proto3Configuration {
 
     // Add paths from protoc options (--proto_path or -I)
     const protoPathOptions = this.getProtoPathOptions();
-    for (const option of protoPathOptions) {
+    for (let i = 0; i < protoPathOptions.length; i++) {
+      const option = protoPathOptions[i];
       if (option.startsWith('--proto_path=')) {
         const protoPath = option.substring('--proto_path='.length);
         if (protoPath) {
           paths.push(protoPath);
         }
-      } else if (option.startsWith('-I')) {
-        const pathValue = option.length > 2 ? option.substring(2) : '';
+      } else if (option.startsWith('-I') && option.length > 2) {
+        // Handle -I<path>
+        const pathValue = option.substring(2);
         if (pathValue) {
           paths.push(pathValue);
         }
       } else if (option === '-I') {
         // Handle case where -I is separated from path
-        const optionIndex = this.getProtocOptions().indexOf(option);
-        if (optionIndex < this.getProtocOptions().length - 1) {
-          const nextOption = this.getProtocOptions()[optionIndex + 1];
+        if (i + 1 < protoPathOptions.length) {
+          const nextOption = protoPathOptions[i + 1];
           if (!nextOption.startsWith('-')) {
             paths.push(nextOption);
+            i++; // Skip the next option since it's consumed as a path
           }
         }
       }
-    }
 
     // Remove duplicates and resolve relative paths
     const uniquePaths = new Set<string>();
+    let warnedAboutRelativePath = false;
     for (const searchPath of paths) {
       if (path.isAbsolute(searchPath)) {
         uniquePaths.add(path.resolve(searchPath));
       } else if (workspaceRoot) {
         uniquePaths.add(path.resolve(workspaceRoot, searchPath));
+      } else {
+        uniquePaths.add(path.resolve(process.cwd(), searchPath));
+        if (!warnedAboutRelativePath) {
+          console.warn(
+            `[protoc] Relative proto path "${searchPath}" resolved against current working directory (${process.cwd()}) because workspace root is undefined.`
+          );
+          warnedAboutRelativePath = true;
+        }
       }
     }
 

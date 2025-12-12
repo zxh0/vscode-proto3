@@ -94,7 +94,8 @@ export class Proto3DefinitionProvider implements vscode.DefinitionProvider {
       files.push(...pathFiles);
     }
 
-    for (const file of files) {
+    const uniqueFiles = Array.from(new Set(files));
+    for (const file of uniqueFiles) {
       const data = fs.readFileSync(file.toString());
       const lines = data.toString().split('\n');
       for (let lineIndex = 0; lineIndex < lines.length; lineIndex++) {
