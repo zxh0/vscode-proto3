@@ -83,6 +83,17 @@ export class Proto3DefinitionProvider implements vscode.DefinitionProvider {
 
     const files = [document.uri.fsPath, ...(await fg(searchPaths))];
 
+    // Also search in proto paths for any files that might not be directly imported
+    const workspaceFolder = vscode.workspace.getWorkspaceFolder(document.uri);
+    const { Proto3Configuration } = await import('./proto3Configuration');
+    const config = Proto3Configuration.Instance(workspaceFolder);
+    const protoPaths = config.getAllProtoPathsForImport();
+
+    for (const protoPath of protoPaths) {
+      const pathFiles = await fg(path.join(protoPath, '**', '*.proto'));
+      files.push(...pathFiles);
+    }
+
     for (const file of files) {
       const data = fs.readFileSync(file.toString());
       const lines = data.toString().split('\n');
@@ -107,17 +118,31 @@ export class Proto3DefinitionProvider implements vscode.DefinitionProvider {
   }
 
   private async findImportDefinition(importFileName: string): Promise<vscode.Location | undefined> {
-    const rootPath = vscode.workspace.rootPath ?? '';
-    const files = await fg(path.join(rootPath, '**', importFileName));
-    if (files.length === 0) {
+    const activeEditor = vscode.window.activeTextEditor;
+    if (!activeEditor) {
       return undefined;
     }
-    const importPath = files[0].toString();
-    const uri = vscode.Uri.file(importPath);
-    const definitionStartPosition = new vscode.Position(0, 0);
-    const definitionEndPosition = new vscode.Position(0, 0);
-    const range = new vscode.Range(definitionStartPosition, definitionEndPosition);
-    return new vscode.Location(uri, range);
+
+    const workspaceFolder = vscode.workspace.getWorkspaceFolder(activeEditor.document.uri);
+    const { Proto3Configuration } = await import('./proto3Configuration');
+    const config = Proto3Configuration.Instance(workspaceFolder);
+    const protoPaths = config.getAllProtoPathsForImport();
+
+    // Search in all configured proto paths
+    for (const protoPath of protoPaths) {
+      const searchPattern = path.join(protoPath, '**', importFileName);
+      const files = await fg(searchPattern);
+      if (files.length > 0) {
+        const importPath = files[0].toString();
+        const uri = vscode.Uri.file(importPath);
+        const definitionStartPosition = new vscode.Position(0, 0);
+        const definitionEndPosition = new vscode.Position(0, 0);
+        const range = new vscode.Range(definitionStartPosition, definitionEndPosition);
+        return new vscode.Location(uri, range);
+      }
+    }
+
+    return undefined;
   }
 
   private getTargetLocationInline(

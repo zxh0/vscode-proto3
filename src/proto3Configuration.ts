@@ -74,6 +74,54 @@ export class Proto3Configuration {
   public useAbsolutePath(): boolean {
     return this._config.get<boolean>('use_absolute_path', false);
   }
+
+  public getAllProtoPathsForImport(): string[] {
+    // Combine workspace root and protoc proto_path options
+    const paths: string[] = [];
+    const workspaceRoot = vscode.workspace.rootPath;
+
+    // Add workspace root (current behavior) for backward compatibility
+    if (workspaceRoot) {
+      paths.push(workspaceRoot);
+    }
+
+    // Add paths from protoc options (--proto_path or -I)
+    const protoPathOptions = this.getProtoPathOptions();
+    for (const option of protoPathOptions) {
+      if (option.startsWith('--proto_path=')) {
+        const protoPath = option.substring('--proto_path='.length);
+        if (protoPath) {
+          paths.push(protoPath);
+        }
+      } else if (option.startsWith('-I')) {
+        const pathValue = option.length > 2 ? option.substring(2) : '';
+        if (pathValue) {
+          paths.push(pathValue);
+        }
+      } else if (option === '-I') {
+        // Handle case where -I is separated from path
+        const optionIndex = this.getProtocOptions().indexOf(option);
+        if (optionIndex < this.getProtocOptions().length - 1) {
+          const nextOption = this.getProtocOptions()[optionIndex + 1];
+          if (!nextOption.startsWith('-')) {
+            paths.push(nextOption);
+          }
+        }
+      }
+    }
+
+    // Remove duplicates and resolve relative paths
+    const uniquePaths = new Set<string>();
+    for (const searchPath of paths) {
+      if (path.isAbsolute(searchPath)) {
+        uniquePaths.add(path.resolve(searchPath));
+      } else if (workspaceRoot) {
+        uniquePaths.add(path.resolve(workspaceRoot, searchPath));
+      }
+    }
+
+    return Array.from(uniquePaths);
+  }
 }
 
 class ProtoFinder {
