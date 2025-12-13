@@ -1,15 +1,8 @@
-# vscode-proto3
-
-[![CI](https://github.com/zxh0/vscode-proto3/actions/workflows/ci.yml/badge.svg)](https://github.com/zxh0/vscode-proto3/actions/workflows/ci.yml)
-[![codecov](https://codecov.io/gh/zxh0/vscode-proto3/branch/master/graph/badge.svg)](https://codecov.io/gh/zxh0/vscode-proto3)
-[![VS Code Marketplace](https://img.shields.io/visual-studio-marketplace/v/zxh404.vscode-proto3?label=VS%20Code%20Marketplace)](https://marketplace.visualstudio.com/items?itemName=zxh404.vscode-proto3)
-[![Installs](https://img.shields.io/visual-studio-marketplace/i/zxh404.vscode-proto3)](https://marketplace.visualstudio.com/items?itemName=zxh404.vscode-proto3)
-
-Protobuf 3 support for Visual Studio Code — syntax, validation, snippets, and quick compile/renumber workflows.
-
-> ⚠️ **Project is looking for new maintainers.** If you're interested, please comment on issue #184.
-
 ![icon](images/vscode_extension_icon.png)
+
+> Salute to the long-standing [zxh0/vscode-proto3](https://github.com/zxh0/vscode-proto3) extension that has accompanied us for so long.
+
+This is an excellent and concise extension in VSCode, and it is well worth our continuous effort to make small optimizations.
 
 ## Highlights
 
