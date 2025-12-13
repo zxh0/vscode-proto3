@@ -2,7 +2,7 @@
   "name": "vscode-proto3-next",
   "displayName": "vscode-proto3-next",
   "description": "Protobuf 3 support for Visual Studio Code",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "publisher": "jay-youngn",
   "license": "SEE LICENSE IN LICENSE.txt",
   "icon": "images/vscode_extension_icon.png",
