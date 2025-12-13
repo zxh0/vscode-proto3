@@ -1,15 +1,15 @@
 {
-  "name": "vscode-proto3",
-  "displayName": "vscode-proto3",
+  "name": "vscode-proto3-next",
+  "displayName": "vscode-proto3-next",
   "description": "Protobuf 3 support for Visual Studio Code",
-  "version": "0.5.6",
-  "publisher": "zxh404",
+  "version": "1.0.1",
+  "publisher": "jay-youngn",
   "license": "SEE LICENSE IN LICENSE.txt",
   "icon": "images/vscode_extension_icon.png",
-  "homepage": "https://github.com/zxh0/vscode-proto3/blob/master/README.md",
+  "homepage": "https://github.com/jay-youngn/vscode-proto3/blob/master/README.md",
   "repository": {
     "type": "git",
-    "url": "https://github.com/zxh0/vscode-proto3"
+    "url": "https://github.com/jay-youngn/vscode-proto3"
   },
   "engines": {
     "vscode": "^1.75.0"

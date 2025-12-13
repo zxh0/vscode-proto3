@@ -68,11 +68,70 @@ export class Proto3Configuration {
   }
 
   public renumberOnSave(): boolean {
-    return this._config.get<boolean>('renumber_on_save', true);
+    return this._config.get<boolean>('renumber_on_save', false);
   }
 
   public useAbsolutePath(): boolean {
     return this._config.get<boolean>('use_absolute_path', false);
+  }
+
+  public getAllProtoPathsForImport(): string[] {
+    // Combine workspace root and protoc proto_path options
+    const paths: string[] = [];
+    const workspaceRoot = vscode.workspace.rootPath;
+
+    // Add workspace root (current behavior) for backward compatibility
+    if (workspaceRoot) {
+      paths.push(workspaceRoot);
+    }
+
+    // Add paths from protoc options (--proto_path or -I)
+    const protoPathOptions = this.getProtoPathOptions();
+    for (let i = 0; i < protoPathOptions.length; i++) {
+      const option = protoPathOptions[i];
+      if (option.startsWith('--proto_path=')) {
+        const protoPath = option.substring('--proto_path='.length);
+        if (protoPath) {
+          paths.push(protoPath);
+        }
+      } else if (option.startsWith('-I') && option.length > 2) {
+        // Handle -I<path>
+        const pathValue = option.substring(2);
+        if (pathValue) {
+          paths.push(pathValue);
+        }
+      } else if (option === '-I') {
+        // Handle case where -I is separated from path
+        if (i + 1 < protoPathOptions.length) {
+          const nextOption = protoPathOptions[i + 1];
+          if (!nextOption.startsWith('-')) {
+            paths.push(nextOption);
+            i++; // Skip the next option since it's consumed as a path
+          }
+        }
+      }
+    }
+
+    // Remove duplicates and resolve relative paths
+    const uniquePaths = new Set<string>();
+    let warnedAboutRelativePath = false;
+    for (const searchPath of paths) {
+      if (path.isAbsolute(searchPath)) {
+        uniquePaths.add(path.resolve(searchPath));
+      } else if (workspaceRoot) {
+        uniquePaths.add(path.resolve(workspaceRoot, searchPath));
+      } else {
+        uniquePaths.add(path.resolve(process.cwd(), searchPath));
+        if (!warnedAboutRelativePath) {
+          console.warn(
+            `[protoc] Relative proto path "${searchPath}" resolved against current working directory (${process.cwd()}) because workspace root is undefined.`
+          );
+          warnedAboutRelativePath = true;
+        }
+      }
+    }
+
+    return Array.from(uniquePaths);
   }
 }
 
