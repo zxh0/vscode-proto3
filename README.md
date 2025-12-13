@@ -1,135 +1,165 @@
+# vscode-proto3
+
 ![icon](images/vscode_extension_icon.png)
 
 > Salute to the long-standing [zxh0/vscode-proto3](https://github.com/zxh0/vscode-proto3) extension that has accompanied us for so long.
 
+Protobuf 3 support for Visual Studio Code
+
 This is an excellent and concise extension in VSCode, and it is well worth our continuous effort to make small optimizations.
 
-## Highlights
+## VSCode Commands
 
-- Fast syntax highlighting and validation for `.proto`
-- IntelliSense-style completion and snippets
-- Compile current/all protos via `protoc`
-- One-click renumbering for fields and enums
-- Formatting via `clang-format`
+_By default **ctrl-shift-p** opens the command prompt._
+
+| Command | Description |
+|---------|-------------|
+| `proto3: Compile All Protos` | Compiles all workspace protos using [configurations](#extension-settings) defined with `protoc.options`. |
+| `proto3: Compile This Proto` | Compiles the active proto using [configurations](#extension-settings) defined with `protoc.options`. |
+
+## Features
+
+- syntax highlighting.
+- syntax validation.
+- code snippets.
+- code completion.
+- code formatting.
+- brace matching.
+- line and block commenting.
+- compilation.
 
 ![gif1](images/gif1.gif)
 
-## Commands
+### Syntax Highlighting
 
-Open the command palette (**Ctrl+Shift+P** / **Cmd+Shift+P**) and run:
+The grammar is written in tmLanguage JSON format.
 
-| Command | Description |
-| --- | --- |
-| `proto3: Compile All Protos` | Compile all workspace protos using configured `protoc.options`. |
-| `proto3: Compile This Proto` | Compile the active proto using configured `protoc.options`. |
-| `proto3: Renumber Fields/Enum Values` | Renumber fields from `1` and enum values from `0` in the current scope. |
+### Syntax Validation
 
-### Renumbering
+The validation is triggered when you save the proto file. You need protoc
+compiler to enable syntax validation. You also need a settings.json file
+to tell the extension the full path of protoc if it is not in `path`.
 
-While inside a message or enum, run `proto3: Renumber Fields/Enum Values`.
-Tags are rewritten so fields count up from `1` and enums from `0`.
+### Extension Settings
 
-### Snippets
-
-| prefix | body |
-| --- | --- |
-| sp2 | `syntax = "proto2";` |
-| sp3 | `syntax = "proto3";` |
-| pkg | `package package.name;` |
-| imp | `import "path/to/other/protos.proto";` |
-| ojp | `option java_package = "java.package.name";` |
-| ojoc | `option java_outer_classname = "ClassName";` |
-| o4s | `option optimize_for = SPEED;` |
-| o4cs | `option optimize_for = CODE_SIZE;` |
-| o4lr | `option optimize_for = LITE_RUNTIME;` |
-| odep | `option deprecated = true;` |
-| oaa | `option allow_alias = true;` |
-| msg | `message MessageName {}` |
-| fbo | `bool field_name = tag;` |
-| fi32 | `int32 field_name = tag;` |
-| fi64 | `int64 field_name = tag;` |
-| fu32 | `uint32 field_name = tag;` |
-| fu64 | `uint64 field_name = tag;` |
-| fs32 | `sint32 field_name = tag;` |
-| fs64 | `sint64 field_name = tag;` |
-| ff32 | `fixed32 field_name = tag;` |
-| ff64 | `fixed64 field_name = tag;` |
-| fsf32 | `sfixed32 field_name = tag;` |
-| fsf64 | `sfixed64 field_name = tag;` |
-| ffl | `float field_name = tag;` |
-| fdo | `double field_name = tag;` |
-| fst | `string field_name = tag;` |
-| fby | `bytes field_name = tag;` |
-| fm | `map<key, val> field_name = tag;` |
-| foo | `oneof name {}` |
-| en | `enum EnumName {}` |
-| sv | `service ServiceName {}` |
-| rpc | `rpc MethodName (Request) returns (Response);` |
-| svgapi | Google API standard methods |
-
-### Formatting
-
-- Runs `clang-format` if available. Configure via settings:
-
+Below is an example settings.json file which comes from
+[example/.vscode](https://github.com/zxh0/vscode-proto3/tree/master/example/.vscode):
 ```json
 {
-  "clang-format.style": "google",
-  "clang-format.executable": "clang-format"
+    "protoc": {
+        "path": "/path/to/protoc",
+        "compile_on_save": false,
+        "options": [
+            "--proto_path=protos/v3",
+            "--proto_path=protos/v2",
+            "--proto_path=${workspaceRoot}/proto",
+            "--proto_path=${env.GOPATH}/src",
+            "--java_out=gen/java"
+        ]
+    }
 }
 ```
 
-## Configuration
+#### Fields
 
-Example `.vscode/settings.json` (see `example/.vscode`):
+The possible fields under the `protoc` extension settings which can be defined in a `settings.json` file.
 
-```json
-{
-  "protoc": {
-    "path": "/path/to/protoc",
-    "compile_on_save": false,
-    "options": [
-      "--proto_path=protos/v3",
-      "--proto_path=protos/v2",
-      "--proto_path=${workspaceRoot}/proto",
-      "--proto_path=${env.GOPATH}/src",
-      "--java_out=gen/java"
-    ]
-  }
-}
-```
+| Field            | Type     | Default          | Description                                                                    |
+| ---------------- | -------- | ---------------- | ------------------------------------------------------------------------------ |
+| path             | string   | _protoc in PATH_ | Path to protoc. Defaults to protoc in PATH if omitted.                         |
+| compile_on_save  | boolean  | false            | On `.proto` file save, compiles to `--*_out` location within `options`         |
+| compile_all_path | string   | Workspace Root   | Search Path for `Compile All Protos` action. Defaults to the Workspace Root    |
+| use_absolute_path| boolean  | false            | Set `true` for `compile_all_path` search files using absolute path             |
+| options          | string[] | []               | protoc compiler arguments/flags, required for proto validation and compilation |
 
-| Field | Type | Default | Description |
-| --- | --- | --- | --- |
-| `path` | string | protoc in PATH | Protoc binary path. |
-| `compile_on_save` | boolean | `false` | Compile current file on save. |
-| `renumber_on_save` | boolean | `true` | Renumber fields/enums on save. |
-| `compile_all_path` | string | Workspace root | Search path for Compile All. |
-| `use_absolute_path` | boolean | `false` | Use absolute paths when searching. |
-| `options` | string[] | `[]` | Protoc flags for validation/compilation. |
 
-Inline variables supported: `config.*`, `env.*`, `workspaceRoot`.
+#### In-Line Variables
 
-## Development
+These variables can be used to inject variables strings within the `protoc` extension configurations. See above for examples.
 
-- Install dependencies: `npm install`
-- Local checks: `npm run verify` (lint, markdown lint, format check, tests with `--forbid-only`)
-- Build/package: `npm run package:vsix`
-- Release: push a tag `v*.*.*` to trigger CI packaging and GitHub release attachment (no marketplace publish)
+| Variable      | Description                              |
+| ------------- | ---------------------------------------- |
+| config.*      | Refer settings items in ``Preferences``. |
+| env.*         | Refer environment variable.              |
+| workspaceRoot | Returns current workspace root path.     |
 
-## Troubleshooting
+### Code Completion
 
-- `spawnsync clang-format enoent`: install `clang-format` (`brew install clang-format` on macOS) or update `clang-format.executable`.
-- Auto-complete may be limited in complex scopes; please file an issue with a minimal repro.
+A very simple parser is written to support code completion.
 
-## Contributing
+### Code Snippets
 
-See [CONTRIBUTING](CONTRIBUTING.md). PRs that add tests and keep `npm run verify` passing are welcome.
+| prefix | body                                           |
+| ------ | ---------------------------------------------- |
+| sp2    | `syntax = "proto2";`                           |
+| sp3    | `syntax = "proto3";`                           |
+| pkg    | `package package.name;`                        |
+| imp    | `import "path/to/other/protos.proto";`         |
+| ojp    | `option java_package = "java.package.name";`   |
+| ojoc   | `option java_outer_classname = "ClassName";`   |
+| o4s    | `option optimize_for = SPEED;`                 |
+| o4cs   | `option optimize_for = CODE_SIZE;`             |
+| o4lr   | `option optimize_for = LITE_RUNTIME;`          |
+| odep   | `option deprecated = true;`                    |
+| oaa    | `option allow_alias = true;`                   |
+| msg    | `message MessageName {}`                       |
+| fbo    | `bool field_name = tag;`                       |
+| fi32   | `int32 field_name = tag;`                      |
+| fi64   | `int64 field_name = tag;`                      |
+| fu32   | `uint32 field_name = tag;`                     |
+| fu64   | `uint64 field_name = tag;`                     |
+| fs32   | `sint32 field_name = tag;`                     |
+| fs64   | `sint64 field_name = tag;`                     |
+| ff32   | `fixed32 field_name = tag;`                    |
+| ff64   | `fixed64 field_name = tag;`                    |
+| fsf32  | `sfixed32 field_name = tag;`                   |
+| fsf64  | `sfixed64 field_name = tag;`                   |
+| ffl    | `float field_name = tag;`                      |
+| fdo    | `double field_name = tag;`                     |
+| fst    | `string field_name = tag;`                     |
+| fby    | `bytes field_name = tag;`                      |
+| fm     | `map<key, val> field_name = tag;`              |
+| foo    | `oneof name {}`                                |
+| en     | `enum EnumName {}`                             |
+| sv     | `service ServiceName {}`                       |
+| rpc    | `rpc MethodName (Request) returns (Response);` |
 
-## Top contributors
+### Google API Design Guide
 
-![Top contributors](https://contrib.rocks/image?repo=zxh0/vscode-proto3)
+The following snippets are based on
+[Google API Design Guide](https://cloud.google.com/apis/design/).
 
-See the full list on GitHub in the [contributors graph](https://github.com/zxh0/vscode-proto3/graphs/contributors).
+| prefix | reference                                                                 |
+| ------ | ------------------------------------------------------------------------- |
+| svgapi | [Standard Methods](https://cloud.google.com/apis/design/standard_methods) |
+
+## Code Formatting
+
+Support "Format Document" if `clang-format` is in path, including custom `style` options.
+
+By default, `clang-format`'s standard coding style will be used for formatting. To define a custom style or use a supported preset add `"clang-format.style"` in VSCode Settings (`settings.json`)
+
+### Example usage:
+`"clang-format.style": "google"`
+
+This is the equivalent of executing `clang-format -style=google` from the shell.
+
+With multiple formatting options
+
+`"clang-format.style": "{ IndentWidth: 4, BasedOnStyle: google, AlignConsecutiveAssignments: true }"`
+
+For further formatting options refer to the [official `clang-format` documentation](https://clang.llvm.org/docs/ClangFormatStyleOptions.html)
+
+## Known Issues
+
+Auto-completion not works in some situations.
+
+Some users consistently see an error like `spawnsync clang-format enoent` when they save. This happens when the "formatOnSave"-setting is enabled in VSCode and "clang-format" cannot be found. To fix this:
+
+### On MacOS
+
+1. Install clang-format on your system: `brew install clang-format`
+2. Install the `clang-format` plugin in VSCode
 
 ## Release Notes
 
