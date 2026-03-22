@@ -5,6 +5,7 @@ import {
   computeMessageEdits,
   findEnclosingBlock,
 } from '../src/proto3RenumberLogic';
+import { applyEdits } from './testUtils';
 
 suite('Proto3RenumberLogic', () => {
   test('renumbers message fields while skipping nested messages', () => {
@@ -16,13 +17,9 @@ suite('Proto3RenumberLogic', () => {
 
     const edits = computeMessageEdits(text, block);
     assert.strictEqual(edits.length, 3);
-    assert.deepStrictEqual(
-      edits.map(edit => text.slice(edit.start, edit.end)),
-      ['5', '8', '11']
-    );
-    assert.deepStrictEqual(
-      edits.map(edit => edit.replacement),
-      ['1', '2', '3']
+    assert.strictEqual(
+      applyEdits(text, edits),
+      `message Outer {\n  string keep = 1;\n  message Inner {\n    string nested = 1;\n  }\n  oneof choice {\n    int32 picked = 2;\n    string named = 3;\n  }\n}`
     );
   });
 
@@ -46,9 +43,9 @@ suite('Proto3RenumberLogic', () => {
 
     const edits = computeEnumEdits(text, block);
     assert.strictEqual(edits.length, 2);
-    assert.deepStrictEqual(
-      edits.map(edit => edit.replacement),
-      ['0', '1']
+    assert.strictEqual(
+      applyEdits(text, edits),
+      `enum Sample {\n  SAMPLE_UNKNOWN = 0;\n  SAMPLE_CREATED = 1;\n}`
     );
   });
 
@@ -56,13 +53,9 @@ suite('Proto3RenumberLogic', () => {
     const text = `message Foo {\n  string keep = 3;\n  enum State {\n    UNKNOWN = 2;\n    STARTED = 5;\n  }\n  message Inner {\n    int64 value = 4;\n  }\n}`;
     const edits = computeDocumentRenumberEdits(text);
     assert.strictEqual(edits.length, 4);
-    assert.deepStrictEqual(
-      edits.map(edit => text.slice(edit.start, edit.end)),
-      ['3', '2', '5', '4']
-    );
-    assert.deepStrictEqual(
-      edits.map(edit => edit.replacement),
-      ['1', '0', '1', '1']
+    assert.strictEqual(
+      applyEdits(text, edits),
+      `message Foo {\n  string keep = 1;\n  enum State {\n    UNKNOWN = 0;\n    STARTED = 1;\n  }\n  message Inner {\n    int64 value = 1;\n  }\n}`
     );
   });
 });

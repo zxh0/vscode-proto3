@@ -6,6 +6,7 @@ import {
   findAllBlocks,
   findEnclosingBlock,
 } from '../src/proto3RenumberLogic';
+import { applyEdits } from './testUtils';
 
 suite('Proto3RenumberLogic - Extended Tests', () => {
   suite('findEnclosingBlock', () => {
@@ -132,7 +133,7 @@ suite('Proto3RenumberLogic - Extended Tests', () => {
       const block = findAllBlocks(text)[0];
       const result = computeMessageEdits(text, block);
       assert.strictEqual(result.length, 1);
-      assert.strictEqual(result[0].replacement, '1');
+      assert.strictEqual(applyEdits(text, result), `message Foo {\n  string name = 1;\n}`);
     });
 
     test('renumbers multiple fields sequentially', () => {
@@ -140,9 +141,9 @@ suite('Proto3RenumberLogic - Extended Tests', () => {
       const block = findAllBlocks(text)[0];
       const result = computeMessageEdits(text, block);
       assert.strictEqual(result.length, 3);
-      assert.deepStrictEqual(
-        result.map(e => e.replacement),
-        ['1', '2', '3']
+      assert.strictEqual(
+        applyEdits(text, result),
+        `message Foo {\n  string a = 1;\n  int32 b = 2;\n  bool c = 3;\n}`
       );
     });
 
@@ -212,6 +213,18 @@ suite('Proto3RenumberLogic - Extended Tests', () => {
       assert.strictEqual(result.length, 1);
       assert.strictEqual(result[0].replacement, '1');
     });
+
+    test('renumbers field numbers without changing field names that include digits', () => {
+      const text = `message Foo {\n  string field_5 = 5;\n  string field_8 = 8;\n}`;
+      const block = findAllBlocks(text)[0];
+      const result = computeMessageEdits(text, block);
+
+      assert.strictEqual(result.length, 2);
+      assert.strictEqual(
+        applyEdits(text, result),
+        `message Foo {\n  string field_5 = 1;\n  string field_8 = 2;\n}`
+      );
+    });
   });
 
   suite('computeEnumEdits', () => {
@@ -234,9 +247,9 @@ suite('Proto3RenumberLogic - Extended Tests', () => {
       const block = findAllBlocks(text)[0];
       const result = computeEnumEdits(text, block);
       assert.strictEqual(result.length, 2);
-      assert.deepStrictEqual(
-        result.map(e => e.replacement),
-        ['0', '1']
+      assert.strictEqual(
+        applyEdits(text, result),
+        `enum Status {\n  UNKNOWN = 0;\n  ACTIVE = 1;\n}`
       );
     });
 
@@ -244,11 +257,10 @@ suite('Proto3RenumberLogic - Extended Tests', () => {
       const text = `enum Status {\n  NEGATIVE = -1;\n  ZERO = 0;\n}`;
       const block = findAllBlocks(text)[0];
       const result = computeEnumEdits(text, block);
-      // Should renumber to 0, 1
       assert.strictEqual(result.length, 2);
-      assert.deepStrictEqual(
-        result.map(e => e.replacement),
-        ['0', '1']
+      assert.strictEqual(
+        applyEdits(text, result),
+        `enum Status {\n  NEGATIVE = 0;\n  ZERO = 1;\n}`
       );
     });
 
@@ -264,6 +276,30 @@ suite('Proto3RenumberLogic - Extended Tests', () => {
       const block = findAllBlocks(text)[0];
       const result = computeEnumEdits(text, block);
       assert.strictEqual(result.length, 2);
+    });
+
+    test('renumbers enum values without changing enum names that include digits', () => {
+      const text = `enum Method {\n  GERG88_1 = 4;\n  GERG88_2 = 5;\n  GERG88_3 = 6;\n}`;
+      const block = findAllBlocks(text)[0];
+      const result = computeEnumEdits(text, block);
+
+      assert.strictEqual(result.length, 3);
+      assert.strictEqual(
+        applyEdits(text, result),
+        `enum Method {\n  GERG88_1 = 0;\n  GERG88_2 = 1;\n  GERG88_3 = 2;\n}`
+      );
+    });
+
+    test('replaces full hexadecimal enum literals', () => {
+      const text = `enum Status {\n  NEGATIVE = -0x20;\n  POSITIVE = 0x10;\n}`;
+      const block = findAllBlocks(text)[0];
+      const result = computeEnumEdits(text, block);
+
+      assert.strictEqual(result.length, 2);
+      assert.strictEqual(
+        applyEdits(text, result),
+        `enum Status {\n  NEGATIVE = 0;\n  POSITIVE = 1;\n}`
+      );
     });
   });
 
@@ -282,9 +318,9 @@ suite('Proto3RenumberLogic - Extended Tests', () => {
       const text = `message Foo {\n  string a = 5;\n}\n\nmessage Bar {\n  int32 b = 10;\n}`;
       const result = computeDocumentRenumberEdits(text);
       assert.strictEqual(result.length, 2);
-      assert.deepStrictEqual(
-        result.map(e => e.replacement),
-        ['1', '1']
+      assert.strictEqual(
+        applyEdits(text, result),
+        `message Foo {\n  string a = 1;\n}\n\nmessage Bar {\n  int32 b = 1;\n}`
       );
     });
 
@@ -292,6 +328,10 @@ suite('Proto3RenumberLogic - Extended Tests', () => {
       const text = `message Foo {\n  string a = 5;\n}\n\nenum Status {\n  UNKNOWN = 5;\n}`;
       const result = computeDocumentRenumberEdits(text);
       assert.strictEqual(result.length, 2);
+      assert.strictEqual(
+        applyEdits(text, result),
+        `message Foo {\n  string a = 1;\n}\n\nenum Status {\n  UNKNOWN = 0;\n}`
+      );
     });
 
     test('returns edits sorted by position', () => {
@@ -362,6 +402,20 @@ message Outer {
       const block = findAllBlocks(text)[0];
       const result = computeMessageEdits(text, block);
       assert.strictEqual(result.length, 1);
+    });
+
+    test('ignores braces inside comments when finding and renumbering blocks', () => {
+      const text = `message Foo {\n  // comment with }\n  string name = 5;\n}`;
+      const block = findEnclosingBlock(text, text.indexOf('name'));
+      assert.ok(block);
+      assert.strictEqual(block.type, 'message');
+
+      const result = computeMessageEdits(text, block);
+      assert.strictEqual(result.length, 1);
+      assert.strictEqual(
+        applyEdits(text, result),
+        `message Foo {\n  // comment with }\n  string name = 1;\n}`
+      );
     });
 
     test('handles reserved ranges', () => {
